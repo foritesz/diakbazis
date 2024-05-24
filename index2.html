@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="css/style.css" rel="stylesheet" />
+  <!-- responsive style -->
+  <link href="css/responsive.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+
+  
+  <style>
+    /* Remove the navbar's default rounded borders and increase the bottom margin */ 
+    .navbar {
+      margin-bottom: 0;
+    }
+    
+    /* Remove the jumbotron's default bottom margin */ 
+     .goods {
+      margin-top: 50px;
+      margin-bottom: 50px;
+    }
+   
+    /* Add a gray background color and some padding to the footer */
+    footer {
+      background-color: #f2f2f2;
+      padding: 25px;
+      position: relative;
+    }
+    .col-sm-9{
+     width: 80%;
+    }
+
+    @media (max-width: 800px) {
+      .col-sm-9{
+    width: 100%;
+  }
+}
+
+    .col-sm-3{
+      width: 20%;
+    }
+
+    @media (max-width: 800px) {
+      .col-sm-3{
+    width: 100%;
+  }
+}
+
+
+/*.clearfix:after {
+  content: "";
+  display: table;
+  clear: both;
+}*/
+
+.dropbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+ 
+}
+
+@media (max-width: 800px) {
+  button.dropbtn{
+    width: 100%;
+  }
+}
+
+.dropbtn:hover, .dropbtn:focus {
+  background-color: #3e8e41;
+}
+
+#myInput {
+  box-sizing: border-box;
+  background-image: url('searchicon.png');
+  background-position: 14px 12px;
+  background-repeat: no-repeat;
+  font-size: 16px;
+  padding: 14px 20px 12px 45px;
+  border: none;
+  border-bottom: 1px solid #ddd;
+}
+
+#myInput:focus {outline: 3px solid #ddd;}
+
+
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f6f6f6;
+  min-width: 230px;
+  overflow: auto;
+  border: 1px solid #ddd;
+  z-index: 1;
+}
+
+
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {background-color: #ddd;}
+
+.show {display: block;}
+
+/* filters*/
+
+.collapsible {
+  background-color: #777;
+  color: white;
+  cursor: pointer;
+  padding: 18px;
+  width: 100%;
+  border: none;
+  text-align: center;
+  outline: none;
+  font-size: 15px;
+ 
+
+}
+
+@media only screen and (max-width: 800px) {
+.collapsible {
+    width: 100%;
+  }
+}
+
+.active, .collapsible:hover {
+  background-color: #555;
+}
+
+.content1 {
+  padding: 0 18px;
+  max-height:  0;
+  overflow: hidden;
+  transition: max-height 0.2s ease-out;
+
+}
+h6{
+    font-size: large;
+}
+
+</style>
+</head>
+<body>
+
+<nav class="navbar navbar-inverse">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>                        
+      </button>
+      <a class="navbar-brand" href="#">Logo</a>
+    </div>
+    <div class="collapse navbar-collapse" id="myNavbar">
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="index.html">Home</a></li>
+        <li><a href="index2.html">Products</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<div class="goods">
+  <div class="container-fluid">
+    <div class="row content">
+      <div class="col-sm-3 sidenav">
+        
+        
+
+            <div id="mobile-filter">
+              <div class="border-bottom pb-2 ml-2">
+                  <h4 id="burgundy">Filters</h4>
+            </div>
+              <div class="py-2 border-bottom ml-3">
+                  <button class="collapsible">Categories</button>
+                  <div class="content1">
+                  <form>
+                      <div class="form-group">
+                          <input type="checkbox" id="artisan">
+                          <label for="artisan">Fresh Artisan Breads</label>
+                      </div>
+                      <div class="form-group">
+                          <input type="checkbox" id="breakfast">
+                          <label for="breakfast">Breakfast Breads</label>
+                      </div>
+                      <div class="form-group">
+                          <input type="checkbox" id="healthy">
+                          <label for="healthy">Healthy Breads</label>
+                      </div>                                
+                  </form>
+              </div>
+              <div class="py-2 border-bottom ml-3">
+                  <button class="collapsible">Accompainments</button>
+                  <div class="content1">
+                  <form>
+                      <div class="form-group">
+                          <input type="checkbox" id="tea">
+                          <label for="tea">Tea Cakes</label>
+                      </div>
+                      <div class="form-group">
+                          <input type="checkbox" id="cookies">
+                          <label for="cookies">Cookies</label>
+                      </div>
+                      <div class="form-group">
+                          <input type="checkbox" id="pastries">
+                          <label for="pastries">Pastries</label>
+                      </div>                                
+                      <div class="form-group">
+                          <input type="checkbox" id="dough">
+                          <label for="dough">Cookie Dough</label>
+                      </div>                                
+                      <div class="form-group">
+                          <input type="checkbox" id="choco">
+                          <label for="choco">Chocolates</label>
+                      </div>                                
+                  </form>
+              </div>
+              <div class="py-2 ml-3">
+                  <button class="collapsible">Top Offers</button>
+                  <div class="content1">
+                  <form>
+                      <div class="form-group">
+                          <input type="checkbox" id="25off">
+                          <label for="25">25% off</label>
+                      </div>
+                      <div class="form-group">
+                          <input type="checkbox" id="5off">
+                          <label for="5off" id="off">5% off on artisan breads</label>
+                      </div>                                           
+                  </form>
+              </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+        
+      
+  <div class="col-sm-9">
+    <div class="responsive">
+      <div class="gallery">
+        <a target="_blank" href="img_5terre.jpg">
+          <img src="img_5terre.jpg" alt="Cinque Terre" width="600" height="400"></a>
+          <div class="desc">Add a description of the image here</div>
+      </div>
+    </div>
+       
+    <div class="responsive">
+        <div class="gallery">
+          <a target="_blank" href="img_forest.jpg">
+            <img src="img_forest.jpg" alt="Forest" width="600" height="400"></a>
+        <div class="desc">Add a description of the image here</div>
+      </div>
+    </div>
+            
+    <div class="responsive">
+      <div class="gallery">
+        <a target="_blank" href="img_lights.jpg">
+          <img src="img_lights.jpg" alt="Northern Lights" width="600" height="400"></a>
+        <div class="desc">Add a description of the image here</div>
+      </div>
+    </div>
+            
+    <div class="responsive">
+      <div class="gallery">
+        <a target="_blank" href="img_mountains.jpg">
+          <img src="img_mountains.jpg" alt="Mountains" width="600" height="400"></a>
+          <div class="desc">Add a description of the image here</div>
+      </div>
+    </div>
+
+    <div class="responsive">
+      <div class="gallery">
+        <a target="_blank" href="img_forest.jpg">
+          <img src="img_forest.jpg" alt="Forest" width="600" height="400"></a>
+      <div class="desc">Add a description of the image here</div>
+    </div>
+  </div>
+          
+  <div class="responsive">
+    <div class="gallery">
+      <a target="_blank" href="img_lights.jpg">
+        <img src="img_lights.jpg" alt="Northern Lights" width="600" height="400"></a>
+      <div class="desc">Add a description of the image here</div>
+    </div>
+  </div>
+          
+  <div class="responsive">
+    <div class="gallery">
+      <a target="_blank" href="img_mountains.jpg">
+        <img src="img_mountains.jpg" alt="Mountains" width="600" height="400"></a>
+        <div class="desc">Add a description of the image here</div>
+    </div>
+  </div>
+  </div>
+</div>
+</div>
+</div>
+
+<footer class="footer">
+  <p>Online Store Copyright</p> 
+</footer>
+
+<script>
+const mediaQuery = window.matchMedia('(min-width: 800px)')
+if (mediaQuery.matches) {
+function myFunction() {
+  document.getElementById("myDropdown").classList.toggle("show");
+}
+}
+function filterFunction(filter = '') {
+  var input, ul, li, a, i;
+  input = document.getElementById("myInput");
+  if (!filter) {
+    input.value = ''; // Üres szűrési kifejezés esetén töröljük a beírt értéket
+  }
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "none";
+    }
+  }
+}
+
+function initFilter() {
+  myFunction(); // Az oldal betöltésekor hívjuk meg a lenyíló menü megjelenítését
+  filterFunction(); // Az oldal betöltésekor hívjuk meg a szűrést üres kifejezéssel
+}
+
+// Az oldal betöltésekor futtatjuk az initFilter() függvényt
+window.addEventListener('load', initFilter);
+
+function filterFunction() {
+  var input, filter, ul, li, a, i;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  div = document.getElementById("myDropdown");
+  a = div.getElementsByTagName("a");
+  for (i = 0; i < a.length; i++) {
+    txtValue = a[i].textContent || a[i].innerText;
+    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+      a[i].style.display = "";
+    } else {
+      a[i].style.display = "block";
+    }
+  }
+}
+
+function myFunction() {
+  var dropdown = document.getElementById("myDropdown");
+  dropdown.classList.toggle("show");
+}
+
+function filterFunction(filter = '') {
+  // ... a többi kód marad változatlan ...
+}
+
+function initFilter() {
+  filterFunction();
+}
+
+// Az oldal betöltésekor futtatjuk az initFilter() függvényt
+window.addEventListener('load', initFilter);
+
+// Az oldal betöltésekor ellenőrizzük a képernyő szélességét
+// Ha nagyobb vagy egyenlő, mint 800px, akkor azonnal mutassuk a lenyíló menüt
+if (window.matchMedia('(min-width: 800px)').matches) {
+  myFunction();
+}
+</script>
+
+<script>
+  const mediaQueryfilter = window.matchMedia('(min-width: 800px)');
+  
+  function initFilter() {
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+  
+    for (i = 0; i < coll.length; i++) {
+      coll[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var content = this.nextElementSibling;
+        if (content.style.maxHeight) {
+          content.style.maxHeight = null;
+        } else {
+          content.style.maxHeight = content.scrollHeight + "px";
+        }
+      });
+  
+      // Az "if" blokkkal beállítjuk az elemek kezdeti állapotát az ablakméretnek megfelelően
+      if (mediaQueryfilter.matches) {
+        coll[i].classList.add("active");
+        var content = coll[i].nextElementSibling;
+        content.style.maxHeight = 20+content.scrollHeight + "px";
+      } else {
+        coll[i].classList.remove("active");
+        var content = coll[i].nextElementSibling;
+        content.style.maxHeight = null;
+      }
+    }
+  }
+  
+  // Az "initFilter" függvény meghívása az oldal betöltésekor
+  initFilter();
+  
+  // Eseményfigyelő a médiaké
+  
+  
+   </script>
+
+</body>
+</html>
