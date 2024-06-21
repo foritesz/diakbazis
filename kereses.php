@@ -1,4 +1,17 @@
-<?php 
+<?php
+
+// kereses.php
+
+// Ellenőrizzük a keresés paramétert
+if (!isset($_GET['kereses']) || empty($_GET['kereses'])) {
+    http_response_code(404);
+    include('404.php');
+    exit();
+}
+
+// Itt jön a további kód a keresési eredmények megjelenítéséhez
+
+
 session_start();
 include("Product.php");
 include("navbar.php");

@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weboldal Kínézet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background-color: #f8f8f8;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+        }
+        .logo {
+            margin-left: 20px;
+        }
+        .search-bar {
+            flex-grow: 1;
+            text-align: center;
+        }
+        .search-bar input {
+            width: 50%;
+            padding: 8px;
+        }
+        .dropdown-menu {
+            display: flex;
+            justify-content: center;
+            background-color: #eee;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+        }
+        .dropdown-menu select {
+            margin: 0 10px;
+            padding: 5px;
+        }
+        .content {
+            display: flex;
+            width: 1000px;
+            margin: 20px auto;
+        }
+        .filter {
+            width: 25%;
+            padding: 10px;
+            border-right: 1px solid #ddd;
+        }
+        .filter h3 {
+            cursor: pointer;
+            margin: 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+        }
+        .subcategory {
+            display: none;
+            padding-left: 20px;
+        }
+        .products {
+            width: 75%;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .product-card {
+            width: calc(50% - 20px);
+            border: 1px solid #ddd;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+        .product-card img {
+            max-width: 100%;
+            height: auto;
+        }
+        .footer {
+            background-color: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            margin-top: 20px;
+        }
+        @media (max-width: 768px) {
+            .content {
+                width: 100%;
+                flex-direction: column;
+            }
+            .filter {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+            .products {
+                width: 100%;
+            }
+            .product-card {
+                width: calc(100% - 20px);
+            }
+            .subcategory {
+                display: none;
+            }
+            .filter h3.active + .subcategory {
+                display: block;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="logo">
+            <h1>Logó</h1>
+        </div>
+        <div class="search-bar">
+            <input type="text" placeholder="Keresés...">
+        </div>
+    </div>
+
+    <div class="dropdown-menu">
+        <select><option>Papír-Írószer</option></select>
+        <select><option>Kreatív</option></select>
+        <select><option>Játék</option></select>
+        <select><option>Ajándék</option></select>
+        <select><option>Könyv</option></select>
+        <select><option>Táska-Pénztárca</option></select>
+        <select><option>Cipő</option></select>
+        <select><option>Háztartási cikkek</option></select>
+        <select><option>Szezonális</option></select>
+        <select><option>Óra</option></select>
+        <select><option>Szolgáltatás</option></select>
+    </div>
+
+    <div class="content">
+        <div class="filter">
+            <h3 onclick="toggleCategory('cat1')">Kategória 1</h3>
+            <div class="subcategory" id="cat1">
+                <label><input type="checkbox"> Alkategória 1.1</label><br>
+                <label><input type="checkbox"> Alkategória 1.2</label><br>
+                <label><input type="checkbox"> Alkategória 1.3</label><br>
+            </div>
+            <h3 onclick="toggleCategory('cat2')">Kategória 2</h3>
+            <div class="subcategory" id="cat2">
+                <label><input type="checkbox"> Alkategória 2.1</label><br>
+                <label><input type="checkbox"> Alkategória 2.2</label><br>
+                <label><input type="checkbox"> Alkategória 2.3</label><br>
+            </div>
+        </div>
+        <div class="products">
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Product Image">
+                <h3>Termék neve</h3>
+                <p>Termék leírása...</p>
+                <p>Ár: 1000 Ft</p>
+            </div>
+            <div class="product-card">
+                <img src="https://via.placeholder.com/150" alt="Product Image">
+                <h3>Termék neve</h3>
+                <p>Termék leírása...</p>
+                <p>Ár: 1000 Ft</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Webshop. Minden jog fenntartva.</p>
+    </div>
+
+    <script>
+        function toggleCategory(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "none" || element.style.display === "") {
+                element.style.display = "block";
+            } else {
+                element.style.display = "none";
+            }
+        }
+
+        window.addEventListener('load', function() {
+            if (window.innerWidth <= 768) {
+                var subcategories = document.querySelectorAll('.subcategory');
+                subcategories.forEach(function(subcategory) {
+                    subcategory.style.display = "none";
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -125,34 +125,38 @@ if ($result->num_rows > 0) {
 	public function getSearchforIt() {
 		// Initialize the $subcategories array
 		$subcategories = array();
-		
-		// Keresés a products táblában
-		$sql = "SELECT * FROM products WHERE product_name LIKE '%" . $this->search . "%' OR leiras LIKE '%" . $this->search . "%' OR subcategory LIKE '%" . $this->search . "%'";
-		$result_products = $this->dbConnect->query($sql);
+		// Initialize a set to keep track of unique subcategories
+		$uniqueSubcategories = array();
 	
-		if ($result_products->num_rows > 0) {
-			// Kilistázás
-			while ($row = $result_products->fetch_assoc()) {
-				$category_id = $row['subcategory'];
+		// Construct the SQL query to search in products and join with categories
+		$sql = "
+			SELECT p.*, c.menu_category, c.category_name, c.subcategory
+			FROM products p
+			INNER JOIN categories c ON p.subcategory = c.subcategory
+			WHERE p.product_name LIKE '%" . $this->search . "%' 
+			OR p.leiras LIKE '%" . $this->search . "%' 
+			OR p.subcategory LIKE '%" . $this->search . "%'
+		";
+		$result = $this->dbConnect->query($sql);
 	
-				// Keresés a categories táblában a category_id alapján
-				$sql_categories = "SELECT * FROM categories WHERE category_id = '$category_id'";
-				$result_categories = $this->dbConnect->query($sql_categories);
+		if ($result->num_rows > 0) {
+			// Iterate through the result set and build the subcategories array
+			while ($row = $result->fetch_assoc()) {
+				$category_name = $row['category_name'];
+				$subcategory = $row['subcategory'];
 	
-				if ($result_categories->num_rows > 0) {
-					$category_row = $result_categories->fetch_assoc();
-					if (isset($category_row['category_name'])) {
-						$category_name = $category_row['category_name'];
-						$subcategory = $category_row['subcategory'];
-	
-						// Add the result to the $subcategories array
-						$subcategories[$category_name][] = $subcategory;
-					}
+				// Check if the subcategory is already in the unique set
+				if (!isset($uniqueSubcategories[$subcategory])) {
+					// Add the result to the $subcategories array
+					$subcategories[$category_name][] = $subcategory;
+					// Mark the subcategory as seen
+					$uniqueSubcategories[$subcategory] = true;
 				}
 			}
 		} else {
-			// Nincs találat a products táblában
+			// No results found in the products and categories tables
 		}
+	
 		if (isset($_POST['subcategory']) && !empty($_POST['subcategory'])) {
 			$checked = $_POST['subcategory'];
 			$conditions = [];
@@ -170,34 +174,46 @@ if ($result->num_rows > 0) {
 		
 			// Construct the SQL query
 			$sql = "SELECT * FROM categories WHERE $conditionsString";
+		} else {
+			// Construct the SQL query to search in categories
+			$sql = "
+				SELECT * FROM categories 
+				WHERE menu_category LIKE '%" . $this->search . "%' 
+				OR category_name LIKE '%" . $this->search . "%' 
+				OR subcategory LIKE '%" . $this->search . "%'
+			";
 		}
-		else
-		{
-		// Keresés a categories táblában
-			$sql = "SELECT * FROM categories WHERE menu_category LIKE '%" . $this->search . "%' OR category_name LIKE '%" . $this->search . "%' OR subcategory LIKE '%" . $this->search . "%'";
-		}
+		
 		$result_categories = $this->dbConnect->query($sql);
-		//echo $checked;
+	
 		if ($result_categories->num_rows > 0) {
-			// Kilistázás
+			// Iterate through the result set and build the subcategories array
 			while ($row = $result_categories->fetch_assoc()) {
 				if (isset($row['category_name'])) {
 					$category_name = $row['category_name'];
 					$subcategory = $row['subcategory'];
 	
-					// Add the result to the $subcategories array
-					$subcategories[$category_name][] = $subcategory;
+					// Check if the subcategory is already in the unique set
+					if (!isset($uniqueSubcategories[$subcategory])) {
+						// Add the result to the $subcategories array
+						$subcategories[$category_name][] = $subcategory;
+						// Mark the subcategory as seen
+						$uniqueSubcategories[$subcategory] = true;
+					}
 				}
 			}
 		} else {
-			// Nincs találat a categories táblában
+			// No results found in the categories table
 		}
 	
-		// Kapcsolat bezárása
-	
+		// Close the connection (if necessary)
+		// $this->dbConnect->close();
+		
 		// Return the $subcategories array
 		return $subcategories;
 	}
+	
+	
 	
 	
 
@@ -263,7 +279,7 @@ if ($result->num_rows > 0) {
             foreach ($products as $key => $product) {				
 				$productHTML .= '<div class="responsive">';
                 $productHTML .= '<div class="gallery">';
-                $productHTML .= '<a href="index4.php?ID='.$product['id'].'"><img src="images/'.$product['image'].'" alt="'.$product['product_name'].'" /></a>';
+                $productHTML .= '<a href="index4.php?ID='.$product['id'].'"><img src="images/'.$product['kepek'].'" alt="'.$product['product_name'].'" /></a>';
                 $productHTML .= '<a href="" class="product-name">'.$product['product_name'].'</a>';
                 $productHTML .= '<div class="price">$'.$product['price'];
 				$productHTML .= '<h6>subcategory : '.$product['subcategory'].'</h6>'.$this->receivedMenuCategory.'';

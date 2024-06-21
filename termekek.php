@@ -1,4 +1,23 @@
-<?php 
+<?php
+
+// termekek.php
+
+// Ellenőrizzük a menucategory paramétert
+if (!isset($_GET['menucategory']) || empty($_GET['menucategory'])) {
+    http_response_code(404);
+    include('404.php');
+    exit();
+}
+
+// Ellenőrizzük az alkategoria paramétert
+if (empty($_GET['alkategoria']) && empty($_GET['menucategory'])) {
+    http_response_code(404);
+    include('404.php');
+    exit();
+}
+
+// Itt jön a további kód a termékek megjelenítéséhez
+
  session_start();
 include("Product.php");
 include("navbar.php");
