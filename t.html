@@ -147,7 +147,6 @@
             border-top: 1px solid #ddd;
             margin-top: 20px;
         }
-        
         @media (max-width: 1024px) {
             .header {
                 flex-direction: column;
@@ -207,59 +206,9 @@
                 display: block;
             }
         }
-
-        /* Skeleton Animation */
-        .skeleton {
-            animation: skeleton-animation 1.5s linear infinite alternate;
-        }
-
-        @keyframes skeleton-animation {
-            0% {
-                background-position: 200% center;
-                background-color: hsl(200, 20%, 70%)
-            }
-            100% {
-                background-position: -200% center;
-                background-color: hsl(200, 20%, 95%)
-            }
-        }
-
-        /* Hide content while loading */
-        .loading .product-card img,
-        .loading .subcategory, 
-        .loading .product-details{
-            visibility: hidden;
-        }
-
-        .pagination {
-            display: flex;
-            justify-content: center;
-            margin: 20px 0;
-        }
-        .pagination button {
-            padding: 10px 15px;
-            margin: 0 5px;
-            border: 1px solid #ddd;
-            background-color: #f8f8f8;
-            cursor: pointer;
-        }
-        .pagination button:hover {
-            background-color: #ddd;
-        }
-        .pagination .page-number {
-            padding: 10px 15px;
-            margin: 0 5px;
-            border: 1px solid #ddd;
-            background-color: #f8f8f8;
-            cursor: pointer;
-        }
-        .pagination .page-number.active {
-            background-color: #ddd;
-            font-weight: bold;
-        }
     </style>
 </head>
-<body class="loading">
+<body>
 
     <div class="header">
         <div class="logo">
@@ -292,7 +241,7 @@
         <select><option>Szolgáltatás</option></select>
     </div>
 
-    <div class="dropdown-menu dropdown skeleton">
+    <div class="dropdown-menu dropdown">
         <select><option>Papír-Írószer</option></select>
         <select><option>Kreatív</option></select>
         <select><option>Játék</option></select>
@@ -309,13 +258,13 @@
     <div class="content">
         <div class="filter">
             <h3 onclick="toggleCategory('cat1')">Kategória 1</h3>
-            <div class="subcategory skeleton" id="cat1">
+            <div class="subcategory" id="cat1">
                 <label><input type="checkbox"> Alkategória 1.1</label><br>
                 <label><input type="checkbox"> Alkategória 1.2</label><br>
                 <label><input type="checkbox"> Alkategória 1.3</label><br>
             </div>
             <h3 onclick="toggleCategory('cat2')">Kategória 2</h3>
-            <div class="subcategory skeleton" id="cat2">
+            <div class="subcategory" id="cat2">
                 <label><input type="checkbox"> Alkategória 2.1</label><br>
                 <label><input type="checkbox"> Alkategória 2.2</label><br>
                 <label><input type="checkbox"> Alkategória 2.3</label><br>
@@ -323,13 +272,13 @@
         </div>
         <div class="products">
             <div class="product-card">
-                <div class="image-container skeleton">
+                <div class="image-container">
                     <img src="https://via.placeholder.com/150" alt="Product Image" class="zoom-image">
                 </div>
                 <div class="zoom-window" id="zoomWindow">
                     <img src="https://via.placeholder.com/150" alt="Zoomed Image" class="zoomed-image">
                 </div>
-                <div class="product-details skeleton">
+                <div class="product-details">
                     <h3>Termék neve</h3>
                     <p>Termék leírása...</p>
                     <p>Ár: 1000 Ft</p>
@@ -337,13 +286,13 @@
             </div>
             
             <div class="product-card">
-                <div class="image-container skeleton">
+                <div class="image-container">
                     <img src="https://via.placeholder.com/150" alt="Product Image" class="zoom-image">
                 </div>
                 <div class="zoom-window" id="zoomWindow">
                     <img src="https://via.placeholder.com/150" alt="Zoomed Image" class="zoomed-image">
                 </div>
-                <div class="product-details skeleton">
+                <div class="product-details">
                     <h3>Termék neve</h3>
                     <p>Termék leírása...</p>
                     <p>Ár: 1000 Ft</p>
@@ -351,17 +300,7 @@
             </div>
         </div>
     </div>
-
-    <div class="pagination">
-        <button onclick="changePage(-1)">« Előző</button>
-        <span class="page-number active" onclick="goToPage(1)">1</span>
-        <span class="page-number" onclick="goToPage(2)">2</span>
-        <span class="page-number" onclick="goToPage(3)">3</span>
-        <span class="page-number" onclick="goToPage(4)">4</span>
-        <span class="page-number" onclick="goToPage(5)">5</span>
-        <button onclick="changePage(1)">Következő »</button>
-    </div>
-
+    
     <div class="footer">
         <p>&copy; 2024 Webshop. Minden jog fenntartva.</p>
     </div>
@@ -393,7 +332,7 @@
                 searchBar.classList.add('active');
             }
         }
-        
+
         window.addEventListener('load', function() {
             if (window.innerWidth <= 1024) {
                 var subcategories = document.querySelectorAll('.subcategory');
@@ -401,19 +340,9 @@
                     subcategory.style.display = "none";
                 });
             }
-
-            // Remove skeleton class after loading
-            setTimeout(function() {
-                var skeletons = document.querySelectorAll('.skeleton');
-                skeletons.forEach(function(skeleton) {
-                    skeleton.classList.remove('skeleton');
-                });
-
-                // Show content after skeletons are removed
-                document.querySelector('body').classList.remove('loading');
-            }, 3000); // Adjust the timeout as needed
         });
     </script>
 
 </body>
 </html>
+make Skeleton Loading Animation
