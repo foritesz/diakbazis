@@ -277,15 +277,19 @@ if ($result->num_rows > 0) {
 		$productHTML = '';
 		if(isset($products) && count($products)) {			
             foreach ($products as $key => $product) {				
-				$productHTML .= '<div class="responsive">';
-                $productHTML .= '<div class="gallery">';
-                $productHTML .= '<a href="index4.php?ID='.$product['id'].'"><img src="images/'.$product['kepek'].'" alt="'.$product['product_name'].'" /></a>';
-                $productHTML .= '<a href="" class="product-name">'.$product['product_name'].'</a>';
-                $productHTML .= '<div class="price">$'.$product['price'];
-				$productHTML .= '<h6>subcategory : '.$product['subcategory'].'</h6>'.$this->receivedMenuCategory.'';
-                $productHTML .= '</div>';
-                $productHTML .= '</div>';
-				$productHTML .= '</div>';			
+				$productHTML .= '<div class="product-card">';
+				$productHTML .= '<div class="image-container skeleton">';
+				$productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
+				$productHTML .= '</div>';
+				$productHTML .= '<div class="zoom-window" id="zoomWindow">';
+				$productHTML .= '<img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
+				$productHTML .= '</div>';
+				$productHTML .= '<div class="product-details skeleton">';
+				$productHTML .= '<h3>' . $product['product_name'] . '</h3>';
+				$productHTML .= '<p>' . $product['leiras'] . '</p>';
+				$productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
+				$productHTML .= '</div>';
+				$productHTML .= '</div>';		
 			}
 		}
 		session_unset();

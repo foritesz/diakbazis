@@ -14,7 +14,9 @@ $categories = $product->getCategories();
     <script src="script.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <title>Weboldal Kínézet</title>
+
 <body class="loading">
   <div class="header">
           <div class="logo">
@@ -54,6 +56,7 @@ $categories = $product->getCategories();
                 }
             }
             //session_destroy();
+            echo '</form>';
   ?>
   <div class="navbar">
         <div class="dropdown-container">
@@ -62,120 +65,342 @@ $categories = $product->getCategories();
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Papír-Íroszer';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Kreatív 
+                <button class="dropbtn" onclick="toggleDropdown(event)">Kreatív
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Kreatív';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
                 </div>
-            </div> 
-            
+            </div>
+
             <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Játék 
+                <button class="dropbtn" onclick="toggleDropdown(event)">Játék
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Játék';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
                 </div>
-            </div> 
-            
+            </div>
+
             <div class="dropdown">
                 <button class="dropbtn" onclick="toggleDropdown(event)">Ajándék 
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Ajándék';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Könyv 
+                <button class="dropbtn" onclick="toggleDropdown(event)">Könyv
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Könyv';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Táska-Pénztárca
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Táska-Pénztárca';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Cipő
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Cipő';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Táska-Pénztárca 
+                <button class="dropbtn" onclick="toggleDropdown(event)">Háztartási cikkek
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Háztartási cikkek';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Szezonális
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Szezonális';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Óra
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Óra';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
                 </div>
             </div>
             
             <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Cipő 
+                <button class="dropbtn" onclick="toggleDropdown(event)">Szolgáltatás
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Szolgáltatás';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
                 </div>
             </div>
-            
-            <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Háztartási cikkek 
-                  <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
-            </div>
-            
-            <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Szezonális 
-                  <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
-            </div>
-            
-            <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Óra 
-                  <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
-            </div>
-            
-            <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Szolgáltatás 
-                  <i class="fa fa-caret-down"></i>
-                </button>
-                <div class="dropdown-content">
-                    <a href="#">Link 1</a>
-                    <a href="#">Link 2</a>
-                    <a href="#">Link 3</a>
-                </div>
+
             </div>
         </div>
     </div>

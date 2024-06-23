@@ -1,28 +1,31 @@
 function toggleDropdown(event) {
-    var dropdownContent = event.currentTarget.nextElementSibling;
-    if (dropdownContent.classList.contains('show')) {
-        dropdownContent.classList.remove('show');
-    } else {
-        var dropdowns = document.getElementsByClassName('dropdown-content');
-        for (var i = 0; i < dropdowns.length; i++) {
-        dropdowns[i].classList.remove('show');
-        }
-        dropdownContent.classList.add('show');
-    }
-    }
+    event.preventDefault(); // Ezzel megelőzzük az alapértelmezett működést
 
-    window.onclick = function(event) {
-    if (!event.target.matches('.dropbtn')) {
-        var dropdowns = document.getElementsByClassName('dropdown-content');
-        for (var i = 0; i < dropdowns.length; i++) {
+    // Bezárjuk az összes lenyíló tartalmat
+    var dropdowns = document.getElementsByClassName("dropdown-content");
+    for (var i = 0; i < dropdowns.length; i++) {
         var openDropdown = dropdowns[i];
         if (openDropdown.classList.contains('show')) {
             openDropdown.classList.remove('show');
         }
-        }
-    }
     }
 
+    // Megnyitjuk az aktuális lenyíló tartalmat
+    var dropdownContent = event.target.nextElementSibling;
+    dropdownContent.classList.toggle("show");
+}
+
+window.onclick = function(event) {
+    if (!event.target.matches('.dropbtn')) {
+        var dropdowns = document.getElementsByClassName("dropdown-content");
+        for (var i = 0; i < dropdowns.length; i++) {
+            var openDropdown = dropdowns[i];
+            if (openDropdown.classList.contains('show')) {
+                openDropdown.classList.remove('show');
+            }
+        }
+    }
+}
 function toggleCategory(id) {
     var element = document.getElementById(id);
     if (element.style.display === "none" || element.style.display === "") {
@@ -69,3 +72,4 @@ window.addEventListener('load', function() {
         document.querySelector('body').classList.remove('loading');
     }, 3000); // Adjust the timeout as needed
 });
+
