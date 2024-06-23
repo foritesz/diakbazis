@@ -1,3 +1,10 @@
+<?php
+$product = new Product();
+$subcategories = $product->getSubcategory();
+$menucategories = $product->getMenucategory();
+$categories = $product->getCategories();
+?>
+
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -6,17 +13,9 @@
     <link rel="stylesheet" href="style.css">
     <script src="script.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Weboldal Kínézet</title>
-
-<?php
-/*include("Product.php");*/
-$product = new Product();
-$subcategories = $product->getSubcategory();
-$menucategories = $product->getMenucategory();
-$categories = $product->getCategories();
-?>
 <body class="loading">
-
   <div class="header">
           <div class="logo">
               <h1>Logó</h1>
@@ -56,94 +55,128 @@ $categories = $product->getCategories();
             }
             //session_destroy();
   ?>
-  <div class="dropdown-container">
-          <div class="dropdown">
-              <button class="dropbtn">Papír-Írószer</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-          <div class="dropdown">
-              <button class="dropbtn">Kreatív</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-          <div class="dropdown">
-              <button class="dropbtn">Játék</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-          <div class="dropdown">
-              <button class="dropbtn">Ajándék</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-          <div class="dropdown">
-              <button class="dropbtn">Könyv</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-          <div class="dropdown">
-              <button class="dropbtn">Táska-Pénztárca</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-          <div class="dropdown">
-              <button class="dropbtn">Cipő</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-          <div class="dropdown">
-              <button class="dropbtn">Háztartási cikkek</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-          <div class="dropdown">
-              <button class="dropbtn">Szezonális</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-          <div class="dropdown">
-              <button class="dropbtn">Óra</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-          <div class="dropdown">
-              <button class="dropbtn">Szolgáltatás</button>
-              <div class="dropdown-content">
-                  <a href="#">Link 1</a>
-                  <a href="#">Link 2</a>
-                  <a href="#">Link 3</a>
-              </div>
-          </div>
-      </div>
+  <div class="navbar">
+        <div class="dropdown-container">
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Papír-Írószer 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Kreatív 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div> 
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Játék 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div> 
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Ajándék 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Könyv 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Táska-Pénztárca 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Cipő 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Háztartási cikkek 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Szezonális 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Óra 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Szolgáltatás 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>

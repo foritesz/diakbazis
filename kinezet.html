@@ -4,236 +4,287 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <title>Weboldal Kínézet</title>
     <style>
         body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-}
-.header {
-    background-color: #f8f8f8;
-    padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ddd;
-    position: relative;
-}
-.logo {
-    margin-left: 20px;
-}
-.search-bar {
-    flex-grow: 1;
-    text-align: center;
-    position: relative;
-}
-.search-bar input {
-    width: 50%;
-    padding: 8px;
-}
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+        }
 
-.search-icon {
-    display: none;
-}
-.dropdown-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    background-color: #f8f8f8;
-    border-bottom: 1px solid #ddd;
-    padding: 10px 0;
-}
-.dropdown {
-    position: relative;
-    display: inline-block;
-    margin: 0 10px;
-}
-.dropbtn {
-    background-color: #4CAF50;
-    color: white;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    cursor: pointer;
-}
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-}
-.dropdown-content a:hover {
-    background-color: #f1f1f1;
-}
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-.dropdown:hover .dropbtn {
-    background-color: #3e8e41;
-}
-.hamburger {
-    display: none;
-    flex-direction: column;
-    cursor: pointer;
-    margin-top: 10px;
-}
-.hamburger div {
-    width: 25px;
-    height: 3px;
-    background-color: #333;
-    margin: 4px 0;
-}
-.content {
-    display: flex;
-    width: 1000px;
-    margin: 20px auto;
-}
-.filter {
-    width: 25%;
-    padding: 10px;
-    border-right: 1px solid #ddd;
-}
-.filter h3 {
-    cursor: pointer;
-    margin: 0;
-    padding: 10px;
-    background-color: #f0f0f0;
-    border: 1px solid #ddd;
-}
-.subcategory {
-    padding-left: 20px;
-}
-.products {
-    width: 75%;
-    padding: 10px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-.product-card {
-    display: flex;
-    width: calc(100% - 20px);
-    border: 1px solid #ddd;
-    padding: 10px;
-    box-sizing: border-box;
-    position: relative;
-}
-.image-container img {
-    max-width: 150px;
-    height: auto;
-    margin-right: 10px;
-}
-.zoom-image {
-    width: 100%;
-    height: 100%;
-}
-.zoom-window {
-    display: none;
-    position: absolute;
-    top: 1px;
-    left: 200px;
-    width: 500px;
-    height: 500px;
-    border: 2px solid #000;
-    overflow: hidden;
-    z-index: 900;
-    background: #fff;
-}
-.zoom-window .zoomed-image {
-    width: 100%;
-    height: 100%;
-    transform: scale(1.5);
-}
-.image-container:hover + .zoom-window {
-    display: block;
-}
-.product-details {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.footer {
-    background-color: #f8f8f8;
-    padding: 10px;
-    text-align: center;
-    border-top: 1px solid #ddd;
-    margin-top: 20px;
-}
-@media (max-width: 1024px) {
-    .header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    .hamburger {
-        display: flex;
-    }
-    .search-icon {
-        position: absolute;
-        right: 10px;
-        top: 100px;
-        cursor: pointer;
-        display: flex;
-    }
-    .search-bar {
-        flex-grow: 1;
-        text-align: center;
-        position: relative;
-        display: none;
-    }
-    .search-bar.active {
-        display: flex; /* Show when active */
-    }
-    .search-bar input {
-        margin-top: 20px;
-        width: 700px;
-    }
-    .dropdown-container {
-        flex-direction: column;
-        align-items: center;
-        width: 100%;
-        display: none;
-    }
-    .dropdown-container.active {
-        display: flex;
-        flex-direction: column;
-        align-items: stretch;
-    }
-    .dropdown-content {
-        position: relative;
-        width: 100%;
-    }
-    .content {
-        width: 100%;
-        flex-direction: column;
-    }
-    .filter {
-        width: 100%;
-        border-right: none;
-        border-bottom: 1px solid #ddd;
-    }
-    .products {
-        width: 100%;
-    }
-    .product-card {
-        width: calc(100% - 20px);
-    }
-    .subcategory {
-        display: none;
-    }
-    .filter h3.active + .subcategory {
-        display: block;
-    }
-}
+        .header {
+            background-color: #f8f8f8;
+            padding: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            position: relative;
+        }
+
+        .logo {
+            margin-left: 20px;
+        }
+
+        .search-bar {
+            flex-grow: 1;
+            text-align: center;
+            position: relative;
+        }
+
+        .search-bar input {
+            width: 50%;
+            padding: 8px;
+        }
+
+        .search-icon {
+            display: none;
+        }
+
+        .navbar {
+            overflow: hidden;
+            background-color: #333;
+        }
+
+        .dropdown-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 50px;
+            background-color: #333;
+        }
+
+        .dropdown {
+            float: left;
+            overflow: hidden;
+        }
+
+        .dropdown .dropbtn {
+            font-size: 16px;
+            border: none;
+            outline: none;
+            color: white;
+            padding: 14px 16px;
+            background-color: inherit;
+            font-family: inherit;
+            margin: 0;
+        }
+
+        .navbar a:hover, .dropdown:hover .dropbtn {
+            background-color: red;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content a {
+            float: none;
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ddd;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .hamburger div {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            margin: 4px 0;
+        }
+
+        .content {
+            display: flex;
+            width: 1000px;
+            margin: 20px auto;
+        }
+
+        .filter {
+            width: 25%;
+            padding: 10px;
+            border-right: 1px solid #ddd;
+        }
+
+        .filter h3 {
+            cursor: pointer;
+            margin: 0;
+            padding: 10px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+        }
+
+        .subcategory {
+            padding-left: 20px;
+        }
+
+        .products {
+            width: 75%;
+            padding: 10px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .product-card {
+            display: flex;
+            width: calc(100% - 20px);
+            border: 1px solid #ddd;
+            padding: 10px;
+            box-sizing: border-box;
+            position: relative;
+        }
+
+        .image-container img {
+            max-width: 150px;
+            height: auto;
+            margin-right: 10px;
+        }
+
+        .zoom-image {
+            width: 100%;
+            height: 100%;
+        }
+
+        .zoom-window {
+            display: none;
+            position: absolute;
+            top: 1px;
+            left: 200px;
+            width: 500px;
+            height: 500px;
+            border: 2px solid #000;
+            overflow: hidden;
+            z-index: 900;
+            background: #fff;
+        }
+
+        .zoom-window .zoomed-image {
+            width: 100%;
+            height: 100%;
+            transform: scale(1.5);
+        }
+
+        .image-container:hover + .zoom-window {
+            display: block;
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .footer {
+            background-color: #f8f8f8;
+            padding: 10px;
+            text-align: center;
+            border-top: 1px solid #ddd;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hamburger {
+                display: flex;
+            }
+
+            .search-icon {
+                position: absolute;
+                right: 10px;
+                top: 100px;
+                cursor: pointer;
+                display: flex;
+            }
+
+            .search-bar {
+                flex-grow: 1;
+                text-align: center;
+                position: relative;
+                display: none;
+            }
+
+            .search-bar.active {
+                display: flex; /* Show when active */
+            }
+
+            .search-bar input {
+                margin-top: 20px;
+                width: 700px;
+            }
+
+            .dropdown-container {
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+                display: none;
+            }
+
+            .dropdown-container.active {
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .dropdown-content {
+                position: relative;
+                width: 100%;
+            }
+
+            .content {
+                width: 100%;
+                flex-direction: column;
+            }
+
+            .filter {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .products {
+                width: 100%;
+            }
+
+            .product-card {
+                width: calc(100% - 20px);
+            }
+
+            .subcategory {
+                display: none;
+            }
+
+            .filter h3.active + .subcategory {
+                display: block;
+            }
+        }
 
         /* Skeleton Animation */
         .skeleton {
@@ -253,9 +304,10 @@
 
         /* Hide content while loading */
         .loading .product-card img,
-        .loading .subcategory, 
+        .loading .subcategory,
         .loading .product-details,
-        .loading .dropdown-menu option{
+        .loading .dropdown-menu option,
+        .loading .dropdown-content a{
             visibility: hidden;
         }
 
@@ -264,6 +316,7 @@
             justify-content: center;
             margin: 20px 0;
         }
+
         .pagination button {
             padding: 10px 15px;
             margin: 0 5px;
@@ -271,9 +324,11 @@
             background-color: #f8f8f8;
             cursor: pointer;
         }
+
         .pagination button:hover {
             background-color: #ddd;
         }
+
         .pagination .page-number {
             padding: 10px 15px;
             margin: 0 5px;
@@ -281,6 +336,7 @@
             background-color: #f8f8f8;
             cursor: pointer;
         }
+
         .pagination .page-number.active {
             background-color: #ddd;
             font-weight: bold;
@@ -306,97 +362,130 @@
         </div>
     </div>
 
-    <div class="dropdown-container">
-        <div class="dropdown">
-            <button class="dropbtn">Papír-Írószer</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+    <div class="navbar">
+        <div class="dropdown-container">
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Papír-Írószer 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Kreatív</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Kreatív 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div> 
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Játék 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
+            </div> 
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Ajándék 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Játék</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Könyv 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Ajándék</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Táska-Pénztárca 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Könyv</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Cipő 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Táska-Pénztárca</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Háztartási cikkek 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Cipő</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Szezonális 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Háztartási cikkek</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Óra 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Szezonális</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Óra</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
-            </div>
-        </div>
-        <div class="dropdown">
-            <button class="dropbtn">Szolgáltatás</button>
-            <div class="dropdown-content">
-                <a href="#">Link 1</a>
-                <a href="#">Link 2</a>
-                <a href="#">Link 3</a>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Szolgáltatás 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <a href="#">Link 1</a>
+                    <a href="#">Link 2</a>
+                    <a href="#">Link 3</a>
+                </div>
             </div>
         </div>
     </div>
-
     <div class="content">
         <div class="filter">
             <h3 onclick="toggleCategory('cat1')">Kategória 1</h3>
@@ -458,6 +547,31 @@
     </div>
 
     <script>
+        function toggleDropdown(event) {
+            var dropdownContent = event.currentTarget.nextElementSibling;
+            if (dropdownContent.classList.contains('show')) {
+                dropdownContent.classList.remove('show');
+            } else {
+                var dropdowns = document.getElementsByClassName('dropdown-content');
+                for (var i = 0; i < dropdowns.length; i++) {
+                dropdowns[i].classList.remove('show');
+                }
+                dropdownContent.classList.add('show');
+            }
+            }
+
+            window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName('dropdown-content');
+                for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+                }
+            }
+            }
+
         function toggleCategory(id) {
             var element = document.getElementById(id);
             if (element.style.display === "none" || element.style.display === "") {
