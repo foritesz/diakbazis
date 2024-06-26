@@ -70,6 +70,72 @@ $ide = $product->getCategories();
     </div>
 </div>
 <input type="hidden" id="totalRecords" value="<?php echo $totalRecords; ?>">
+<div id="loadMoreContainer">
+    <button id="loadMoreButton" style="display:none;">Load More</button>
+</div>
 
+<script>
+$(document).ready(function() {
+    var totalRecord = 0;
+    var totalData = $("#totalRecords").val();
+    var loading = false;
+
+    function loadProducts() {
+        var subcategory = getCheckboxValues('subcategory');
+        var search = $("#myInput").val();
+
+        $.ajax({
+            type: 'POST',
+            url: "load_products.php",
+            dataType: "json",
+            data: {
+                totalRecord: totalRecord,
+                subcategory: subcategory,
+                search: search
+            },
+            success: function(data) {
+                $("#results").append(data.products);
+                totalRecord++;
+                loading = false;
+                if (totalRecord >= totalData) {
+                    $("#loadMoreButton").hide();
+                } else {
+                    $("#loadMoreButton").show();
+                }
+            }
+        });
+    }
+
+    $('#searchForm').submit(function(e) {
+        e.preventDefault();
+
+        totalRecord = 0;
+        $("#results").empty();
+        loadProducts();
+    });
+
+    $("#loadMoreButton").click(function() {
+        if (!loading && totalRecord < totalData) {
+            loading = true;
+            loadProducts();
+        }
+    });
+
+    loadProducts();
+
+    function getCheckboxValues(checkboxClass) {
+        var values = [];
+        $("." + checkboxClass + ":checked").each(function() {
+            values.push($(this).val());
+        });
+        return values;
+    }
+
+    $('.sort_rang').change(function() {
+        $("#search_form").submit();
+        return false;
+    });
+});
+</script>
 <script src="filter.js"></script>
 <script src="ajax.js"></script>

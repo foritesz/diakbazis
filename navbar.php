@@ -62,7 +62,7 @@ $categories = $product->getCategories();
   <div class="navbar">
         <div class="dropdown-container">
             <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Papír-Írószer 
+                <button class="dropbtn" onclick="toggleDropdown(event)">Papír-Írószer
                   <i class="fa fa-caret-down"></i>
                 </button>
                 <div class="dropdown-content">
@@ -70,7 +70,7 @@ $categories = $product->getCategories();
                             <div class="row">
 <?php
 
-                                $selectedCategory = 'Papír-Íroszer';
+                                $selectedCategory = 'Papír-Írószer';
                                 if (isset($menucategories[$selectedCategory])) {
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
                                         echo' <div class="column">';
