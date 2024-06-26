@@ -3,11 +3,11 @@
 // kereses.php
 
 // Ellenőrizzük a keresés paramétert
-if (!isset($_GET['kereses']) || empty($_GET['kereses'])) {
+/*if (!isset($_GET['kereses']) || empty($_GET['kereses'])) {
     http_response_code(404);
     include('404.php');
     exit();
-}
+}*/
 
 // Itt jön a további kód a keresési eredmények megjelenítéséhez
 
@@ -19,7 +19,7 @@ $product = new Product();
 //$categories = $product->getCategories();
 $searchResults = $product->getSearchforIt();
 $totalRecords = $product->getTotalProducts();
-$ide=$product->getCategories();
+$ide=$product->getSearchforIt();
 
 ?>
 
@@ -39,8 +39,8 @@ $ide=$product->getCategories();
                 //echo '<form method="post" id="search_form">';
             
                 foreach ($searchResults as $categoryName => $subcategories) {
-                  echo '<div class="content">';
-                  echo '<div class="filter">';
+                  echo '<div>';
+                  echo '<div>';
                   echo '<h3 onclick="toggleCategory(\'' . $product->cleanString($categoryName) . '\')">' . ucfirst($categoryName) . '</h3>';
                   echo '<div class="subcategory skeleton" id="' . $product->cleanString($categoryName) . '">';
                   
@@ -59,7 +59,7 @@ $ide=$product->getCategories();
           }
             else
             {
-              echo "Üres!";
+              echo " <br>Nincs ilyen termék!";
             }
             
               
@@ -78,130 +78,65 @@ $ide=$product->getCategories();
 <input type="hidden" id="totalRecords" value="<?php echo $totalRecords; ?>">
 
 <script>
-const mediaQueryfilter = window.matchMedia('(min-width: 800px)');
+$(document).ready(function() {
+    setCheckboxesFromUrl();
+    
+    // Attach event listener to checkboxes to update URL when their state changes
+    $('input:checkbox').on('change', function() {
+        clearFilters();
+    });
+});
 
-function initFilter(event) {
-  
-  var coll = document.getElementsByClassName("collapsible");
-  var i;
-
-  function toggleCollapsible(event) {
-    this.classList.toggle("active");
-    var content = this.nextElementSibling;
-    if (content.style.maxHeight) {
-      content.style.maxHeight = null;
-    } else {
-      content.style.maxHeight = content.scrollHeight + "px";
-    }
-    event.preventDefault();
-  }
-
-  for (i = 0; i < coll.length; i++) {
-    // Eseménykezelő hozzáadása
-    coll[i].addEventListener("click", toggleCollapsible);
-
-    // Kezdeti állapot beállítása az ablakméretnek megfelelően
-    if (mediaQueryfilter.matches) {
-      coll[i].classList.add("active");
-      var content = coll[i].nextElementSibling;
-      content.style.maxHeight = content.scrollHeight + "px";
-    } else {
-      coll[i].classList.remove("active");
-      var content = coll[i].nextElementSibling;
-      content.style.maxHeight = null;
-    }
-  }
-  
+function clearFilters() {
+    var checkedValues = [];
+    
+    $('input:checkbox').each(function() {
+        if ($(this).prop('checked')) {
+            // If a checkbox is checked, add its value to the list
+            checkedValues.push($(this).val());
+        }
+    });
+    
+    window.history.replaceState({}, document.title, updateUrl('alkategoria', checkedValues));
 }
 
-// Eseménykezelő hozzáadása az ablak betöltésekor
-//window.onload = initFilter;
+// Function to add or update the alkategoria parameters in the URL
+function updateUrl(key, values) {
+    var currentUrl = window.location.href;
+    var urlParts = currentUrl.split('?');
+    var baseUrl = urlParts[0];
+    var queryParams = urlParts.length > 1 ? urlParts[1].split('&') : [];
 
+    // Filter out existing alkategoria parameters
+    queryParams = queryParams.filter(param => !param.startsWith(key + '='));
 
-  // Az "initFilter" függvény meghívása az oldal betöltésekor
-  initFilter();
+    // Add new alkategoria parameters for each value
+    values.forEach(value => {
+        queryParams.push(key + '=' + value);
+    });
 
-  // Eseményfigyelő a médiaképernyő méretének változásához
-  mediaQuery.addListener(initFilter);
-  
-  // Eseményfigyelő a médiaké
-  /*$(document).on('click', 'label', function() {
-    var checkbox = $(this).find('input:checkbox'); // Keresd meg a labelhez tartozó checkboxot
+    return baseUrl + (queryParams.length > 0 ? '?' + queryParams.join('&') : '');
+}
 
-    if (checkbox.is(':checked')) {
-        checkbox.prop('checked', false); // Ha be van jelölve, vedd ki a pipát
-        $(this).removeClass('active'); // Távolítsd el az "active" class-t
-    } else {
-        checkbox.prop('checked', true); // Ha nincs bejelölve, jelöld be
-        $(this).addClass('active'); // Adj hozzá az "active" class-t
+// Function to get URL parameter values by key
+function getUrlParameterValues(key) {
+    var urlParams = new URLSearchParams(window.location.search);
+    return urlParams.getAll(key);
+}
+
+// Function to set checkboxes based on URL parameters
+function setCheckboxesFromUrl() {
+    var alkategoriaValues = getUrlParameterValues('alkategoria');
+    if (alkategoriaValues.length > 0) {
+        $('input:checkbox').each(function() {
+            if (alkategoriaValues.includes($(this).val())) {
+                $(this).prop('checked', true);
+            }
+        });
     }
-});*/
-//php-hoz
-  function clearFilters() {
-      $('input:checkbox').each(function() {
-          if ($(this).prop('checked')) {
-              // Ha a checkbox be van jelölve, hozzáadja az alkategoria részt az URL-hez
-              var currentValue = $(this).val();
-              window.history.replaceState({}, document.title, updateUrl('alkategoria', currentValue));
-          } else {
-              // Ha a checkbox nincs bejelölve, eltávolítja az alkategoria részt az URL-ből
-              window.history.replaceState({}, document.title, removeUrlParam('alkategoria'));
-          }
-      });
-  }
+}
 
-  // Függvény az alkategoria rész hozzáadására vagy módosítására az URL-ben
-  function updateUrl(key, value) {
-      var currentUrl = window.location.href;
-      var urlParts = currentUrl.split('?');
-      if (urlParts.length >= 2) {
-          var baseUrl = urlParts[0];
-          var queryParams = urlParts[1].split('&');
 
-          var updatedParams = [];
-          var paramExists = false;
 
-          for (var i = 0; i < queryParams.length; i++) {
-              var param = queryParams[i].split('=');
-              if (param[0] === key) {
-                  paramExists = true;
-                  updatedParams.push(key + '=' + value);
-              } else {
-                  updatedParams.push(queryParams[i]);
-              }
-          }
-
-          if (!paramExists) {
-              updatedParams.push(key + '=' + value);
-          }
-
-          return baseUrl + '?' + updatedParams.join('&');
-      }
-
-      return currentUrl;
-  }
-
-  // Függvény az alkategoria rész eltávolítására az URL-ből
-  function removeUrlParam(key) {
-      var currentUrl = window.location.href;
-      var urlParts = currentUrl.split('?');
-      if (urlParts.length >= 2) {
-          var baseUrl = urlParts[0];
-          var queryParams = urlParts[1].split('&');
-
-          var updatedParams = [];
-
-          for (var i = 0; i < queryParams.length; i++) {
-              var param = queryParams[i].split('=');
-              if (param[0] !== key) {
-                  updatedParams.push(queryParams[i]);
-              }
-          }
-
-          return baseUrl + '?' + updatedParams.join('&');
-      }
-
-      return currentUrl;
-  }
 </script>
 <script src="ajax.js"></script>

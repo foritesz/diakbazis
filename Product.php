@@ -123,12 +123,10 @@ if ($result->num_rows > 0) {
 	
 	
 	public function getSearchforIt() {
-		// Initialize the $subcategories array
 		$subcategories = array();
-		// Initialize a set to keep track of unique subcategories
 		$uniqueSubcategories = array();
+		$this->search = isset($_GET['kereses']) ? $_GET['kereses'] : '';
 	
-		// Construct the SQL query to search in products and join with categories
 		$sql = "
 			SELECT p.*, c.menu_category, c.category_name, c.subcategory
 			FROM products p
@@ -140,42 +138,27 @@ if ($result->num_rows > 0) {
 		$result = $this->dbConnect->query($sql);
 	
 		if ($result->num_rows > 0) {
-			// Iterate through the result set and build the subcategories array
 			while ($row = $result->fetch_assoc()) {
 				$category_name = $row['category_name'];
 				$subcategory = $row['subcategory'];
 	
-				// Check if the subcategory is already in the unique set
 				if (!isset($uniqueSubcategories[$subcategory])) {
-					// Add the result to the $subcategories array
 					$subcategories[$category_name][] = $subcategory;
-					// Mark the subcategory as seen
 					$uniqueSubcategories[$subcategory] = true;
 				}
 			}
-		} else {
-			// No results found in the products and categories tables
 		}
 	
 		if (isset($_POST['subcategory']) && !empty($_POST['subcategory'])) {
 			$checked = $_POST['subcategory'];
 			$conditions = [];
-		
 			foreach ($checked as $value) {
-				// Escape and sanitize the input to prevent SQL injection
 				$escapedValue = mysqli_real_escape_string($this->dbConnect, $value);
-		
-				// Add each condition to the array
 				$conditions[] = "menu_category LIKE '%$escapedValue%' OR category_name LIKE '%$escapedValue%' OR subcategory LIKE '%$escapedValue%'";
 			}
-		
-			// Combine conditions with OR
 			$conditionsString = implode(' OR ', $conditions);
-		
-			// Construct the SQL query
 			$sql = "SELECT * FROM categories WHERE $conditionsString";
 		} else {
-			// Construct the SQL query to search in categories
 			$sql = "
 				SELECT * FROM categories 
 				WHERE menu_category LIKE '%" . $this->search . "%' 
@@ -187,96 +170,80 @@ if ($result->num_rows > 0) {
 		$result_categories = $this->dbConnect->query($sql);
 	
 		if ($result_categories->num_rows > 0) {
-			// Iterate through the result set and build the subcategories array
 			while ($row = $result_categories->fetch_assoc()) {
 				if (isset($row['category_name'])) {
 					$category_name = $row['category_name'];
 					$subcategory = $row['subcategory'];
 	
-					// Check if the subcategory is already in the unique set
 					if (!isset($uniqueSubcategories[$subcategory])) {
-						// Add the result to the $subcategories array
 						$subcategories[$category_name][] = $subcategory;
-						// Mark the subcategory as seen
 						$uniqueSubcategories[$subcategory] = true;
 					}
 				}
 			}
-		} else {
-			// No results found in the categories table
 		}
 	
-		// Close the connection (if necessary)
-		// $this->dbConnect->close();
-		
-		// Return the $subcategories array
 		return $subcategories;
 	}
 	
 	
 	
 	
+	
 
-	public function getTotalProducts () {
+	public function getTotalProducts() {
 		$sql = "SELECT DISTINCT id FROM " . $this->productTable . "
-		INNER JOIN " . $this->categoryTable . 
-		" ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
-		if(isset($_POST['subcategory']) && $_POST['subcategory']!=""){			
-			$sql.=" AND " . $this->categoryTable . ".subcategory IN ('".implode("','",$_POST['subcategory'])."')";
-		}	
-		$productPerPage = 9;		
-		$rowCount = $this->getNumRows($sql);
+		INNER JOIN " . $this->categoryTable . " 
+		ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
+		
+		if(isset($_POST['subcategory']) && !empty($_POST['subcategory'])) {            
+			$sql .= " AND " . $this->categoryTable . ".subcategory IN ('" . implode("','", array_map([$this->dbConnect, 'real_escape_string'], $_POST['subcategory'])) . "')";
+		}
+	
+		$result = $this->dbConnect->query($sql);
+		if (!$result) {
+			die('Invalid query: ' . $this->dbConnect->error);
+		}
+	
+		$productPerPage = 1;        
+		$rowCount = $result->num_rows;
 		$totalData = ceil($rowCount / $productPerPage);
+	
 		return $totalData;
-	}		
+	}
+	
 	public function getProducts() {
-		$productPerPage = 9;	
-		$totalRecord  = strtolower(trim(str_replace("/","",$_POST['totalRecord'])));
-		$start = ceil($totalRecord * $productPerPage);
-		
-		//$selectedMenuCategory = isset($_SESSION['selectedMenuCategory']) ? $_SESSION['selectedMenuCategory'] : '';
-		
+		$productPerPage = 9;    
+		$totalRecord  = isset($_POST['totalRecord']) ? intval($_POST['totalRecord']) : 0;
+		$start = $totalRecord;
+	
 		$sql = "SELECT *
-        FROM " . $this->productTable . "
-        INNER JOIN " . $this->categoryTable . 
-        " ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
-        
-
+			FROM " . $this->productTable . "
+			INNER JOIN " . $this->categoryTable . 
+			" ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
+		
 		if (!empty($this->receivedMenuCategory)) {
 			$sql .= " WHERE " . $this->categoryTable . ".menu_category = '" . $this->receivedMenuCategory . "'";
 		}
-
-
+	
 		if (isset($_POST['category']) && $_POST['category'] != "") {
 			$sql .= " AND " . $this->categoryTable . ".category_id IN ('" . implode("','", $_POST['category']) . "')";
 		}
-
+	
 		if (isset($_POST['subcategory']) && $_POST['subcategory'] != "") {
 			$sql .= " AND " . $this->categoryTable . ".subcategory IN ('" . implode("','", $_POST['subcategory']) . "')";
 		}
-
+	
 		if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
 			$sql .= " AND " . $this->productTable . ".product_name LIKE '%" . $this->search . "%'";
 		}
-
-		/*if(isset($_POST['sorting']) && $_POST['sorting']!="") {
-			$sorting = implode("','",$_POST['sorting']);			
-			if($sorting == 'newest' || $sorting == '') {
-				$sql.=" ORDER BY id DESC";
-			} else if($sorting == 'low') {
-				$sql.=" ORDER BY price ASC";
-			} else if($sorting == 'high') {
-				$sql.=" ORDER BY price DESC";
-			}
-		} else {
-			$sql.=" ORDER BY id DESC";
-		}*/		
-		$sql.=" LIMIT $start, $productPerPage";		
+	
+		$sql .= " LIMIT $start, $productPerPage";        
 		$products = $this->getData($sql);
-		$rowcount = $this->getNumRows($sql);
+	
 		$productHTML = '';
-		if(isset($products) && count($products)) {			
-            foreach ($products as $key => $product) {				
+		if(isset($products) && count($products)) {            
+			foreach ($products as $key => $product) {                
 				$productHTML .= '<div class="product-card">';
 				$productHTML .= '<div class="image-container skeleton">';
 				$productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
@@ -289,12 +256,13 @@ if ($result->num_rows > 0) {
 				$productHTML .= '<p>' . $product['leiras'] . '</p>';
 				$productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
 				$productHTML .= '</div>';
-				$productHTML .= '</div>';		
+				$productHTML .= '</div>';        
 			}
 		}
-		session_unset();
-		return 	$productHTML;	
-	}	
+		return  $productHTML;    
+	}
+	
+	
 
 	/**
 	 * @return mixed
@@ -316,12 +284,4 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-
-
-/*$stmt = $your_pdo_connection->prepare($sql);
-$stmt->execute($params);
-
-// Fetch results as needed
-while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-	// Process each row*/
 ?>
