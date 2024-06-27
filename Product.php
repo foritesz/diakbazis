@@ -205,62 +205,75 @@ if ($result->num_rows > 0) {
 			die('Invalid query: ' . $this->dbConnect->error);
 		}
 	
-		$productPerPage = 1;        
+		$productPerPage = 2;        
 		$rowCount = $result->num_rows;
 		$totalData = ceil($rowCount / $productPerPage);
 	
 		return $totalData;
 	}
 	
-	public function getProducts() {
-		$productPerPage = 9;    
-		$totalRecord  = isset($_POST['totalRecord']) ? intval($_POST['totalRecord']) : 0;
-		$start = $totalRecord;
-	
-		$sql = "SELECT *
-			FROM " . $this->productTable . "
-			INNER JOIN " . $this->categoryTable . 
-			" ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
+public function getProducts($page = 0, $subcategory = [], $search = '') {
+    $productPerPage = 1;
+    $start = $page * $productPerPage;
+
+    $sql = "SELECT *
+            FROM " . $this->productTable . "
+            INNER JOIN " . $this->categoryTable . " 
+            ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
+
+    $conditions = [];
+
+    if (!empty($this->receivedMenuCategory)) {
+        $conditions[] = $this->categoryTable . ".menu_category = '" . $this->receivedMenuCategory . "'";
+    }
+
+    if (!empty($subcategory)) {
+        $subcategory = array_map([$this->dbConnect, 'real_escape_string'], $subcategory);
+        $conditions[] = $this->categoryTable . ".subcategory IN ('" . implode("','", $subcategory) . "')";
+    }
+
+    if (!empty($search)) {
+        $search = $this->dbConnect->real_escape_string($search);
+        $conditions[] = $this->productTable . ".product_name LIKE '%" . $search . "%'";
+    }
+
+    if (!empty($conditions)) {
+        $sql .= " WHERE " . implode(' AND ', $conditions);
+    }
+
+	if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
+		$sql .= " AND " . $this->productTable . ".product_name LIKE '%" . $this->search . "%'";
 		
-		if (!empty($this->receivedMenuCategory)) {
-			$sql .= " WHERE " . $this->categoryTable . ".menu_category = '" . $this->receivedMenuCategory . "'";
-		}
-	
-		if (isset($_POST['category']) && $_POST['category'] != "") {
-			$sql .= " AND " . $this->categoryTable . ".category_id IN ('" . implode("','", $_POST['category']) . "')";
-		}
-	
-		if (isset($_POST['subcategory']) && $_POST['subcategory'] != "") {
-			$sql .= " AND " . $this->categoryTable . ".subcategory IN ('" . implode("','", $_POST['subcategory']) . "')";
-		}
-	
-		if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
-			$sql .= " AND " . $this->productTable . ".product_name LIKE '%" . $this->search . "%'";
-		}
-	
-		$sql .= " LIMIT $start, $productPerPage";        
-		$products = $this->getData($sql);
-	
-		$productHTML = '';
-		if(isset($products) && count($products)) {            
-			foreach ($products as $key => $product) {                
-				$productHTML .= '<div class="product-card">';
-				$productHTML .= '<div class="image-container skeleton">';
-				$productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
-				$productHTML .= '</div>';
-				$productHTML .= '<div class="zoom-window" id="zoomWindow">';
-				$productHTML .= '<img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
-				$productHTML .= '</div>';
-				$productHTML .= '<div class="product-details skeleton">';
-				$productHTML .= '<h3>' . $product['product_name'] . '</h3>';
-				$productHTML .= '<p>' . $product['leiras'] . '</p>';
-				$productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
-				$productHTML .= '</div>';
-				$productHTML .= '</div>';        
-			}
-		}
-		return  $productHTML;    
 	}
+
+    $sql .= " LIMIT $start, $productPerPage";
+
+    $products = $this->getData($sql);
+    $productHTML = '';
+
+    if (!empty($products)) {
+        foreach ($products as $product) {
+            $productHTML .= '<div class="product-card">';
+            $productHTML .= '<div class="image-container skeleton">';
+            $productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
+            $productHTML .= '</div>';
+            $productHTML .= '<div class="zoom-window" id="zoomWindow">';
+            $productHTML .= '<img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
+            $productHTML .= '</div>';
+            $productHTML .= '<div class="product-details skeleton">';
+            $productHTML .= '<h3>' . $product['product_name'] . '</h3>';
+            $productHTML .= '<p>' . $product['leiras'] . '</p>';
+            $productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
+            $productHTML .= '</div>';
+            $productHTML .= '</div>';
+        }
+    }
+
+    return $productHTML;
+}
+
+	
+	
 	
 	
 

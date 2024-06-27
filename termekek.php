@@ -93,15 +93,22 @@ $(document).ready(function() {
                 subcategory: subcategory,
                 search: search
             },
+            beforeSend: function() {
+                $("#loadMoreButton").text("Loading...").prop("disabled", true);
+            },
             success: function(data) {
                 $("#results").append(data.products);
+                $(".skeleton").removeClass("skeleton"); // Remove the skeleton class
                 totalRecord++;
                 loading = false;
                 if (totalRecord >= totalData) {
                     $("#loadMoreButton").hide();
                 } else {
-                    $("#loadMoreButton").show();
+                    $("#loadMoreButton").show().text("Load More").prop("disabled", false);
                 }
+            },
+            error: function() {
+                $("#loadMoreButton").text("Load More").prop("disabled", false);
             }
         });
     }
@@ -137,5 +144,6 @@ $(document).ready(function() {
     });
 });
 </script>
+
 <script src="filter.js"></script>
-<script src="ajax.js"></script>
+
