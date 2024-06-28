@@ -49,7 +49,7 @@ $categories = $product->getCategories();
                     // Ellenőrzés, ha a keresőmező nem üres
                     if(isset($_GET['submit'])) {
                         // Itt lehet további keresési logika vagy adatbázis lekérdezés
-                        header("Location: kereses.php?kereses=".urlencode($kereses));
+                        header("Location: /kereses.php?kereses=".urlencode($kereses));
                         exit();
                         
                         // Példa: Visszairányítás a masik_oldal.php-re a keresési paraméterrel

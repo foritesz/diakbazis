@@ -25,13 +25,15 @@ if(empty($email_address))
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--custom style-->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="assets/css/style_admin.css">
+  <link rel="stylesheet" href="../style.css">
 
 
 </head>
 <body>
 <?php
-include('partials/header.php');
+include("../Product.php");
+include('../navbar.php');
  ?>
  <div id="confirmBox">
   <p>Are You Sure to Delete ?</p>
@@ -40,9 +42,9 @@ include('partials/header.php');
 <div id="alertBox">mhvmbvbm</div>
 <div class="container-fluid">
   <div class="row">
-      <div class="col-sm-2">
+
  <?php include('partials/sidebar.php'); ?>
-      </div>
+   
       <div class="col-sm-10">
         <div id="dynamic-page">
           <!--dynamic page content-->

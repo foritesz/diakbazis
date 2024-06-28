@@ -340,6 +340,46 @@
             background-color: #ddd;
             font-weight: bold;
         }
+
+        .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.buttons {
+    display: flex;
+    flex-direction: column;
+}
+
+.modify-btn {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.modify-btn:hover, .delete-btn:hover {
+    opacity: 0.8;
+}
+
     </style>
 </head>
 <body class="loading">
@@ -513,6 +553,16 @@
                     <p>Termék leírása...</p>
                     <p>Ár: 1000 Ft</p>
                 </div>
+                <div class="actions">
+                    <div class="checkbox-container">
+                        <label><input type="checkbox"> Opció 1</label><br>
+                        <label><input type="checkbox"> Opció 2</label>
+                    </div>
+                    <div class="buttons">
+                        <button class="modify-btn">Módosítás</button>
+                        <button class="delete-btn">Törlés</button>
+                    </div>
+                </div>
             </div>
             
             <div class="product-card">
@@ -526,6 +576,16 @@
                     <h3>Termék neve</h3>
                     <p>Termék leírása...</p>
                     <p>Ár: 1000 Ft</p>
+                </div>
+                <div class="actions">
+                    <div class="checkbox-container">
+                        <label><input type="checkbox"> Opció 1</label><br>
+                        <label><input type="checkbox"> Opció 2</label>
+                    </div>
+                    <div class="buttons">
+                        <button class="modify-btn">Módosítás</button>
+                        <button class="delete-btn">Törlés</button>
+                    </div>
                 </div>
             </div>
         </div>
