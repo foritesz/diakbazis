@@ -82,7 +82,7 @@ if(isset($message)){
             <option value="Játék">Játék</option>
             <option value="Ajándék">Ajándék</option>
             <option value="Könyv">Könyv</option>
-            <option value="áska-Pénztárca">Táska-Pénztárca</option>
+            <option value="Táska-Pénztárca">Táska-Pénztárca</option>
             <option value="Cipő">Cipő</option>
             <option value="Házatrtási cikkek">Házatrtási cikkek</option>
             <option value="Szezonáli">Szezonális</option>

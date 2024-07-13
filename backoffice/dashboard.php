@@ -24,13 +24,12 @@ if(empty($email_address))
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--custom style-->
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/css/style_admin.css">
+  <script src="../script.js"></script>
   <link rel="stylesheet" href="../style.css">
-
+  <link rel="stylesheet" href="assets/css/style_admin.css">
 
 </head>
-<body>
+<body class="custom-theme">
 <?php
 include("../Product.php");
 include('../navbar.php');

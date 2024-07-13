@@ -78,7 +78,7 @@ $categories = $product->getCategories();
                                         foreach ($subcategories as $key => $subcategory ) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "/backoffice/dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
 
                                             } 
