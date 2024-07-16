@@ -1,5 +1,6 @@
 <?php
 session_start();
+include("../Product.php");
 $email_address= $_SESSION['email'];
 include('config/database.php');
 if(empty($email_address))
@@ -31,7 +32,6 @@ if(empty($email_address))
 </head>
 <body class="custom-theme">
 <?php
-include("../Product.php");
 include('../navbar.php');
  ?>
  <div id="confirmBox">

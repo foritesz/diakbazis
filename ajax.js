@@ -8,7 +8,7 @@ $(document).ready(function() {
 
     $.ajax({
         type: 'POST',
-        url: "load_products.php",
+        url: "../load_products.php",
         dataType: "json",
         data: {
             totalRecord: totalRecord,
@@ -29,7 +29,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: "load_products.php",
+            url: "../load_products.php",
             dataType: "json",
             data: {
                 totalRecord: totalRecord,
@@ -50,7 +50,7 @@ $(document).ready(function() {
                 $('.loader').show();                
 				$.ajax({
 					type: 'POST',
-					url : "load_products.php",
+					url : "../load_products.php",
 					dataType: "json",			
 					data:{totalRecord:totalRecord,subcategory:subcategory},
 					success: function (data) {
