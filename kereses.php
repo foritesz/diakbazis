@@ -212,3 +212,4 @@ function setCheckboxesFromUrl() {
 
 
 </script>
+<script src="ajax.js"></script>

@@ -191,26 +191,26 @@ if ($result->num_rows > 0) {
 	
 	
 
-	public function getTotalProducts() {
-		$sql = "SELECT DISTINCT id FROM " . $this->productTable . "
-		INNER JOIN " . $this->categoryTable . " 
-		ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
-		
-		if(isset($_POST['subcategory']) && !empty($_POST['subcategory'])) {            
-			$sql .= " AND " . $this->categoryTable . ".subcategory IN ('" . implode("','", array_map([$this->dbConnect, 'real_escape_string'], $_POST['subcategory'])) . "')";
-		}
+public function getTotalProducts() {
+	$sql = "SELECT DISTINCT id FROM " . $this->productTable . "
+	INNER JOIN " . $this->categoryTable . " 
+	ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
 	
-		$result = $this->dbConnect->query($sql);
-		if (!$result) {
-			die('Invalid query: ' . $this->dbConnect->error);
-		}
-	
-		$productPerPage = 2;        
-		$rowCount = $result->num_rows;
-		$totalData = ceil($rowCount / $productPerPage);
-	
-		return $totalData;
+	if(isset($_POST['subcategory']) && !empty($_POST['subcategory'])) {            
+		$sql .= " AND " . $this->categoryTable . ".subcategory IN ('" . implode("','", array_map([$this->dbConnect, 'real_escape_string'], $_POST['subcategory'])) . "')";
 	}
+
+	$result = $this->dbConnect->query($sql);
+	if (!$result) {
+		die('Invalid query: ' . $this->dbConnect->error);
+	}
+
+	$productPerPage = 2;        
+	$rowCount = $result->num_rows;
+	$totalData = ceil($rowCount / $productPerPage);
+
+	return $totalData;
+}
 	
 public function getProducts($page = 0, $subcategory = [], $search = '') {
     $productPerPage = 1;
@@ -273,7 +273,68 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
 }
 
 	
-	
+public function getProductsForAdmin($page = 0, $subcategory = [], $search = '') {
+    $productPerPage = 1;
+    $start = $page * $productPerPage;
+
+    $sql = "SELECT *
+            FROM " . $this->productTable . "
+            INNER JOIN " . $this->categoryTable . " 
+            ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
+
+    $conditions = [];
+
+    if (!empty($this->receivedMenuCategory)) {
+        $conditions[] = $this->categoryTable . ".menu_category = '" . $this->receivedMenuCategory . "'";
+    }
+
+    if (!empty($subcategory)) {
+        $subcategory = array_map([$this->dbConnect, 'real_escape_string'], $subcategory);
+        $conditions[] = $this->categoryTable . ".subcategory IN ('" . implode("','", $subcategory) . "')";
+    }
+
+    if (!empty($search)) {
+        $search = $this->dbConnect->real_escape_string($search);
+        $conditions[] = $this->productTable . ".product_name LIKE '%" . $search . "%'";
+    }
+
+    if (!empty($conditions)) {
+        $sql .= " WHERE " . implode(' AND ', $conditions);
+    }
+
+	if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
+		$sql .= " AND " . $this->productTable . ".product_name LIKE '%" . $this->search . "%'";
+		
+	}
+
+    $sql .= " LIMIT $start, $productPerPage";
+
+    $products = $this->getData($sql);
+    $productHTML = '';
+
+    if (!empty($products)) {
+        foreach ($products as $product) {
+			
+            $productHTML .= '<div class="product-card">';
+            $productHTML .= '<div class="image-container skeleton">';
+            $productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
+            $productHTML .= '</div>';
+            $productHTML .= '<div class="zoom-window" id="zoomWindow">';
+            $productHTML .= '<img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
+            $productHTML .= '</div>';
+            $productHTML .= '<div class="product-details skeleton">';
+            $productHTML .= '<h3>' . $product['product_name'] . '</h3>';
+            $productHTML .= '<p>' . $product['leiras'] . '</p>';
+            $productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
+            $productHTML .= '</div>';
+			$productHTML .='<a href="dashboard.php?cat=product-crud&subcat=admin_update&edit='.$product['id'].' " class="btn"> <i class="fas fa-edit"></i> edit </a>';
+			$productHTML .='<a href="dashboard.php?cat=product-crud&subcat=admin_page&delete='.$product['id'].'" class="btn"> <i class="fas fa-trash"></i> delete </a>';
+            $productHTML .= '</div>';
+        }
+    }
+
+    return $productHTML;
+}	
 	
 	
 
