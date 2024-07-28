@@ -13,6 +13,8 @@ if (isset($_POST['update_product'])) {
     $product_image = $_FILES['product_image']['name'];
     $product_image_tmp_name = $_FILES['product_image']['tmp_name'];
     $product_image_folder = 'uploaded_img/' . $product_image;
+    $category_name = $_POST['category_name'];
+    $subcategory = $_POST['subcategory'];
 
     // Initialize the update query
     $update_data = "UPDATE products SET ";
@@ -32,6 +34,12 @@ if (isset($_POST['update_product'])) {
     $update_fields[] = "seasonal='$seasonal'";
     if (!empty($product_image)) {
         $update_fields[] = "kepek='$product_image'";
+    }
+    if (!empty($category_name)) {
+        $update_fields[] = "category_name='$category_name'";
+    }
+    if (!empty($subcategory)) {
+        $update_fields[] = "subcategory='$subcategory'";
     }
 
     // Combine the fields to the update query
@@ -96,6 +104,8 @@ if (isset($message)) {
             <label for="seasonal">Seasonal</label>
         </div>
         <input type="file" class="box" name="product_image" accept="image/png, image/jpeg, image/jpg">
+        <input type="text" class="box" name="category_name" value="<?php echo $row['category_name']; ?>" placeholder="Enter the category name">
+        <input type="text" class="box" name="subcategory" value="<?php echo $row['subcategory']; ?>" placeholder="Enter the subcategory">
         <input type="submit" value="Update Product" name="update_product" class="btn">
         <a href="dashboard.php?cat=product-crud&subcat=admin_page" class="btn">Go Back!</a>
     </form>

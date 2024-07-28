@@ -239,4 +239,4 @@ $ide = $product->getCategories();
 </div>
 
 <script src="../filter.js"></script>
-<script src="../ajax.js"></script>
+<script src="../ajax_admin.js"></script>
