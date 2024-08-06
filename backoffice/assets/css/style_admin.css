@@ -1,185 +1,71 @@
-.navbar.bg-light.menu {
-  background-color: #6c757d !important;
-  width: 100%;
+.dropdown {
+  float: left;
+  overflow:visible;
+}
+.custom-navbar {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #ddd;
 }
 
-.navbar.bg-light.main-menu {
-  background-color: #6c757d !important;
-  width: 100%;
-}
-
-.menu .container-fluid, .main-menu .container-fluid {
-  max-width: 100%;
-  padding-left: 0;
-  padding-right: 0;
-}
-
-.navbar-nav {
+.custom-navbar-nav {
+  list-style-type: none;
+  padding: 0;
   display: flex;
-  justify-content: space-around;
-  width: 100%;
+  justify-content: center;
+  margin: 0;
 }
 
-.navbar-nav .nav-item .nav-link {
-  color: white;
+.custom-navbar-nav .nav-item {
+  margin: 0 15px;
+  position: relative;
 }
 
-.navbar-nav .dropdown-menu .dropdown-item {
-  color: #6c757d;
+.custom-nav-link {
+  text-decoration: none;
+  color: #333;
+  padding: 15px 0;
+  display: block;
 }
 
-.navbar-nav .dropdown-menu .dropdown-item:hover {
-  color: white;
-  background-color: #6c757d;
+.custom-nav-link:hover {
+  color: red;
 }
 
-.navbar-nav .nav-item .nav-link.shortname {
-  background-color: white;
-  color: black;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  margin: 5px 0;
-  padding: 8px 0 0 14px;
-}
-
-.main-menu .navbar-nav.flex-row {
-  flex-direction: row;
-  flex-wrap: nowrap;
-}
-
-.navbar-nav .dropdown-menu {
-  position: absolute;
-}
-
-
-.form{
-  width: 79%;
-    border: 1px solid lightgray;
-    padding: 40px;
-}
-#alertBox{
+.custom-dropdown-content {
   display: none;
-    position: absolute;
-    left: 26%;
-    top: 58px;
-    z-index: 99;
-   
-   
-}
-.content-box{
-  width: 98%;
-    border: 1px solid lightgray;
-    padding: 40px;
-}
-#alertBox .success{
-  box-shadow: 0px 0px 15px #00000042;
-    
-    color: white;
-    background: green;
-    padding: 10px 5px;
-    font-size: 15px;
-}
-#alertBox .fail{
-   box-shadow: 0px 0px 15px #00000042;
-  color: white;
-    background: red;
-    padding: 10px 5px;
-    font-size: 15px;
+  position: absolute;
+  background-color: #f8f8f8;
+  min-width: 200px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  left: 0;
 }
 
-#confirmBox{
-position: fixed;
-    left: 40%;
-    top: 100px;
-    background: white;
-    box-shadow: 0px 0px 15px #0000003b;
-    z-index: 99;
-    padding: 11px;
-    width: 30%;
-    text-align: center;
-    height: 150px;
-    display: none;
+.custom-dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
 }
-#confirmBox p{
-color: #dc3545;
-    font-size: 20px;
-    position: relative;
-    top: 15px
+
+.custom-dropdown-content a:hover {
+  background-color: #ddd;
 }
-#confirmBox button{
-border: 0px;
-    margin: 30px;
-    padding: 2px 30px;
-    background: #dc3545;
-    color: white;
+
+.show {
+  display: block;
 }
- #hide i{
-    font-size: 25px; margin: 10px 0px
-  }
-  .description li a{
-    padding: 0px 0px;
-    margin: 0px;
-    color: #ffc0c6;
-    border-bottom: 0px !important;
-  }
-  label::after{
-    color: #ffffff !important;
-    background-color: #dc3545 !important;
-  }
-  .accordion-content .description {
-   
-    color: #4f4f4f;
-    cursor: pointer;
-    padding: 5px 5px 5px 25px;
-    max-width: 100%;
-    outline: none;
-    font-size: 14px;
-    margin: 4px 0px;
-    position: relative;}
-.accordion-content .description p {
-   margin:0px;
-   color:gray;}
-.accordion-content .title {
-   margin: 10px 0px;
-    font-weight: normal;
-   
-    padding: 0px 0px;
-    cursor: pointer;
-    font-size: 15px;
-    color: white;}
-    .accordion-content {
-    color: white;
-    border-bottom: 1px solid #959696;
-    position: relative;
-    }
-.accordion-content.show .description{
-  display:block;}
-.accordion-content.hide .description{
-  display:none;}
-.accordion-content.hide .title::after{
- content: " ";
-   
-   
-    padding: 0px 0px;
-    font-size: 22px;
-   
-    font-size: 19px;
-    font-weight: normal;
-    /* float: right; */
-   position: absolute;
-    top: 6px;
-    right: -47px;}
-.accordion-content.show .title::after{
- content: "  ";
-   
-    
-    padding: 0px 0px;
-    font-size: 22px;
-  
-    font-size: 19px;
-    font-weight: normal;
-  
-   position: absolute;
-    top: 6px;
-    right: -47px;}
+
+.logout-button {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-left: auto;
+}
+
+.logout-button:hover {
+  background-color: #c82333;
+}

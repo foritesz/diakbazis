@@ -1,97 +1,509 @@
-<!-- Sticky Top Menu -->
-<div class="container-fluid bg-secondary menu sticky-top">
-  <div class="row">
-    <div class="col-sm-2">
-      <ul class="nav">
-        <li class="nav-item">
-          <a class="nav-link shortname" href="#">Acronym</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">Full Name</a>
-        </li>
-      </ul>
-    </div>
-    <div class="col-sm-6">
-      <ul class="nav">
-        <li class="nav-item">
-          <h4 class="text-light" style="position: relative;top: 8px">Admin Panel</h4>
-        </li>
-      </ul>
-    </div>
-    <div class="col-sm-4">
-      <ul class="nav justify-content-end">
-        <li class="nav-item">
-          <a href="dashboard.php?cat=setting&subcat=admin-panel" class="nav-link content-link" title="setting"><i class='fas fa-cog'></i></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="logout.php" title="logout"><i class='fas fa-sign-out-alt'></i></a>
-        </li>
-      </ul>
-    </div>
-  </div>
-</div>
+<?php
+$product = new Product();
+$subcategories = $product->getSubcategory();
+$menucategories = $product->getMenucategory();
+$categories = $product->getCategories();
+?>
 
-<!-- Main navigation -->
-<nav class="navbar bg-light main-menu sticky-top">
-  <div class="container-fluid">
-    <ul class="navbar-nav flex-row">
-      <li class="nav-item">
-        <a class="nav-link content-link" href="dashboard.php"><i class='fas fa-home'></i> Dashboard</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="productsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class='fas fa-cog'></i> Termékek
-        </a>
-        <div class="dropdown-menu" aria-labelledby="productsDropdown">
-          <a class="dropdown-item" href="dashboard.php?cat=product-crud&subcat=admin_page">Termék kezelése</a>
-          <a class="dropdown-item" href="dashboard.php?cat=product-crud&subcat=filter_page">Kategóriák kezelése</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="websiteSettingDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class='fas fa-cog'></i> Website Setting
-        </a>
-        <div class="dropdown-menu" aria-labelledby="websiteSettingDropdown">
-          <a class="dropdown-item" href="dashboard.php?cat=website-setting&subcat=website-menu">Website Menu</a>
-          <a class="dropdown-item" href="dashboard.php?cat=website-setting&subcat=website-setting">Website-Setting</a>
-          <a class="dropdown-item" href="dashboard.php?cat=website-setting&subcat=theme-setting">Theme Setting</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="contactUsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class='fas fa-envelope'></i> Contact Us
-        </a>
-        <div class="dropdown-menu" aria-labelledby="contactUsDropdown">
-          <a class="dropdown-item" href="dashboard.php?cat=contact&subcat=contact-details">Contact Detail</a>
-          <a class="dropdown-item" href="dashboard.php?cat=contact&subcat=contact-us-message">Contact Message</a>
-          <a class="dropdown-item" href="dashboard.php?cat=contact&subcat=contact-email">Contact Email</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="websiteContentDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class='fas fa-file-alt'></i> Website Content
-        </a>
-        <div class="dropdown-menu" aria-labelledby="websiteContentDropdown">
-          <a class="dropdown-item" href="dashboard.php?cat=website-content&subcat=home-content">Home Content</a>
-        </div>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#" id="websiteAdminDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <i class='fas fa-user-cog'></i> Website Admin
-        </a>
-        <div class="dropdown-menu" aria-labelledby="websiteAdminDropdown">
-          <a class="dropdown-item" href="dashboard.php?cat=website-admin&subcat=admin-profile">Admin Profile</a>
-          <a class="dropdown-item" href="dashboard.php?cat=website-admin&subcat=change-password">Change Password</a>
-        </div>
-      </li>
-    </ul>
-  </div>
-</nav>
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style_admin.css">
+    <script src="../script.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <title>Weboldal Kínézet</title>
 
-<!-- Content goes here -->
-<div class="container-fluid">
-  <!-- Your page content -->
-</div>
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJAK/lAxT5d3wblKcz0M7+6Im9xCZUyJHs6fo5w5ku4E6QLLa" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<body class="loading">
+  <div class="header">
+          <div class="logo">
+              <h1>Logó</h1>
+          </div>
+          <div class="hamburger" onclick="toggleMenu()">
+              <div></div>
+              <div></div>
+              <div></div>
+          </div>
+          <div class="search-icon" onclick="toggleSearchBar()">
+              <i class="bi bi-search"></i>
+          </div>
+          <div class="search-bar">
+            <form action="kereses.php" method="GET">
+                <input type="text" placeholder="Keresés..." id="kereso" name="kereses">
+                <button type="submit"><i class="bi bi-search"></i></button>
+            </form>
+          </div>
+    </div>
+  <?php
+            echo '<form method="post" id="search_form">';
+
+            if ($_SERVER["REQUEST_METHOD"] == "GET") {
+                // Keresési paraméter kiolvasása
+                if(isset($_GET['kereses'])) {
+                    $kereset = $_GET['kereses'];
+                        
+                    $_SESSION['kereset'] = $_GET['kereses'];
+                    // Ellenőrzés, ha a keresőmező nem üres
+                    if(isset($_GET['submit'])) {
+                        // Itt lehet további keresési logika vagy adatbázis lekérdezés
+                        header("Location: /kereses.php?kereses=".urlencode($kereses));
+                        exit();
+                        
+                        // Példa: Visszairányítás a masik_oldal.php-re a keresési paraméterrel
+                    }
+                }
+            }
+            //session_destroy();
+            echo '</form>';
+  ?>
+  <div class="navbar">
+        <div class="dropdown-container">
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Papír-Írószer
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+                            <?php
+
+$selectedCategory = 'Papír-Írószer';
+if (isset($menucategories[$selectedCategory])) {
+    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+        echo' <div class="column">';
+        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+        foreach ($subcategories as $key => $subcategory ) {
+            $categoryEncoded = urlencode($selectedCategory);
+            $subcategoryEncoded = urlencode($subcategory);
+            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+            } 
+        echo'</div>';
+    }
+}
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Kreatív
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Kreatív';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "/backoffice/dashboard.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Játék
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Játék';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Ajándék 
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Ajándék';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Könyv
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Könyv';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Táska-Pénztárca
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Táska-Pénztárca';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Cipő
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Cipő';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Háztartási cikkek
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Háztartási cikkek';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Szezonális
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Szezonális';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Óra
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Óra';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="dropdown">
+                <button class="dropbtn" onclick="toggleDropdown(event)">Szolgáltatás
+                  <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                      <div class="content1">
+                            <div class="row">
+<?php
+
+                                $selectedCategory = 'Szolgáltatás';
+                                if (isset($menucategories[$selectedCategory])) {
+                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
+                                        echo' <div class="column">';
+                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
+                                        foreach ($subcategories as $key => $subcategory ) {
+                                            $categoryEncoded = urlencode($selectedCategory);
+                                            $subcategoryEncoded = urlencode($subcategory);
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+
+                                            } 
+                                        echo'</div>';
+                                    }
+                                }
+
+?>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</body>
+
+    <!-- Main navigation -->
+    <nav class="custom-navbar sticky-top">
+        <div class="container-fluid">
+            <ul class="custom-navbar-nav">
+                <li class="nav-item">
+                    <a class="custom-nav-link" href="dashboard.php"><i class='fa fa-home'></i> Dashboard</a>
+                </li>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle custom-nav-link" href="#" onclick="toggleDropdown(event)">
+                        <i class='fa fa-cog'></i> Termékek
+                    </a>
+                    <div class="custom-dropdown-content">
+                        <a href="dashboard.php?cat=product-crud&subcat=admin_page">Termék kezelése</a>
+                        <a href="dashboard.php?cat=product-crud&subcat=filter_page">Kategóriák kezelése</a>
+                    </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle custom-nav-link" href="#" onclick="toggleDropdown(event)">
+                        <i class='fa fa-cog'></i> Website Setting 
+                    </a>
+                    <div class="custom-dropdown-content">
+                        <a href="dashboard.php?cat=website-setting&subcat=website-menu">Website Menu</a>
+                        <a href="dashboard.php?cat=website-setting&subcat=website-setting">Website-Setting</a>
+                        <a href="dashboard.php?cat=website-setting&subcat=theme-setting">Theme Setting</a>
+                    </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle custom-nav-link" href="#" onclick="toggleDropdown(event)">
+                        <i class='fa fa-envelope'></i> Contact Us
+                    </a>
+                    <div class="custom-dropdown-content">
+                        <a href="dashboard.php?cat=contact&subcat=contact-details">Contact Detail</a>
+                        <a href="dashboard.php?cat=contact&subcat=contact-us-message">Contact Message</a>
+                        <a href="dashboard.php?cat=contact&subcat=contact-email">Contact Email</a>
+                    </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle custom-nav-link" href="#" onclick="toggleDropdown(event)">
+                        <i class='fa fa-file-alt'></i> Website Content
+                    </a>
+                    <div class="custom-dropdown-content">
+                        <a href="dashboard.php?cat=website-content&subcat=home-content">Home Content</a>
+                    </div>
+                </li>
+                <div class="dropdown-divider"></div>
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle custom-nav-link" href="#" onclick="toggleDropdown(event)">
+                        <i class='fa fa-user-cog'></i> Website Admin
+                    </a>
+                    <div class="custom-dropdown-content">
+                        <a href="dashboard.php?cat=website-admin&subcat=admin-profile">Admin Profile</a>
+                        <a href="dashboard.php?cat=website-admin&subcat=change-password">Change Password</a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <button class="logout-button" onclick="logout()">Kijelentkezés</button>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+
+    <script>
+        function toggleDropdown(event) {
+            event.preventDefault();
+
+            // Bezárjuk az összes lenyíló tartalmat
+            var dropdowns = document.getElementsByClassName("custom-dropdown-content");
+            for (var i = 0; i < dropdowns.length; i++) {
+                var openDropdown = dropdowns[i];
+                if (openDropdown.classList.contains('show')) {
+                    openDropdown.classList.remove('show');
+                }
+            }
+
+            // Megnyitjuk az aktuális lenyíló tartalmat
+            var dropdownContent = event.target.nextElementSibling;
+            dropdownContent.classList.toggle("show");
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.matches('.custom-nav-link')) {
+                var dropdowns = document.getElementsByClassName("custom-dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
+            }
+        }
+
+        function logout() {
+            window.location.href = 'logout.php';
+        }
+    </script>

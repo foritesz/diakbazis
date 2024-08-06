@@ -1,31 +1,11 @@
-
 $(document).ready(function() {
-	
     var totalRecord = 0;
-    var subcategory = getCheckboxValues('subcategory');
     var totalData = $("#totalRecords").val();
-	var search = $("#myInput").val(); // Hozzáadott sor: Keresési érték lekérése
+    var loading = false;
 
-    $.ajax({
-        type: 'POST',
-        url: "../load_products_admin.php",
-        dataType: "json",
-        data: {
-            totalRecord: totalRecord,
-            subcategory: subcategory,
-            search: search // Hozzáadott sor: Keresési érték továbbítása
-        },
-        success: function(data) {
-            $("#results").append(data.products);
-            totalRecord++;
-        }
-    });
-	$('#searchForm').submit(function(e) {
-        e.preventDefault(); // Prevent the form from submitting in the traditional way
-
-        var searchValue = $('#myInput').val();
-        totalRecord = 0; // Reset totalRecord when performing a new search
-        $("#results").empty(); // Clear existing results
+    function loadProducts() {
+        var subcategory = getCheckboxValues('subcategory');
+        var search = $("#myInput").val();
 
         $.ajax({
             type: 'POST',
@@ -33,51 +13,74 @@ $(document).ready(function() {
             dataType: "json",
             data: {
                 totalRecord: totalRecord,
-                subcategory: getCheckboxValues('subcategory'),
-                search: searchValue
+                subcategory: subcategory,
+                search: search
+            },
+            beforeSend: function() {
+                $("#loadMoreButton").text("Loading...").prop("disabled", true);
+                $('.loader').show();
             },
             success: function(data) {
                 $("#results").append(data.products);
+                $(".skeleton").removeClass("skeleton"); // Remove the skeleton class
                 totalRecord++;
+                loading = false;
+                $('.loader').hide();
+                if (totalRecord >= totalData) {
+                    $("#loadMoreButton").hide();
+                } else {
+                    $("#loadMoreButton").show().text("Load More").prop("disabled", false);
+                }
+            },
+            error: function() {
+                $("#loadMoreButton").text("Load More").prop("disabled", false);
+                $('.loader').hide();
             }
         });
+    }
+
+    $('#searchForm').submit(function(e) {
+        e.preventDefault();
+
+        totalRecord = 0;
+        $("#results").empty();
+        loadProducts();
     });
-    $(window).scroll(function() {
-		scrollHeight = parseInt($(window).scrollTop() + $(window).height());		
-        if(scrollHeight == $(document).height()){	
-            if(totalRecord <= totalData){
-                loading = true;
-                $('.loader').show();                
-				$.ajax({
-					type: 'POST',
-					url : "../load_products_admin.php",
-					dataType: "json",			
-					data:{totalRecord:totalRecord,subcategory:subcategory},
-					success: function (data) {
-						$("#results").append(data.products);
-						$('.loader').hide();
-						totalRecord++;
-					}
-				});
-            }            
+
+    $("#loadMoreButton").click(function() {
+        if (!loading && totalRecord < totalData) {
+            loading = true;
+            loadProducts();
         }
     });
-    function getCheckboxValues(checkboxClass){
-        var values = new Array();
-		$("."+checkboxClass+":checked").each(function() {
-		   values.push($(this).val());
-		});
+
+    $(window).scroll(function() {
+        var scrollHeight = parseInt($(window).scrollTop() + $(window).height());
+        if (scrollHeight == $(document).height() && !loading && totalRecord < totalData) {
+            loading = true;
+            loadProducts();
+        }
+    });
+
+    function getCheckboxValues(checkboxClass) {
+        var values = [];
+        $("." + checkboxClass + ":checked").each(function() {
+            values.push($(this).val());
+        });
         return values;
     }
-    $('.sort_rang').change(function(){
-        $("#search_form").submit();
+
+    $('.sort_rang').change(function() {
+        $("#searchForm").submit();
         return false;
     });
-	$(document).on('click', 'label', function() {
-		if($('input:checkbox:checked')) {
-			$('input:checkbox:checked', this).closest('label').addClass('active');
-		}
-	})
-	
-});
 
+    $(document).on('click', 'label', function() {
+        if ($('input:checkbox:checked', this)) {
+            $(this).closest('label').addClass('active');
+        }
+    });
+
+    // Initial load
+    loadProducts();
+});

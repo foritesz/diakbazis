@@ -25,15 +25,12 @@ if(empty($email_address))
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--custom style-->
-  <script src="../script.js"></script>
+
   <link rel="stylesheet" href="../style.css">
   <link rel="stylesheet" href="assets/css/style_admin.css">
 
 </head>
 <body class="custom-theme">
-<?php
-include('../navbar.php');
- ?>
  <div id="confirmBox">
   <p>Are You Sure to Delete ?</p>
   <button value="1" >Yes</button><button value="0">No</button>

@@ -5,8 +5,6 @@ ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 @include 'config.php';
 
-
-
 function resizeImage($source_image, $destination, $width, $height) {
     list($source_width, $source_height, $source_type) = getimagesize($source_image);
     switch ($source_type) {
@@ -41,7 +39,6 @@ if (isset($_POST['add_product'])) {
     $product_image = $_FILES['product_image']['name'];
     $product_image_tmp_name = $_FILES['product_image']['tmp_name'];
 
-    // Automatically generate a new name for the image file
     $new_image_name = uniqid() . '.jpg';
     $product_image_folder = 'C:/AppServ/www/diakbazis/images/' . $new_image_name;
 
@@ -52,7 +49,6 @@ if (isset($_POST['add_product'])) {
         $upload = mysqli_query($conn, $insert);
 
         if ($upload) {
-            // Resize the image and save it
             if (resizeImage($product_image_tmp_name, $product_image_folder, 600, 600)) {
                 $message[] = 'New product added successfully.';
             } else {
@@ -70,7 +66,6 @@ if (isset($_GET['delete'])) {
     header('location:admin_page.php');
 }
 
-// Fetch categories and subcategories for the dropdowns
 $categories_result = mysqli_query($conn, "SELECT DISTINCT category_name FROM categories");
 $subcategories_result = mysqli_query($conn, "SELECT category_name, subcategory FROM categories");
 ?>
@@ -82,7 +77,6 @@ $subcategories_result = mysqli_query($conn, "SELECT category_name, subcategory F
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>admin page</title>
-<!-- custom css file link  -->
 <link rel="stylesheet" href="product-crud/style.css">
 </head>
 <body>
@@ -164,22 +158,67 @@ if (isset($message)) {
 
 </body>
 </html>
-<script>
-   document.getElementById('category_name').addEventListener('change', function () {
-      var category = this.value;
-      var subcategorySelect = document.getElementById('subcategory');
-      var options = subcategorySelect.querySelectorAll('option');
-      options.forEach(function (option) {
-         if (option.getAttribute('data-category') === category || option.value === "") {
-            option.style.display = 'block';
-         } else {
-            option.style.display = 'none';
-         }
-      });
-   });
-</script>
-<?php
 
+<script>
+function updateURL() {
+    // Get the current URL without the query string
+    let baseURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
+
+    // Get the value of 'menucategory' from the initial URL parameters
+    let urlParams = new URLSearchParams(window.location.search);
+    let selectedMenuCategory = urlParams.get('menucategory');
+
+    // Get all checkbox elements
+    let checkboxes = document.querySelectorAll('.subcategory input[type="checkbox"]');
+
+    // Collect selected checkbox values
+    let alkategoriaParams = [];
+    for (let checkbox of checkboxes) {
+        if (checkbox.checked) {
+            alkategoriaParams.push(checkbox.value);
+        }
+    }
+
+    // Build the new URL with selected checkboxes
+    let newURL = baseURL + "?cat=product-crud&subcat=admin_page";
+    if (selectedMenuCategory) {
+        newURL += "&menucategory=" + encodeURIComponent(selectedMenuCategory);
+    }
+    if (alkategoriaParams.length > 0) {
+        newURL += "&alkategoria=" + alkategoriaParams.map(encodeURIComponent).join('&alkategoria=');
+    } else {
+        // If no checkboxes are selected, remove 'alkategoria' from the URL
+        newURL = newURL.replace(/(&|^)alkategoria=[^&]*/g, '');
+    }
+
+    // Update the browser's URL without reloading the page
+    history.replaceState({}, document.title, newURL);
+}
+
+function highlightCheckboxesFromURL() {
+    let urlParams = new URLSearchParams(window.location.search);
+    let alkategoriaFromURL = urlParams.getAll('alkategoria');
+
+    // Highlight checkboxes based on 'alkategoria' values in the URL
+    let checkboxes = document.querySelectorAll('.subcategory input[type="checkbox"]');
+    for (let checkbox of checkboxes) {
+        if (alkategoriaFromURL.includes(checkbox.value)) {
+            checkbox.checked = true;
+        }
+    }
+}
+
+// Add change event listeners to all checkbox elements
+document.querySelectorAll('.subcategory input[type="checkbox"]').forEach(checkbox => {
+    checkbox.addEventListener("change", updateURL);
+});
+
+// Initialize the checkbox state based on URL parameters
+highlightCheckboxesFromURL();
+
+</script>
+
+<?php
 
 $product = new Product();
 $subcategories = $product->getMenucategory();
@@ -187,19 +226,18 @@ $totalRecords = $product->getTotalProducts();
 $ide = $product->getCategories();
 
 ?>
+
 <div class="content">
     <div class="filter">
 <?php
         $selectedMenuCategory = $_GET['menucategory'];
         $selectedAlkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
 
-        // Új sor: Beolvasás a rejtett input mezőből
         $modifiedURL = isset($_POST['modifiedURL']) ? $_POST['modifiedURL'] : '';
 
         echo "A keresett érték: " . $selectedMenuCategory;
         $_SESSION['selectedMenuCategory'] = $selectedMenuCategory;
 
-        // A módosított URL alapján dolgozz tovább
         parse_str(parse_url($modifiedURL, PHP_URL_QUERY), $modifiedParams);
         $selectedAlkategoria = isset($modifiedParams['alkategoria']) ? $modifiedParams['alkategoria'] : $selectedAlkategoria;
 
@@ -238,5 +276,5 @@ $ide = $product->getCategories();
     <button id="loadMoreButton" style="display:none;">Load More</button>
 </div>
 
-<script src="../filter.js"></script>
+<script src="filter_admin.js"></script>
 <script src="../ajax_admin.js"></script>
