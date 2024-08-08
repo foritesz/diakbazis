@@ -42,7 +42,7 @@ if (isset($_POST['add_product'])) {
     $new_image_name = uniqid() . '.jpg';
     $product_image_folder = 'C:/AppServ/www/diakbazis/images/' . $new_image_name;
 
-    if (empty($product_name) || empty($product_price) || empty($product_image) || empty($subcategory)) {
+    if (empty($product_name) || empty($product_image) || empty($subcategory)) {
         $message[] = 'Please fill out all fields.';
     } else {
         $insert = "INSERT INTO products(product_name, price, kepek, subcategory, visible_product, seasonal) VALUES('$product_name', '$product_price', '$new_image_name', '$subcategory', '$visible_product', '$seasonal')";
@@ -108,6 +108,7 @@ if (isset($message)) {
       <?php } ?>
    </select>
    <input type="text" placeholder="enter product name" name="product_name" class="box">
+   <textarea class="box" id="product_leiras" name="product_leiras" placeholder="Enter the product description"><?php echo $row['leiras']; ?></textarea>
    <input type="number" placeholder="enter product price" name="product_price" class="box">
    <input type="file" accept="image/png, image/jpeg, image/jpg" name="product_image" class="box">
    <div>
@@ -139,18 +140,22 @@ if (isset($message)) {
          </tr>
          </thead>
          <?php while ($row = mysqli_fetch_assoc($select)) { ?>
-         <tr>
-            <td><img src="uploaded_img/<?php echo $row['kepek']; ?>" height="100" alt=""></td>
-            <td><?php echo $row['product_name']; ?></td>
-            <td>$<?php echo $row['price']; ?>/-</td>
-            <td><?php echo $row['visible_product'] ? 'Yes' : 'No'; ?></td>
-            <td><?php echo $row['seasonal'] ? 'Yes' : 'No'; ?></td>
-            <td>
-               <a href="dashboard.php?cat=product-crud&subcat=admin_update&edit=<?php echo $row['id']; ?>" class="btn"> <i class="fas fa-edit"></i> edit </a>
-               <a href="dashboard.php?cat=product-crud&subcat=admin_page&delete=<?php echo $row['id']; ?>" class="btn"> <i class="fas fa-trash"></i> delete </a>
-            </td>
-         </tr>
-         <?php } ?>
+            <tr>
+    <td><img src="uploaded_img/<?php echo $row['kepek']; ?>" height="100" alt=""></td>
+    <td><?php echo $row['product_name']; ?></td>
+    <td>$<?php echo $row['price']; ?>/-</td>
+    <td><?php echo $row['visible_product'] ? 'Yes' : 'No'; ?></td>
+    <td><?php echo $row['seasonal'] ? 'Yes' : 'No'; ?></td>
+    <td>
+       <?php
+       $menucategory = isset($_GET['menucategory']) ? $_GET['menucategory'] : '';
+       $alkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
+       ?>
+       <a href="dashboard.php?cat=product-crud&subcat=admin_update&edit=<?php echo $row['id']; ?>&menucategory=<?php echo urlencode($menucategory); ?>&alkategoria=<?php echo urlencode($alkategoria); ?>" class="btn"> <i class="fas fa-edit"></i> edit </a>
+       <a href="dashboard.php?cat=product-crud&subcat=admin_page&delete=<?php echo $row['id']; ?>" class="btn"> <i class="fas fa-trash"></i> delete </a>
+    </td>
+</tr>
+<?php } ?>
       </table>
    </div>
 
@@ -160,61 +165,37 @@ if (isset($message)) {
 </html>
 
 <script>
-function updateURL() {
-    // Get the current URL without the query string
-    let baseURL = window.location.protocol + "//" + window.location.host + window.location.pathname;
+document.addEventListener('DOMContentLoaded', function() {
+    const checkboxes = document.querySelectorAll('.subcategory');
+    
+    checkboxes.forEach(checkbox => {
+        checkbox.addEventListener('change', function() {
+            updateURL();
+        });
+    });
 
-    // Get the value of 'menucategory' from the initial URL parameters
-    let urlParams = new URLSearchParams(window.location.search);
-    let selectedMenuCategory = urlParams.get('menucategory');
+    function updateURL() {
+        const selectedCheckboxes = document.querySelectorAll('.subcategory:checked');
+        let params = new URLSearchParams(window.location.search);
+        params.delete('alkategoria'); // Remove existing 'alkategoria' params
 
-    // Get all checkbox elements
-    let checkboxes = document.querySelectorAll('.subcategory input[type="checkbox"]');
+        selectedCheckboxes.forEach(checkbox => {
+            params.append('alkategoria', checkbox.value);
+        });
 
-    // Collect selected checkbox values
-    let alkategoriaParams = [];
-    for (let checkbox of checkboxes) {
-        if (checkbox.checked) {
-            alkategoriaParams.push(checkbox.value);
-        }
+        const newURL = `${window.location.pathname}?${params.toString()}`;
+        window.location.href = newURL;
     }
 
-    // Build the new URL with selected checkboxes
-    let newURL = baseURL + "?cat=product-crud&subcat=admin_page";
-    if (selectedMenuCategory) {
-        newURL += "&menucategory=" + encodeURIComponent(selectedMenuCategory);
-    }
-    if (alkategoriaParams.length > 0) {
-        newURL += "&alkategoria=" + alkategoriaParams.map(encodeURIComponent).join('&alkategoria=');
-    } else {
-        // If no checkboxes are selected, remove 'alkategoria' from the URL
-        newURL = newURL.replace(/(&|^)alkategoria=[^&]*/g, '');
-    }
-
-    // Update the browser's URL without reloading the page
-    history.replaceState({}, document.title, newURL);
-}
-
-function highlightCheckboxesFromURL() {
-    let urlParams = new URLSearchParams(window.location.search);
-    let alkategoriaFromURL = urlParams.getAll('alkategoria');
-
-    // Highlight checkboxes based on 'alkategoria' values in the URL
-    let checkboxes = document.querySelectorAll('.subcategory input[type="checkbox"]');
-    for (let checkbox of checkboxes) {
-        if (alkategoriaFromURL.includes(checkbox.value)) {
+    // Retain the checkbox state on page load
+    const urlParams = new URLSearchParams(window.location.search);
+    urlParams.getAll('alkategoria').forEach(value => {
+        const checkbox = document.querySelector(`.subcategory[value="${value}"]`);
+        if (checkbox) {
             checkbox.checked = true;
         }
-    }
-}
-
-// Add change event listeners to all checkbox elements
-document.querySelectorAll('.subcategory input[type="checkbox"]').forEach(checkbox => {
-    checkbox.addEventListener("change", updateURL);
+    });
 });
-
-// Initialize the checkbox state based on URL parameters
-highlightCheckboxesFromURL();
 
 </script>
 

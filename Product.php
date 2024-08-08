@@ -65,32 +65,36 @@ class Product{
 	}
 
 	public function getSubcategory() {
-		$sql = "SELECT  category_id,category_name,subcategory FROM categories ORDER BY subcategory";
-
+		$sql = "SELECT DISTINCT c.category_id, c.category_name, c.subcategory
+				FROM categories c
+				INNER JOIN products p ON c.subcategory = p.subcategory
+				WHERE p.visible_product = 1
+				ORDER BY c.subcategory";
+	
 		$result = $this->dbConnect->query($sql);
+	
 		// Asszociatív tömb létrehozása a csoportosításhoz
 		$subcategories = array();
-
-// Eredmény feldolgozása és csoportosítás
-if ($result->num_rows > 0) {
-    while ($row = $result->fetch_assoc()) {
-        $categoryName = $row["category_name"];
-        $subcategory = $row["subcategory"];
-        
-        // Csoportosítás az alapján, hogy melyik kategóriához tartozik
-        if (!isset($subcategories[$categoryName])) {
-            $subcategories[$categoryName] = array();
-        }
-        $subcategories[$categoryName][] = $subcategory;
-    }
-} else {
-    echo "Nincsenek eredmények.";
-}
 	
+		// Eredmény feldolgozása és csoportosítás
+		if ($result->num_rows > 0) {
+			while ($row = $result->fetch_assoc()) {
+				$categoryName = $row["category_name"];
+				$subcategory = $row["subcategory"];
+				
+				// Csoportosítás az alapján, hogy melyik kategóriához tartozik
+				if (!isset($subcategories[$categoryName])) {
+					$subcategories[$categoryName] = array();
+				}
+				$subcategories[$categoryName][] = $subcategory;
+			}
+		} else {
+			echo "Nincsenek eredmények.";
+		}
 	
-		// Kiíratás a csoportosított adatokról
 		return $subcategories;
 	}
+	
 	
 	public function getMenucategory() {
 		$sql = "SELECT category_name, subcategory, menu_category FROM categories ORDER BY menu_category, category_name";
@@ -221,7 +225,7 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
             INNER JOIN " . $this->categoryTable . " 
             ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
 
-    $conditions = [];
+    $conditions = ["{$this->productTable}.visible_product = 1"];
 
     if (!empty($this->receivedMenuCategory)) {
         $conditions[] = $this->categoryTable . ".menu_category = '" . $this->receivedMenuCategory . "'";
@@ -241,17 +245,16 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
         $sql .= " WHERE " . implode(' AND ', $conditions);
     }
 
-	if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
-		$sql .= " AND " . $this->productTable . ".product_name LIKE '%" . $this->search . "%'";
-		
-	}
+    if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
+        $sql .= " AND " . $this->productTable . ".product_name LIKE '%" . $_SESSION['kereset'] . "%'";
+    }
 
     $sql .= " LIMIT $start, $productPerPage";
 
     $products = $this->getData($sql);
     $productHTML = '';
 
-    if (!empty($products)) {
+	if (!empty($products)) {
         foreach ($products as $product) {
             $productHTML .= '<div class="product-card">';
             $productHTML .= '<div class="image-container skeleton">';
@@ -263,7 +266,12 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
             $productHTML .= '<div class="product-details skeleton">';
             $productHTML .= '<h3>' . $product['product_name'] . '</h3>';
             $productHTML .= '<p>' . $product['leiras'] . '</p>';
-            $productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
+
+            // Check if the price is not null
+            if ($product['price'] !== null) {
+                $productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
+            }
+
             $productHTML .= '</div>';
             $productHTML .= '</div>';
         }
@@ -271,6 +279,7 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
 
     return $productHTML;
 }
+
 
 	
 public function getProductsForAdmin($page = 0, $subcategory = [], $search = '') {
@@ -312,9 +321,8 @@ public function getProductsForAdmin($page = 0, $subcategory = [], $search = '') 
     $products = $this->getData($sql);
     $productHTML = '';
 
-    if (!empty($products)) {
+	if (!empty($products)) {
         foreach ($products as $product) {
-			
             $productHTML .= '<div class="product-card">';
             $productHTML .= '<div class="image-container skeleton">';
             $productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
@@ -325,10 +333,13 @@ public function getProductsForAdmin($page = 0, $subcategory = [], $search = '') 
             $productHTML .= '<div class="product-details skeleton">';
             $productHTML .= '<h3>' . $product['product_name'] . '</h3>';
             $productHTML .= '<p>' . $product['leiras'] . '</p>';
-            $productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
+
+            // Check if the price is not null
+            if ($product['price'] !== null) {
+                $productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
+            }
+
             $productHTML .= '</div>';
-			$productHTML .='<a href="dashboard.php?cat=product-crud&subcat=admin_update&edit='.$product['id'].' " class="btn"> <i class="fas fa-edit"></i> edit </a>';
-			$productHTML .='<a href="dashboard.php?cat=product-crud&subcat=admin_page&delete='.$product['id'].'" class="btn"> <i class="fas fa-trash"></i> delete </a>';
             $productHTML .= '</div>';
         }
     }

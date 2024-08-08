@@ -32,29 +32,27 @@ $categories = $product->getCategories();
               <i class="bi bi-search"></i>
           </div>
           <div class="search-bar">
-            <form action="kereses.php" method="GET">
+            <form method="GET">
                 <input type="text" placeholder="Keresés..." id="kereso" name="kereses">
-                <button type="submit"><i class="bi bi-search"></i></button>
+                <button type="submit" name="submit"><i class="bi bi-search" ></i></button>
             </form>
           </div>
     </div>
   <?php
             echo '<form method="post" id="search_form">';
 
-            if ($_SERVER["REQUEST_METHOD"] == "GET") {
-                // Keresési paraméter kiolvasása
-                if(isset($_GET['kereses'])) {
-                    $kereset = $_GET['kereses'];
-                        
-                    $_SESSION['kereset'] = $_GET['kereses'];
-                    // Ellenőrzés, ha a keresőmező nem üres
-                    if(isset($_GET['submit'])) {
-                        // Itt lehet további keresési logika vagy adatbázis lekérdezés
-                        header("Location: /kereses.php?kereses=".urlencode($kereses));
-                        exit();
-                        
-                        // Példa: Visszairányítás a masik_oldal.php-re a keresési paraméterrel
-                    }
+            if ($_SERVER["REQUEST_METHOD"] == "GET" && isset($_GET['submit'])) {
+                // Check if 'kereses' is set
+                if (isset($_GET['kereses'])) {
+                    $kereses = $_GET['kereses'];
+                    
+                    // Optional: Store in session if needed
+                    // session_start();
+                    // $_SESSION['kereset'] = $kereses;
+                    
+                    // Redirect to the desired page with the search parameter
+                    header("Location: /backoffice/dashboard.php?cat=product-crud&subcat=kereses_admin&kereses=" . urlencode($kereses));
+                    exit();
                 }
             }
             //session_destroy();

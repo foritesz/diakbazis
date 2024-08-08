@@ -31,7 +31,7 @@ $categories = $product->getCategories();
               <i class="bi bi-search"></i>
           </div>
           <div class="search-bar">
-            <form action="kereses.php" method="GET">
+            <form action=kereses.php method="GET">
                 <input type="text" placeholder="Keresés..." id="kereso" name="kereses">
                 <button type="submit"><i class="bi bi-search"></i></button>
             </form>
