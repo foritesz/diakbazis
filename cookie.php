@@ -67,17 +67,11 @@
 <body>
 
     <div class="cookie-container" id="cookie-container">
-        <p>Ez a weboldal sütiket használ a legjobb élmény biztosítása érdekében. Válassz a kategóriák közül, vagy fogadd el az összeset!</p>
+        <p>Ez a weboldal sütiket használ a legjobb élmény biztosítása érdekében.</p>
         
         <div class="details" id="details">
             <h4>Funkcionális sütik</h4>
             <p>Ezek a sütik szükségesek a weboldal alapvető funkcióinak biztosításához.</p>
-            
-            <h4>Analitikai sütik</h4>
-            <p>Ezek a sütik segítenek megérteni, hogyan használják a látogatók a weboldalt.</p>
-            
-            <h4>Marketing sütik</h4>
-            <p>Ezek a sütik segítenek személyre szabni a hirdetéseket, és nyomon követni a marketing hatékonyságát.</p>
         </div>
 
         <div class="cookie-buttons">

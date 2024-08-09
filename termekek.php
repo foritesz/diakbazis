@@ -16,6 +16,7 @@ if (empty($_GET['alkategoria']) && empty($_GET['menucategory'])) {
 session_start();
 include("Product.php");
 include("navbar.php");
+include("cookie.php");
 $product = new Product();
 $subcategories = $product->getMenucategory();
 $totalRecords = $product->getTotalProducts();

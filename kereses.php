@@ -15,6 +15,7 @@
 session_start();
 include("Product.php");
 include("navbar.php");
+include("cookie.php");
 $product = new Product();
 //$categories = $product->getCategories();
 $searchResults = $product->getSearchforIt();
