@@ -13,7 +13,7 @@ if (empty($_GET['alkategoria']) && empty($_GET['menucategory'])) {
     exit();
 }
 
-session_start();
+
 include("Product.php");
 include("navbar.php");
 include("cookie.php");
@@ -64,6 +64,10 @@ $ide = $product->getCategories();
             echo '</div>';
             echo '</form>';
         }
+
+        ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 ?>
 
     </div>
@@ -74,7 +78,7 @@ $ide = $product->getCategories();
 <div id="loadMoreContainer">
     <button id="loadMoreButton" style="display:none;">Load More</button>
 </div>
-
+<?php include("footer.php");?>
 <script>
 $(document).ready(function() {
     var totalRecord = 0;

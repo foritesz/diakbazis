@@ -3,127 +3,145 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cookie Felugró Ablak Kategóriákkal</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        .cookie-container {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            background-color: #333;
-            color: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            display: none; /* Alapértelmezés szerint elrejtve */
-            flex-direction: column;
-            justify-content: space-between;
-            z-index: 1000;
-        }
-
-        .cookie-container p {
-            margin: 0;
-            font-size: 16px;
-        }
-
-        .cookie-buttons {
-            display: flex;
-            justify-content: flex-end;
-            margin-top: 10px;
-        }
-
-        .cookie-btn, .details-btn {
-            background-color: #ff9900;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-left: 10px;
-        }
-
-        .details {
-            margin-top: 15px;
-            background-color: #444;
-            padding: 10px;
-            border-radius: 5px;
-            display: none;
-        }
-
-        .details h4 {
-            margin-top: 10px;
-            margin-bottom: 5px;
-            font-size: 18px;
-            color: #ffcc00;
-        }
-    </style>
+    <title>Papír-írószer bolt szolgáltatásai</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
+<style>
+ body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+header {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.services {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.service-box {
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.service-box:hover {
+    transform: translateY(-5px);
+}
+
+.service-box h2 {
+    color: #333;
+    font-size: 1.5rem;
+    margin-top: 0;
+}
+
+.service-box p {
+    color: #666;
+    line-height: 1.6;
+}
+
+footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 10px;
+    position: relative;
+    width: 100%;
+    bottom: 0;
+}
+
+footer p {
+    margin: 0;
+}
+
+@media (max-width: 600px) {
+    main {
+        padding: 10px;
+    }
+
+    .service-box {
+        padding: 10px;
+    }
+
+    .service-box h2 {
+        font-size: 1.2rem;
+    }
+}
+
+
+</style>
 <body>
+    <header>
+        <h1>Papír-írószer bolt szolgáltatásai</h1>
+    </header>
 
-    <div class="cookie-container" id="cookie-container">
-        <p>Ez a weboldal sütiket használ a legjobb élmény biztosítása érdekében. Válassz a kategóriák közül, vagy fogadd el az összeset!</p>
-        
-        <div class="details" id="details">
-            <h4>Funkcionális sütik</h4>
-            <p>Ezek a sütik szükségesek a weboldal alapvető funkcióinak biztosításához.</p>
-            
-            <h4>Analitikai sütik</h4>
-            <p>Ezek a sütik segítenek megérteni, hogyan használják a látogatók a weboldalt.</p>
-            
-            <h4>Marketing sütik</h4>
-            <p>Ezek a sütik segítenek személyre szabni a hirdetéseket, és nyomon követni a marketing hatékonyságát.</p>
-        </div>
+    <main>
+        <section class="services">
+            <div class="service-box">
+                <h2>Nyomtatási és fénymásolási szolgáltatások</h2>
+                <p>Fekete-fehér és színes nyomtatás, fénymásolás, poszterek és nagy formátumú nyomtatás.</p>
+            </div>
+            <div class="service-box">
+                <h2>Laminálás és spirálozás</h2>
+                <p>Dokumentumok laminálása, spirálkötés és könyvkötés, névjegykártyák készítése.</p>
+            </div>
+            <div class="service-box">
+                <h2>Egyedi bélyegzőkészítés</h2>
+                <p>Bélyegzők tervezése és gyártása személyre szabott szöveggel vagy logóval.</p>
+            </div>
+            <div class="service-box">
+                <h2>Grafikai tervezés és szerkesztés</h2>
+                <p>Névjegykártyák, szórólapok, meghívók, plakátok tervezése és szerkesztése.</p>
+            </div>
+            <div class="service-box">
+                <h2>Fotónyomtatás és fényképkidolgozás</h2>
+                <p>Digitális fotók nyomtatása különböző méretekben, fotókönyvek, vászonképek készítése.</p>
+            </div>
+            <div class="service-box">
+                <h2>Iskolai és irodai kellékek kölcsönzése</h2>
+                <p>Projektorok, prezentációs eszközök, flipchart táblák kölcsönzése.</p>
+            </div>
+            <div class="service-box">
+                <h2>Csomagolási szolgáltatások</h2>
+                <p>Ajándékok csomagolása, csomagolóanyagok értékesítése.</p>
+            </div>
+            <div class="service-box">
+                <h2>Postai szolgáltatások</h2>
+                <p>Postai levelek és csomagok feladása, postafiók bérlése.</p>
+            </div>
+            <div class="service-box">
+                <h2>Tanfolyamok és workshopok</h2>
+                <p>Kézműves foglalkozások, grafikai szoftver oktatása.</p>
+            </div>
+            <div class="service-box">
+                <h2>Üzleti ajándéktárgyak és promóciós anyagok gyártása</h2>
+                <p>Egyedi nyomtatású ajándéktárgyak, logóval ellátott promóciós termékek.</p>
+            </div>
+        </section>
+    </main>
 
-        <div class="cookie-buttons">
-            <button class="details-btn" onclick="toggleDetails()">Részletek</button>
-            <button class="cookie-btn" onclick="acceptCookies()">Elfogadom az összeset</button>
-        </div>
-    </div>
-
-    <script>
-
-        function displayCookieCategories() {
-            const categories = getCookieCategories();
-            const detailsDiv = document.getElementById('details');
-
-            for (const [category, cookies] of Object.entries(categories)) {
-                if (cookies.length > 0) {
-                    const categoryTitle = document.createElement('h4');
-                    categoryTitle.innerText = category;
-                    detailsDiv.appendChild(categoryTitle);
-
-                    const cookieList = document.createElement('p');
-                    cookieList.innerText = cookies.join(", ");
-                    detailsDiv.appendChild(cookieList);
-                }
-            }
-        }
-
-        function acceptCookies() {
-            document.getElementById('cookie-container').style.display = 'none';
-            localStorage.setItem('cookiesAccepted', 'true');
-        }
-
-        function toggleDetails() {
-            const details = document.getElementById('details');
-            details.style.display = details.style.display === 'none' ? 'block' : 'none';
-        }
-
-        window.onload = function() {
-            if (localStorage.getItem('cookiesAccepted')) {
-                document.getElementById('cookie-container').style.display = 'none';
-            } else {
-                document.getElementById('cookie-container').style.display = 'flex';
-                displayCookieCategories();
-            }
-        }
-    </script>
-
+    <footer>
+        <p>&copy; 2024 Papír-írószer bolt. Minden jog fenntartva.</p>
+    </footer>
 </body>
 </html>

@@ -1,5 +1,6 @@
 <?php
 @include 'config.php';
+
 if(isset($_POST['add_filter'])) {
    $menu_category = $_POST['menucategory'];
    $category_name = $_POST['category_name'];
@@ -10,13 +11,14 @@ if(isset($_POST['add_filter'])) {
    } else {
       $subcategoriesArray = explode(',', $subcategories);
       foreach($subcategoriesArray as $subcategory_name) {
-         $insert = "INSERT INTO categories (category_name, subcategory, menu_category) VALUES ('$category_name', ' $subcategories','$menu_category')";
+         $subcategory_name = trim($subcategory_name); // Trim whitespace from the subcategory name
+         $insert = "INSERT INTO categories (category_name, subcategory, menu_category) VALUES ('$category_name', '$subcategory_name', '$menu_category')";
          $upload = mysqli_query($conn, $insert);
       }
       if($upload) {
-         $message[] = 'New product added successfully';
+         $message[] = 'Új kategória sikeresen felvéve!';
       } else {
-         $message[] = 'Could not add the product'. mysqli_error($conn);
+         $message[] = 'Hiba a felvétel során! Error:'. mysqli_error($conn);
       }
    }
 }
@@ -24,13 +26,10 @@ if(isset($_POST['add_filter'])) {
 if(isset($_GET['delete'])) {
    $category_id = $_GET['delete'];
    mysqli_query($conn, "DELETE FROM categories WHERE category_id = $category_id");
-   header('Location: filter_page.php');
+   header('Location: dashboard.php?cat=product-crud&subcat=filter_page');
 }
-
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -73,10 +72,10 @@ if(isset($message)){
 <div class="container">
    <div class="admin-product-form-container">
       <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
-         <h3>add a new product</h3>
-         <label for="menucategory">Choose a category:</label>
+         <h3>Kategória felvétele</h3>
+         <label for="menucategory">Menü Kategória kiválasztása:</label>
          <select name="menucategory" id="menucategory" class="box" required>
-         <option value="">Select a category</option>
+         <option value="">Menü kategória</option>
             <option value="Papír-Írószer">Papír-Írószer</option>
             <option value="Kreatív">Kreatív</option>
             <option value="Játék">Játék</option>
@@ -88,12 +87,12 @@ if(isset($message)){
             <option value="Szezonáli">Szezonális</option>
             <option value="Ór">Óra</option>
             <option value="Szolgáltatás">Szolgáltatás</option>
-         <input type="text" placeholder="enter category name" name="category_name" class="box" required>
-         <input type="text" placeholder="enter subcategory name" id="subcategory_name" class="box">
-         <button type="button" onclick="addSubcategory()" class="btn">Add Subcategory</button>
+         <input type="text" placeholder="Kategoria neve" name="category_name" class="box" required>
+         <input type="text" placeholder="Alkategoria" id="subcategory_name" class="box">
+         <button type="button" onclick="addSubcategory()" class="btn">Alkategoria felvétele</button>
          <ul id="subcategory_list"></ul>
          <input type="hidden" name="subcategories" id="subcategories">
-         <input type="submit" class="btn" name="add_filter" value="add product">
+         <input type="submit" class="btn" name="add_filter" value="Kategória felvétele">
       </form>
    </div>
 

@@ -45,7 +45,7 @@
 <body>
     <div class="container">
         <h1>404 - Az oldal nem található</h1>
-        <p>A keresett oldal nem létezik. Kérjük, ellenőrizze az URL-t vagy térjen vissza a <a href="/">főoldalra</a>.</p>
+        <p>A keresett oldal nem létezik. Kérjük, ellenőrizze az URL-t vagy térjen vissza a <a href="../">főoldalra</a>.</p>
     </div>
 </body>
 </html>

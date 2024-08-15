@@ -16,12 +16,13 @@ $categories = $product->getCategories();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <title>Weboldal Kínézet</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <title>Admin oldla</title>
 
 <body class="loading">
   <div class="header">
           <div class="logo">
-              <h1>Logó</h1>
+              <h1>Admin Oldal</h1>
           </div>
           <div class="hamburger" onclick="toggleMenu()">
               <div></div>
@@ -71,20 +72,26 @@ $categories = $product->getCategories();
 
 $selectedCategory = 'Papír-Írószer';
 if (isset($menucategories[$selectedCategory])) {
+    $itemCount = 0;
     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-        echo' <div class="column">';
+        if ($itemCount % 4 == 0) {
+            // Close the previous column and start a new one after every 4 items
+            if ($itemCount > 0) {
+                echo '</div>'; // Close previous column
+            }
+            echo '<div class="column">'; // Start new column
+        }
         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-        foreach ($subcategories as $key => $subcategory ) {
+        foreach ($subcategories as $key => $subcategory) {
             $categoryEncoded = urlencode($selectedCategory);
             $subcategoryEncoded = urlencode($subcategory);
             $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-            } 
-        echo'</div>';
+        }
+        $itemCount++;
     }
+    echo '</div>'; 
 }
-
 ?>
                         </div>
                     </div>
@@ -102,20 +109,26 @@ if (isset($menucategories[$selectedCategory])) {
 
                                 $selectedCategory = 'Kreatív';
                                 if (isset($menucategories[$selectedCategory])) {
+                                    $itemCount = 0;
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        echo' <div class="column">';
+                                        if ($itemCount % 4 == 0) {
+                                            // Close the previous column and start a new one after every 4 items
+                                            if ($itemCount > 0) {
+                                                echo '</div>'; // Close previous column
+                                            }
+                                            echo '<div class="column">'; // Start new column
+                                        }
                                         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory ) {
+                                        foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "/backoffice/dashboard.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-                                            } 
-                                        echo'</div>';
+                                        }
+                                        $itemCount++;
                                     }
+                                    echo '</div>'; 
                                 }
-
 ?>
                         </div>
                     </div>
@@ -133,20 +146,26 @@ if (isset($menucategories[$selectedCategory])) {
 
                                 $selectedCategory = 'Játék';
                                 if (isset($menucategories[$selectedCategory])) {
+                                    $itemCount = 0;
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        echo' <div class="column">';
+                                        if ($itemCount % 4 == 0) {
+                                            // Close the previous column and start a new one after every 4 items
+                                            if ($itemCount > 0) {
+                                                echo '</div>'; // Close previous column
+                                            }
+                                            echo '<div class="column">'; // Start new column
+                                        }
                                         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory ) {
+                                        foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-                                            } 
-                                        echo'</div>';
+                                        }
+                                        $itemCount++;
                                     }
+                                    echo '</div>'; 
                                 }
-
 ?>
                         </div>
                     </div>
@@ -164,20 +183,26 @@ if (isset($menucategories[$selectedCategory])) {
 
                                 $selectedCategory = 'Ajándék';
                                 if (isset($menucategories[$selectedCategory])) {
+                                    $itemCount = 0;
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        echo' <div class="column">';
+                                        if ($itemCount % 4 == 0) {
+                                            // Close the previous column and start a new one after every 4 items
+                                            if ($itemCount > 0) {
+                                                echo '</div>'; // Close previous column
+                                            }
+                                            echo '<div class="column">'; // Start new column
+                                        }
                                         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory ) {
+                                        foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-                                            } 
-                                        echo'</div>';
+                                        }
+                                        $itemCount++;
                                     }
+                                    echo '</div>'; 
                                 }
-
 ?>
                         </div>
                     </div>
@@ -195,20 +220,26 @@ if (isset($menucategories[$selectedCategory])) {
 
                                 $selectedCategory = 'Könyv';
                                 if (isset($menucategories[$selectedCategory])) {
+                                    $itemCount = 0;
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        echo' <div class="column">';
+                                        if ($itemCount % 4 == 0) {
+                                            // Close the previous column and start a new one after every 4 items
+                                            if ($itemCount > 0) {
+                                                echo '</div>'; // Close previous column
+                                            }
+                                            echo '<div class="column">'; // Start new column
+                                        }
                                         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory ) {
+                                        foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-                                            } 
-                                        echo'</div>';
+                                        }
+                                        $itemCount++;
                                     }
+                                    echo '</div>'; 
                                 }
-
 ?>
                         </div>
                     </div>
@@ -226,20 +257,26 @@ if (isset($menucategories[$selectedCategory])) {
 
                                 $selectedCategory = 'Táska-Pénztárca';
                                 if (isset($menucategories[$selectedCategory])) {
+                                    $itemCount = 0;
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        echo' <div class="column">';
+                                        if ($itemCount % 4 == 0) {
+                                            // Close the previous column and start a new one after every 4 items
+                                            if ($itemCount > 0) {
+                                                echo '</div>'; // Close previous column
+                                            }
+                                            echo '<div class="column">'; // Start new column
+                                        }
                                         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory ) {
+                                        foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-                                            } 
-                                        echo'</div>';
+                                        }
+                                        $itemCount++;
                                     }
+                                    echo '</div>'; 
                                 }
-
 ?>
                         </div>
                     </div>
@@ -257,20 +294,26 @@ if (isset($menucategories[$selectedCategory])) {
 
                                 $selectedCategory = 'Cipő';
                                 if (isset($menucategories[$selectedCategory])) {
+                                    $itemCount = 0;
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        echo' <div class="column">';
+                                        if ($itemCount % 4 == 0) {
+                                            // Close the previous column and start a new one after every 4 items
+                                            if ($itemCount > 0) {
+                                                echo '</div>'; // Close previous column
+                                            }
+                                            echo '<div class="column">'; // Start new column
+                                        }
                                         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory ) {
+                                        foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-                                            } 
-                                        echo'</div>';
+                                        }
+                                        $itemCount++;
                                     }
+                                    echo '</div>'; 
                                 }
-
 ?>
                         </div>
                     </div>
@@ -288,20 +331,26 @@ if (isset($menucategories[$selectedCategory])) {
 
                                 $selectedCategory = 'Háztartási cikkek';
                                 if (isset($menucategories[$selectedCategory])) {
+                                    $itemCount = 0;
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        echo' <div class="column">';
+                                        if ($itemCount % 4 == 0) {
+                                            // Close the previous column and start a new one after every 4 items
+                                            if ($itemCount > 0) {
+                                                echo '</div>'; // Close previous column
+                                            }
+                                            echo '<div class="column">'; // Start new column
+                                        }
                                         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory ) {
+                                        foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-                                            } 
-                                        echo'</div>';
+                                        }
+                                        $itemCount++;
                                     }
+                                    echo '</div>'; 
                                 }
-
 ?>
                         </div>
                     </div>
@@ -319,20 +368,26 @@ if (isset($menucategories[$selectedCategory])) {
 
                                 $selectedCategory = 'Szezonális';
                                 if (isset($menucategories[$selectedCategory])) {
+                                    $itemCount = 0;
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        echo' <div class="column">';
+                                        if ($itemCount % 4 == 0) {
+                                            // Close the previous column and start a new one after every 4 items
+                                            if ($itemCount > 0) {
+                                                echo '</div>'; // Close previous column
+                                            }
+                                            echo '<div class="column">'; // Start new column
+                                        }
                                         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory ) {
+                                        foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-                                            } 
-                                        echo'</div>';
+                                        }
+                                        $itemCount++;
                                     }
+                                    echo '</div>'; 
                                 }
-
 ?>
                         </div>
                     </div>
@@ -350,20 +405,26 @@ if (isset($menucategories[$selectedCategory])) {
 
                                 $selectedCategory = 'Óra';
                                 if (isset($menucategories[$selectedCategory])) {
+                                    $itemCount = 0;
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        echo' <div class="column">';
+                                        if ($itemCount % 4 == 0) {
+                                            // Close the previous column and start a new one after every 4 items
+                                            if ($itemCount > 0) {
+                                                echo '</div>'; // Close previous column
+                                            }
+                                            echo '<div class="column">'; // Start new column
+                                        }
                                         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory ) {
+                                        foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-                                            } 
-                                        echo'</div>';
+                                        }
+                                        $itemCount++;
                                     }
+                                    echo '</div>'; 
                                 }
-
 ?>
                         </div>
                     </div>
@@ -381,20 +442,26 @@ if (isset($menucategories[$selectedCategory])) {
 
                                 $selectedCategory = 'Szolgáltatás';
                                 if (isset($menucategories[$selectedCategory])) {
+                                    $itemCount = 0;
                                     foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        echo' <div class="column">';
+                                        if ($itemCount % 4 == 0) {
+                                            // Close the previous column and start a new one after every 4 items
+                                            if ($itemCount > 0) {
+                                                echo '</div>'; // Close previous column
+                                            }
+                                            echo '<div class="column">'; // Start new column
+                                        }
                                         echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory ) {
+                                        foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "dashboard.php?cat=product-crud&subcat=admin_page&menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-
-                                            } 
-                                        echo'</div>';
+                                        }
+                                        $itemCount++;
                                     }
+                                    echo '</div>'; 
                                 }
-
 ?>
                         </div>
                     </div>
@@ -411,7 +478,7 @@ if (isset($menucategories[$selectedCategory])) {
         <div class="container-fluid">
             <ul class="custom-navbar-nav">
                 <li class="nav-item">
-                    <a class="custom-nav-link" href="dashboard.php"><i class='fa fa-home'></i> Dashboard</a>
+                    <a class="custom-nav-link" href="dashboard.php"><i class='fa fa-home'></i>Kezdőlap</a>
                 </li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle custom-nav-link" href="#" onclick="toggleDropdown(event)">
@@ -456,15 +523,16 @@ if (isset($menucategories[$selectedCategory])) {
                 <div class="dropdown-divider"></div>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle custom-nav-link" href="#" onclick="toggleDropdown(event)">
-                        <i class='fa fa-user-cog'></i> Website Admin
+                        <i class='fa fa-user-cog'></i> Felhasználók
                     </a>
                     <div class="custom-dropdown-content">
                         <a href="dashboard.php?cat=website-admin&subcat=admin-profile">Admin Profile</a>
                         <a href="dashboard.php?cat=website-admin&subcat=change-password">Change Password</a>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <button class="logout-button" onclick="logout()">Kijelentkezés</button>
+                <li class="nav-item" style="margin-top:15px;">
+                <a class="nav-link " href="logout.php" title="Kijelentkezés"><i class='fas fa-sign-out-alt'></i>
+            </a>
                 </li>
             </ul>
         </div>

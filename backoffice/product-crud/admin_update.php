@@ -126,7 +126,6 @@ input[type="checkbox"] {
 
 </style>
 <?php
-
 @include 'config.php';
 
 $menucategory = isset($_GET['menucategory']) ? $_GET['menucategory'] : '';
@@ -143,10 +142,20 @@ if (isset($_POST['update_product'])) {
     $product_image = $_FILES['product_image']['name'];
     $product_image_tmp_name = $_FILES['product_image']['tmp_name'];
     $product_image_folder = 'uploaded_img/' . $product_image;
-    $category_name = $_POST['category_name'];
     $subcategory = $_POST['subcategory'];
 
-    // Initialize the update query
+    // Fetch current product details along with category_name
+    $select = mysqli_query($conn, "
+        SELECT p.*, c.category_name 
+        FROM products p
+        LEFT JOIN categories c ON p.subcategory = c.subcategory
+        WHERE p.id = '$id'
+    ");
+    
+    $current_product = mysqli_fetch_assoc($select);
+    $original_category_name = $current_product['category_name']; // Now it should be available
+
+    // Initialize the update query for products table
     $update_data = "UPDATE products SET ";
 
     // Add fields to update only if they are not empty
@@ -162,12 +171,11 @@ if (isset($_POST['update_product'])) {
     }
     $update_fields[] = "visible_product='$visible_product'";
     $update_fields[] = "seasonal='$seasonal'";
+
     if (!empty($product_image)) {
         $update_fields[] = "kepek='$product_image'";
-    }/*
-    if (!empty($category_name)) {
-        $update_fields[] = "category_name='$category_name'";
-    }*/
+    }
+
     if (!empty($subcategory)) {
         $update_fields[] = "subcategory='$subcategory'";
     }
@@ -183,6 +191,30 @@ if (isset($_POST['update_product'])) {
                 move_uploaded_file($product_image_tmp_name, $product_image_folder);
             }
             $message[] = 'Product updated successfully!';
+
+            if ($seasonal) {
+                // Add the product to the "Szezonális" menu category
+                $check_szezonalis = mysqli_query($conn, "SELECT * FROM categories WHERE subcategory='$subcategory' AND menu_category='Szezonális'");
+
+                if (mysqli_num_rows($check_szezonalis) == 0) {
+                    // Insert new row with 'Szezonális' as menu_category
+                    $insert_szezonalis = "INSERT INTO categories (menu_category, category_name, subcategory) 
+                                          SELECT 'Szezonális', '$original_category_name', '$subcategory' 
+                                          FROM categories 
+                                          WHERE subcategory='$subcategory' LIMIT 1";
+                    mysqli_query($conn, $insert_szezonalis);
+                }
+            } else {
+                // Remove the product from the "Szezonális" menu category
+                // Check if any other products are linked to this subcategory under 'Szezonális'
+                $check_other_products = mysqli_query($conn, "SELECT * FROM products WHERE subcategory='$subcategory' AND seasonal=1");
+
+                if (mysqli_num_rows($check_other_products) == 0) {
+                    // Delete the 'Szezonális' category if no other products are linked to it
+                    $delete_szezonalis = "DELETE FROM categories WHERE subcategory='$subcategory' AND menu_category='Szezonális'";
+                    mysqli_query($conn, $delete_szezonalis);
+                }
+            }
         } else {
             $message[] = 'Could not update the product. Please try again.' . mysqli_error($conn);
         }
@@ -190,8 +222,8 @@ if (isset($_POST['update_product'])) {
         $message[] = 'No fields to update.';
     }
 }
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -221,37 +253,36 @@ if (isset($message)) {
     ?>
 
 <form action="" method="post" enctype="multipart/form-data">
-    <h3 class="title">Update the Product</h3>
+    <h3 class="title">Termék frissitése</h3>
     
-    <label for="product_name">Product Name</label>
+    <label for="product_name">Termék neve</label>
     <input type="text" class="box" id="product_name" name="product_name" value="<?php echo $row['product_name']; ?>" placeholder="Enter the product name">
     
-    <label for="product_price">Product Price</label>
+    <label for="product_price">Termék ára</label>
     <input type="number" min="0" class="box" id="product_price" name="product_price" value="<?php echo $row['price']; ?>" placeholder="Enter the product price">
     
-    <label for="product_leiras">Product Description</label>
-    <textarea class="box" id="product_leiras" name="product_leiras" placeholder="Enter the product description"><?php echo $row['leiras']; ?></textarea>
+    <label for="product_leiras">Termék leírása</label>
+    <textarea class="box" id="product_leiras" name="product_leiras" placeholder="Termék leírása"><?php echo $row['leiras']; ?></textarea>
     
     <div>
         <input type="checkbox" id="visible_product" name="visible_product" <?php echo $row['visible_product'] ? 'checked' : ''; ?>>
-        <label for="visible_product">Visible</label>
+        <label for="visible_product">Látható</label>
     </div>
     
     <div>
         <input type="checkbox" id="seasonal" name="seasonal" <?php echo $row['seasonal'] ? 'checked' : ''; ?>>
-        <label for="seasonal">Seasonal</label>
+        <label for="seasonal">Szezonális</label>
     </div>
     
-    <label for="product_image">Product Image</label>
+    <label for="product_image">Termék kép</label>
     <input type="file" class="box" id="product_image" name="product_image" accept="image/png, image/jpeg, image/jpg">
     
-    <label for="subcategory">Subcategory</label>
+    <label for="subcategory">Alkategóriák</label>
     <input type="text" class="box" id="subcategory" name="subcategory" value="<?php echo $row['subcategory']; ?>" placeholder="Enter the subcategory">
     
     <input type="submit" value="Update Product" name="update_product" class="btn">
     <a href="dashboard.php?cat=product-crud&subcat=admin_page&menucategory=<?php echo urlencode($menucategory); ?>&alkategoria=<?php echo urlencode($alkategoria); ?>" class="btn">Go Back!</a>
 </form>
-
 
     <?php } ?>
 
@@ -260,3 +291,8 @@ if (isset($message)) {
 
 </body>
 </html>
+
+
+
+
+

@@ -2,6 +2,8 @@
 class Product{
 	private $search;
 	private $receivedMenuCategory;
+	private $menucategory;
+	private $alkategoria;
 	private $host  = 'localhost';
     private $user  = 'root';
     private $password   = "12345678";
@@ -18,6 +20,8 @@ class Product{
 		// Assign session values to class properties
 		$this->search = isset($_SESSION['kereset']) ? $_SESSION['kereset'] : '';
 		$this->receivedMenuCategory = isset($_SESSION['selectedMenuCategory']) ? $_SESSION['selectedMenuCategory'] : '';
+		$this->menucategory = isset($_SESSION['menucategory']) ? $_SESSION['menucategory'] : ''; // Fixed here
+		$this->alkategoria = isset($_SESSION['alkategoria']) ? $_SESSION['alkategoria'] : '';
 	
 		// Check if the database connection is not established
 		if(!$this->dbConnect){ 
@@ -89,7 +93,7 @@ class Product{
 				$subcategories[$categoryName][] = $subcategory;
 			}
 		} else {
-			echo "Nincsenek eredmények.";
+			//echo "Nincsenek eredmények.";
 		}
 	
 		return $subcategories;
@@ -120,7 +124,7 @@ class Product{
 				$subcategories[$menuCategory][$categoryName][] = $subcategory;
 			}
 		} else {
-			echo "Nincsenek eredmények.";
+			//echo "Nincsenek eredmények.";
 		}
 		return $subcategories;
 	}
@@ -225,7 +229,7 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
             INNER JOIN " . $this->categoryTable . " 
             ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
 
-    $conditions = ["{$this->productTable}.visible_product = 1"];
+    $conditions = [];
 
     if (!empty($this->receivedMenuCategory)) {
         $conditions[] = $this->categoryTable . ".menu_category = '" . $this->receivedMenuCategory . "'";
@@ -245,32 +249,33 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
         $sql .= " WHERE " . implode(' AND ', $conditions);
     }
 
-    if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
-        $sql .= " AND " . $this->productTable . ".product_name LIKE '%" . $_SESSION['kereset'] . "%'";
-    }
+	if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
+		$sql .= " AND " . $this->productTable . ".product_name LIKE '%" . $this->search . "%'";
+		
+	}
 
     $sql .= " LIMIT $start, $productPerPage";
 
     $products = $this->getData($sql);
     $productHTML = '';
-
+	
 	if (!empty($products)) {
         foreach ($products as $product) {
             $productHTML .= '<div class="product-card">';
             $productHTML .= '<div class="image-container skeleton">';
-            $productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
+			$productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
             $productHTML .= '</div>';
             $productHTML .= '<div class="zoom-window" id="zoomWindow">';
             $productHTML .= '<img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
             $productHTML .= '</div>';
-            $productHTML .= '<div class="product-details skeleton">';
+            $productHTML .= '<div class="product-details">';
             $productHTML .= '<h3>' . $product['product_name'] . '</h3>';
             $productHTML .= '<p>' . $product['leiras'] . '</p>';
 
-            // Check if the price is not null
-            if ($product['price'] !== null) {
-                $productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
-            }
+
+			if ($product['price'] != 0) {
+				$productHTML .= '<p>' . $product['price'] . ' Ft</p>';
+			}
 
             $productHTML .= '</div>';
             $productHTML .= '</div>';
@@ -322,27 +327,36 @@ public function getProductsForAdmin($page = 0, $subcategory = [], $search = '') 
     $productHTML = '';
 
 	if (!empty($products)) {
-        foreach ($products as $product) {
-            $productHTML .= '<div class="product-card">';
-            $productHTML .= '<div class="image-container skeleton">';
-            $productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
-            $productHTML .= '</div>';
-            $productHTML .= '<div class="zoom-window" id="zoomWindow">';
-            $productHTML .= '<img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
-            $productHTML .= '</div>';
-            $productHTML .= '<div class="product-details skeleton">';
-            $productHTML .= '<h3>' . $product['product_name'] . '</h3>';
-            $productHTML .= '<p>' . $product['leiras'] . '</p>';
-
-            // Check if the price is not null
-            if ($product['price'] !== null) {
-                $productHTML .= '<p>Ár: $' . $product['price'] . '</p>';
-            }
-
-            $productHTML .= '</div>';
-            $productHTML .= '</div>';
-        }
-    }
+		foreach ($products as $product) {
+			$productHTML .= '<div class="product-card">';
+			$productHTML .= '<div class="image-container skeleton">';
+			$productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
+			$productHTML .= '</div>';
+			$productHTML .= '<div class="zoom-window" id="zoomWindow">';
+			$productHTML .= '<img src="../images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
+			$productHTML .= '</div>';
+			$productHTML .= '<div class="product-details">';
+			$productHTML .= '<h3>' . $product['product_name'] . '</h3>';
+			$productHTML .= '<p>' . $product['leiras'] . '</p>';
+			
+			// Check if the price is not null
+			if ($product['price'] != 0) {
+				$productHTML .= '<p>' . $product['price'] . ' Ft</p>';
+			}
+			$productHTML .= '</div>';
+			$productHTML .= '<div class="actions">';
+			$productHTML .= '<div class="checkbox-container">';
+			$productHTML .= '</div>';
+			$productHTML .= '<div class="buttons">';
+			$productHTML .= '<a href="dashboard.php?cat=product-crud&subcat=admin_update&edit=' . $product['id'] . '&menucategory=' . urlencode($this->menucategory) . '&alkategoria=' . urlencode($this->alkategoria) . '" class="modify-btn"> <i class="fas fa-edit"></i> Módosítás </a>';
+			$productHTML .= '<a href="dashboard.php?cat=product-crud&subcat=admin_page&delete=' . $product['id'] . '" class="delete-btn"> <i class="fas fa-trash"></i> Törlés </a>';
+			$productHTML .= '</div>';
+			$productHTML .= '</div>';
+			$productHTML .= '</div>';
+			
+		}
+	}
+	
 
     return $productHTML;
 }	

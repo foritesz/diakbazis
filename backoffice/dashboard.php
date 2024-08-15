@@ -16,6 +16,8 @@ if(empty($email_address))
           
           include('scripts/multilevel-script.php');
         }
+
+
 ?>
 
 <!DOCTYPE html>
@@ -76,6 +78,8 @@ if($sub[0]=='add')
          ?> 
           <!-- dynamic page content-->
           <?php
+$menucategory = isset($_SESSION['menucategory']) ? $_SESSION['menucategory'] : ''; 
+$alkategoria = isset($_SESSION['alkategoria']) ? $_SESSION['alkategoria'] : '';
      ?>
         </div>
         

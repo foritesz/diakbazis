@@ -1,18 +1,14 @@
 <?php
-
-// kereses.php
-
-// Ellenőrizzük a keresés paramétert
-/*if (!isset($_GET['kereses']) || empty($_GET['kereses'])) {
+if (!isset($_GET['kereses']) || empty($_GET['kereses'])) {
     http_response_code(404);
     include('404.php');
     exit();
-}*/
+}
 
 // Itt jön a további kód a keresési eredmények megjelenítéséhez
 
 
-session_start();
+
 include("Product.php");
 include("navbar.php");
 include("cookie.php");
@@ -81,6 +77,7 @@ $ide=$product->getSearchforIt();
     <button id="loadMoreButton" style="display:none;">Load More</button>
 </div>
 
+<?php include("footer.php");?>
 <script>
 
 </script>

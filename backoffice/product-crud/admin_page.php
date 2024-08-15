@@ -30,9 +30,9 @@ function resizeImage($source_image, $destination, $width, $height) {
 }
 
 if (isset($_POST['add_product'])) {
-    $category_name = $_POST['category_name'];
-    $subcategory = $_POST['subcategory'];
-    $product_name = $_POST['product_name'];
+    $category_name = trim($_POST['category_name']);  // Szóközök eltávolítása
+    $subcategory = trim($_POST['subcategory']);
+    $product_name = trim($_POST['product_name']);
     $product_price = $_POST['product_price'];
     $visible_product = isset($_POST['visible_product']) ? 1 : 0;
     $seasonal = isset($_POST['seasonal']) ? 1 : 0;
@@ -50,12 +50,12 @@ if (isset($_POST['add_product'])) {
 
         if ($upload) {
             if (resizeImage($product_image_tmp_name, $product_image_folder, 600, 600)) {
-                $message[] = 'New product added successfully.';
+                $message[] = 'Új termék felvéve!';
             } else {
-                $message[] = 'Could not resize and upload the product image.';
+                $message[] = 'Hiba a kép feltöltése során.';
             }
         } else {
-            $message[] = 'Could not add the product. Error: ' . mysqli_error($conn);
+            $message[] = 'Hiba a felvétel során! Error: ' . mysqli_error($conn);
         }
     }
 }
@@ -94,7 +94,7 @@ if (isset($message)) {
 <div class="admin-product-form-container">
 
 <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post" enctype="multipart/form-data">
-<h3>add a new product</h3>
+<h3>Termék felvétele</h3>
    <select name="category_name" id="category_name" class="box">
       <option value="" selected="selected">Fő kategória</option>
       <?php while ($row = mysqli_fetch_assoc($categories_result)) { ?>
@@ -107,62 +107,24 @@ if (isset($message)) {
          <option value="<?php echo $row['subcategory']; ?>" data-category="<?php echo $row['category_name']; ?>"><?php echo $row['subcategory']; ?></option>
       <?php } ?>
    </select>
-   <input type="text" placeholder="enter product name" name="product_name" class="box">
-   <textarea class="box" id="product_leiras" name="product_leiras" placeholder="Enter the product description"><?php echo $row['leiras']; ?></textarea>
-   <input type="number" placeholder="enter product price" name="product_price" class="box">
+   <input type="text" placeholder="Termék neve" name="product_name" class="box">
+   <textarea class="box" id="product_leiras" name="product_leiras" placeholder="Termék leírása"><?php echo $row['leiras']; ?></textarea>
+   <input type="number" placeholder="Termék ára" name="product_price" class="box">
    <input type="file" accept="image/png, image/jpeg, image/jpg" name="product_image" class="box">
    <div>
        <input type="checkbox" name="visible_product" id="visible_product">
-       <label for="visible_product">Visible</label>
+       <label for="visible_product">Elrejtés</label>
    </div>
    <div>
        <input type="checkbox" name="seasonal" id="seasonal">
-       <label for="seasonal">Seasonal</label>
+       <label for="seasonal">Szezonális</label>
    </div>
-   <input type="submit" class="btn" name="add_product" value="add product">
+   <input type="submit" class="btn" name="add_product" value="Termék felvétele">
 </form>
 
 </div>
 
-   <?php
-   $select = mysqli_query($conn, "SELECT * FROM products");
-   ?>
-   <div class="product-display">
-      <table class="product-display-table">
-         <thead>
-         <tr>
-            <th>product image</th>
-            <th>product name</th>
-            <th>product price</th>
-            <th>visible</th>
-            <th>seasonal</th>
-            <th>action</th>
-         </tr>
-         </thead>
-         <?php while ($row = mysqli_fetch_assoc($select)) { ?>
-            <tr>
-    <td><img src="uploaded_img/<?php echo $row['kepek']; ?>" height="100" alt=""></td>
-    <td><?php echo $row['product_name']; ?></td>
-    <td>$<?php echo $row['price']; ?>/-</td>
-    <td><?php echo $row['visible_product'] ? 'Yes' : 'No'; ?></td>
-    <td><?php echo $row['seasonal'] ? 'Yes' : 'No'; ?></td>
-    <td>
-       <?php
-       $menucategory = isset($_GET['menucategory']) ? $_GET['menucategory'] : '';
-       $alkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
-       ?>
-       <a href="dashboard.php?cat=product-crud&subcat=admin_update&edit=<?php echo $row['id']; ?>&menucategory=<?php echo urlencode($menucategory); ?>&alkategoria=<?php echo urlencode($alkategoria); ?>" class="btn"> <i class="fas fa-edit"></i> edit </a>
-       <a href="dashboard.php?cat=product-crud&subcat=admin_page&delete=<?php echo $row['id']; ?>" class="btn"> <i class="fas fa-trash"></i> delete </a>
-    </td>
-</tr>
-<?php } ?>
-      </table>
-   </div>
-
-</div>
-
-</body>
-</html>
+  
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
