@@ -75,7 +75,7 @@ input[type="checkbox"] {
 /* Style the submit button */
 .btn {
     display: inline-block;
-    background-color: #5cb85c;
+    background-color: #007bff;
     color: #fff;
     padding: 10px 20px;
     text-align: center;
@@ -90,13 +90,13 @@ input[type="checkbox"] {
 
 /* Hover effect for buttons */
 .btn:hover {
-    background-color: #4cae4c;
+    background-color: #00007bff;
 }
 
 /* Message styling */
 .message {
     display: block;
-    background-color: #5cb85c;
+    background-color: #007bff;
     color: #fff;
     padding: 10px;
     margin-bottom: 15px;
@@ -129,33 +129,57 @@ input[type="checkbox"] {
 @include 'config.php';
 
 $menucategory = isset($_GET['menucategory']) ? $_GET['menucategory'] : '';
+$_SESSION['menucategory']=$menucategory;
 $alkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
+$_SESSION['alkategoria']=$alkategoria ;
+
+// Include the resizeImage function
+function resizeImage($source_image, $destination, $width, $height) {
+    list($source_width, $source_height, $source_type) = getimagesize($source_image);
+    switch ($source_type) {
+        case IMAGETYPE_GIF:
+            $source_gd_image = imagecreatefromgif($source_image);
+            break;
+        case IMAGETYPE_JPEG:
+            $source_gd_image = imagecreatefromjpeg($source_image);
+            break;
+        case IMAGETYPE_PNG:
+            $source_gd_image = imagecreatefrompng($source_image);
+            break;
+        default:
+            return false;
+    }
+    if ($source_gd_image === false) {
+        return false;
+    }
+    $destination_gd_image = imagecreatetruecolor($width, $height);
+    imagecopyresampled($destination_gd_image, $source_gd_image, 0, 0, 0, 0, $width, $height, $source_width, $source_height);
+    // Ensure the directory exists and is writable
+    if (!is_dir(dirname($destination))) {
+        mkdir(dirname($destination), 0755, true);
+    }
+    if (imagejpeg($destination_gd_image, $destination, 90) === false) {
+        return false;
+    }
+    imagedestroy($source_gd_image);
+    imagedestroy($destination_gd_image);
+    return true;
+}
 
 $id = $_GET['edit'];
 
 if (isset($_POST['update_product'])) {
-    $product_name = $_POST['product_name'];
-    $product_price = $_POST['product_price'];
-    $product_leiras = $_POST['product_leiras'];
+    $product_name = $_POST['product_name'] ?? '';
+    $product_price = $_POST['product_price'] ?? '';
+    $product_leiras = $_POST['product_leiras'] ?? '';
     $visible_product = isset($_POST['visible_product']) ? 1 : 0;
     $seasonal = isset($_POST['seasonal']) ? 1 : 0;
     $product_image = $_FILES['product_image']['name'];
-    $product_image_tmp_name = $_FILES['product_image']['tmp_name'];
-    $product_image_folder = 'uploaded_img/' . $product_image;
-    $subcategory = $_POST['subcategory'];
+    $product_image_tmp_name = $_FILES['product_image']['tmp_name'] ;
+    $category_name = $_POST['category_name'] ?? '';  // Check if it's set
+    $subcategory = $_POST['subcategory'] ?? '';
 
-    // Fetch current product details along with category_name
-    $select = mysqli_query($conn, "
-        SELECT p.*, c.category_name 
-        FROM products p
-        LEFT JOIN categories c ON p.subcategory = c.subcategory
-        WHERE p.id = '$id'
-    ");
-    
-    $current_product = mysqli_fetch_assoc($select);
-    $original_category_name = $current_product['category_name']; // Now it should be available
-
-    // Initialize the update query for products table
+    // Initialize the update query
     $update_data = "UPDATE products SET ";
 
     // Add fields to update only if they are not empty
@@ -173,7 +197,15 @@ if (isset($_POST['update_product'])) {
     $update_fields[] = "seasonal='$seasonal'";
 
     if (!empty($product_image)) {
-        $update_fields[] = "kepek='$product_image'";
+        $new_image_name = uniqid() . '.jpg';
+        $product_image_folder = '../images/' . $new_image_name;
+ 
+        // Resize and save the image
+        if (resizeImage($product_image_tmp_name, $product_image_folder, 600, 600)) {
+            // Image resized and saved successfully
+        } else {
+            $message[] = 'Error resizing the image.';
+        }
     }
 
     if (!empty($subcategory)) {
@@ -187,43 +219,15 @@ if (isset($_POST['update_product'])) {
         $upload = mysqli_query($conn, $update_data);
 
         if ($upload) {
-            if (!empty($product_image)) {
-                move_uploaded_file($product_image_tmp_name, $product_image_folder);
-            }
             $message[] = 'Product updated successfully!';
-
-            if ($seasonal) {
-                // Add the product to the "Szezonális" menu category
-                $check_szezonalis = mysqli_query($conn, "SELECT * FROM categories WHERE subcategory='$subcategory' AND menu_category='Szezonális'");
-
-                if (mysqli_num_rows($check_szezonalis) == 0) {
-                    // Insert new row with 'Szezonális' as menu_category
-                    $insert_szezonalis = "INSERT INTO categories (menu_category, category_name, subcategory) 
-                                          SELECT 'Szezonális', '$original_category_name', '$subcategory' 
-                                          FROM categories 
-                                          WHERE subcategory='$subcategory' LIMIT 1";
-                    mysqli_query($conn, $insert_szezonalis);
-                }
-            } else {
-                // Remove the product from the "Szezonális" menu category
-                // Check if any other products are linked to this subcategory under 'Szezonális'
-                $check_other_products = mysqli_query($conn, "SELECT * FROM products WHERE subcategory='$subcategory' AND seasonal=1");
-
-                if (mysqli_num_rows($check_other_products) == 0) {
-                    // Delete the 'Szezonális' category if no other products are linked to it
-                    $delete_szezonalis = "DELETE FROM categories WHERE subcategory='$subcategory' AND menu_category='Szezonális'";
-                    mysqli_query($conn, $delete_szezonalis);
-                }
-            }
         } else {
-            $message[] = 'Could not update the product. Please try again.' . mysqli_error($conn);
+            $message[] = 'Could not update the product. Please try again. ' . mysqli_error($conn);
         }
     } else {
         $message[] = 'No fields to update.';
     }
 }
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -253,35 +257,45 @@ if (isset($message)) {
     ?>
 
 <form action="" method="post" enctype="multipart/form-data">
-    <h3 class="title">Termék frissitése</h3>
+    <h3 class="title">Termék Módosítása</h3>
     
-    <label for="product_name">Termék neve</label>
-    <input type="text" class="box" id="product_name" name="product_name" value="<?php echo $row['product_name']; ?>" placeholder="Enter the product name">
+    <label for="product_name">Név</label>
+    <input type="text" class="box" id="product_name" name="product_name" value="<?php echo htmlspecialchars($row['product_name']); ?>" placeholder="Enter the product name">
     
-    <label for="product_price">Termék ára</label>
-    <input type="number" min="0" class="box" id="product_price" name="product_price" value="<?php echo $row['price']; ?>" placeholder="Enter the product price">
+    <label for="product_price">Ár</label>
+    <input type="number" min="0" class="box" id="product_price" name="product_price" value="<?php echo htmlspecialchars($row['price']); ?>" placeholder="Enter the product price">
     
-    <label for="product_leiras">Termék leírása</label>
-    <textarea class="box" id="product_leiras" name="product_leiras" placeholder="Termék leírása"><?php echo $row['leiras']; ?></textarea>
+    <label for="product_leiras">Leírás</label>
+    <textarea class="box" id="product_leiras" name="product_leiras" placeholder="Enter the product description"><?php echo htmlspecialchars($row['leiras']); ?></textarea>
     
     <div>
         <input type="checkbox" id="visible_product" name="visible_product" <?php echo $row['visible_product'] ? 'checked' : ''; ?>>
-        <label for="visible_product">Látható</label>
+        <label for="visible_product">Elrejtés</label>
     </div>
     
     <div>
-        <input type="checkbox" id="seasonal" name="seasonal" <?php echo $row['seasonal'] ? 'checked' : ''; ?>>
-        <label for="seasonal">Szezonális</label>
+        <input type="checkbox" id="seasonal" name="seasonal" <?php echo $row['seasonal'] ? 'checked' : ''; ?> disabled>
+        <label for="seasonal">Seasonal</label>
     </div>
     
-    <label for="product_image">Termék kép</label>
+    <label for="product_image">Kép</label>
     <input type="file" class="box" id="product_image" name="product_image" accept="image/png, image/jpeg, image/jpg">
     
-    <label for="subcategory">Alkategóriák</label>
-    <input type="text" class="box" id="subcategory" name="subcategory" value="<?php echo $row['subcategory']; ?>" placeholder="Enter the subcategory">
+    <label for="subcategory">Alkategória</label>
+    <select name="subcategory" class="box">
+        <option value="<?php echo $row['subcategory']; ?>" selected="selected"><?php echo $row['subcategory']; ?></option>
+        <?php
+        $subcategories_query = mysqli_query($conn, "SELECT DISTINCT subcategory FROM categories");
+        while ($subcategory_row = mysqli_fetch_assoc($subcategories_query)) {
+            if ($subcategory_row['subcategory'] !== $row['subcategory']) {
+                echo '<option value="'.$subcategory_row['subcategory'].'">'.$subcategory_row['subcategory'].'</option>';
+            }
+        }
+        ?>
+    </select>
     
-    <input type="submit" value="Update Product" name="update_product" class="btn">
-    <a href="dashboard.php?cat=product-crud&subcat=admin_page&menucategory=<?php echo urlencode($menucategory); ?>&alkategoria=<?php echo urlencode($alkategoria); ?>" class="btn">Go Back!</a>
+    <input type="submit" value="Módosítás" name="update_product" class="btn">
+    <a href="dashboard.php?cat=product-crud&subcat=admin_page&menucategory=<?php echo urlencode($menucategory); ?>&alkategoria=<?php echo urlencode($alkategoria); ?>" class="btn">Vissza</a>
 </form>
 
     <?php } ?>

@@ -468,11 +468,8 @@ main {
 }
 
 /* Hide content while loading */
-.loading .product-card img,
-.loading .subcategory,
-.loading .product-details,
-.loading .dropdown-menu option,
-.loading .dropdown-content a{
+.loading .product-card img
+{
   visibility: hidden;
 }
 

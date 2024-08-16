@@ -76,7 +76,7 @@
 
         <div class="cookie-buttons">
             <button class="details-btn" onclick="toggleDetails()">Részletek</button>
-            <button class="cookie-btn" onclick="acceptCookies()">Elfogadom az összeset</button>
+            <button class="cookie-btn" onclick="acceptCookies()">Rendben</button>
         </div>
     </div>
 

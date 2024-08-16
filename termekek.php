@@ -48,7 +48,7 @@ $ide = $product->getCategories();
 
             foreach ($subcategories[$selectedMenuCategory] as $categoryName => $subcategories) {
                 echo '<h3 onclick="toggleCategory(\'' . $product->cleanString($categoryName) . '\')">' . ucfirst($categoryName) . '</h3>';
-                echo '<div class="subcategory skeleton" id="' . $product->cleanString($categoryName) . '">';
+                echo '<div class="subcategory" id="' . $product->cleanString($categoryName) . '">';
 
                 foreach ($subcategories as $key => $subcategory) {
                     $isSubcategoryChecked = (isset($_POST['subcategory']) && in_array($product->cleanString($subcategory), $_POST['subcategory']));
@@ -78,62 +78,9 @@ error_reporting(E_ALL);
 <div id="loadMoreContainer">
     <button id="loadMoreButton" style="display:none;">Load More</button>
 </div>
-<?php include("footer.php");?>
+<?php include("footer.php"); session_destroy();?>
 <script>
-$(document).ready(function() {
-    var totalRecord = 0;
-    var totalData = $("#totalRecords").val();
-    var loading = false;
 
-    function loadProducts() {
-        var subcategory = getCheckboxValues('subcategory');
-        var search = $("#myInput").val();
-
-        $.ajax({
-            type: 'POST',
-            url: "load_products.php",
-            dataType: "json",
-            data: {
-                totalRecord: totalRecord,
-                subcategory: subcategory,
-                search: search
-            },
-            beforeSend: function() {
-                $("#loadMoreButton").text("Loading...").prop("disabled", true);
-            },
-            success: function(data) {
-                $("#results").append(data.products);
-                $(".skeleton").removeClass("skeleton"); // Remove the skeleton class
-                totalRecord++;
-                loading = false;
-                if (totalRecord >= totalData) {
-                    $("#loadMoreButton").hide();
-                } else {
-                    $("#loadMoreButton").show().text("Load More").prop("disabled", false);
-                }
-            },
-            error: function() {
-                $("#loadMoreButton").text("Load More").prop("disabled", false);
-            }
-        });
-    }
-
-    $('#searchForm').submit(function(e) {
-        e.preventDefault();
-
-        totalRecord = 0;
-        $("#results").empty();
-        loadProducts();
-    });
-
-    $("#loadMoreButton").click(function() {
-        if (!loading && totalRecord < totalData) {
-            loading = true;
-            loadProducts();
-        }
-    });
-
-    loadProducts();
 
     function getCheckboxValues(checkboxClass) {
         var values = [];
@@ -147,7 +94,7 @@ $(document).ready(function() {
         $("#search_form").submit();
         return false;
     });
-});
+
 </script>
 
 <script src="filter.js"></script>

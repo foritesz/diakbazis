@@ -199,32 +199,113 @@ class Product{
 	
 	
 
+// Fetch total products for pagination
 public function getTotalProducts() {
-	$sql = "SELECT DISTINCT id FROM " . $this->productTable . "
-	INNER JOIN " . $this->categoryTable . " 
-	ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
-	
-	if(isset($_POST['subcategory']) && !empty($_POST['subcategory'])) {            
-		$sql .= " AND " . $this->categoryTable . ".subcategory IN ('" . implode("','", array_map([$this->dbConnect, 'real_escape_string'], $_POST['subcategory'])) . "')";
-	}
+    $sql = "SELECT DISTINCT " . $this->productTable . ".id 
+            FROM " . $this->productTable . "
+            INNER JOIN " . $this->categoryTable . " 
+            ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
+    
+    $conditions = [];
+    
+    // Check for subcategory filter
+    if (isset($_POST['subcategory']) && !empty($_POST['subcategory'])) {
+        $subcategory = array_map([$this->dbConnect, 'real_escape_string'], $_POST['subcategory']);
+        $conditions[] = $this->categoryTable . ".subcategory IN ('" . implode("','", $subcategory) . "')";
+    }
 
-	$result = $this->dbConnect->query($sql);
-	if (!$result) {
-		die('Invalid query: ' . $this->dbConnect->error);
-	}
+    // Append conditions to SQL query
+    if (!empty($conditions)) {
+        $sql .= " WHERE " . implode(' AND ', $conditions);
+    }
+    
+    $result = $this->dbConnect->query($sql);
+    if (!$result) {
+        die('Invalid query: ' . $this->dbConnect->error);
+    }
 
-	$productPerPage = 2;        
-	$rowCount = $result->num_rows;
-	$totalData = ceil($rowCount / $productPerPage);
+    $productPerPage = 9;        
+    $rowCount = $result->num_rows;
+    $totalData = ceil($rowCount / $productPerPage);
 
-	return $totalData;
+    return $totalData;
 }
-	
+
+// Fetch products based on filters and pagination
 public function getProducts($page = 0, $subcategory = [], $search = '') {
-    $productPerPage = 1;
+    $productPerPage = 9;
     $start = $page * $productPerPage;
 
-    $sql = "SELECT *
+    $sql = "SELECT " . $this->productTable . ".*, " . $this->categoryTable . ".subcategory
+            FROM " . $this->productTable . "
+            INNER JOIN " . $this->categoryTable . " 
+            ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
+
+    $conditions = [];
+
+    // Filter by received menu category if set
+    if (!empty($this->receivedMenuCategory)) {
+        $conditions[] = $this->categoryTable . ".menu_category = '" . $this->dbConnect->real_escape_string($this->receivedMenuCategory) . "'";
+    }
+
+    // Filter by subcategories
+    if (!empty($subcategory)) {
+        $subcategory = array_map([$this->dbConnect, 'real_escape_string'], $subcategory);
+        $conditions[] = $this->categoryTable . ".subcategory IN ('" . implode("','", $subcategory) . "')";
+    }
+
+    // Apply search filter from session or current search
+    if (!empty($search)) {
+        $search = $this->dbConnect->real_escape_string($search);
+        $_SESSION['kereset'] = $search;  // Save search to session
+        $conditions[] = $this->productTable . ".product_name LIKE '%" . $search . "%'";
+    } elseif (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
+        $conditions[] = $this->productTable . ".product_name LIKE '%" . $this->dbConnect->real_escape_string($_SESSION['kereset']) . "%'";
+    }
+
+    // Build SQL query
+    if (!empty($conditions)) {
+        $sql .= " WHERE " . implode(' AND ', $conditions);
+    }
+
+    $sql .= " LIMIT $start, $productPerPage";
+
+    $products = $this->getData($sql);
+    $productHTML = '';
+    
+    if (!empty($products)) {
+        foreach ($products as $product) {
+			if($product['visible_product']==0){
+				$productHTML .= '<div class="product-card">';
+				$productHTML .= '<div class="image-container skeleton">';
+				$productHTML .= '<a href="index.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
+				$productHTML .= '</div>';
+				$productHTML .= '<div class="zoom-window" id="zoomWindow">';
+				$productHTML .= '<img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
+				$productHTML .= '</div>';
+				$productHTML .= '<div class="product-details">';
+				$productHTML .= '<h3>' . $product['product_name'] . '</h3>';
+				$productHTML .= '<p>' . $product['leiras'] . '</p>';
+
+				if ($product['price'] != 0) {
+					$productHTML .= '<p>' . $product['price'] . ' Ft</p>';
+				}
+
+				$productHTML .= '</div>';
+				$productHTML .= '</div>';
+			}
+        }
+    }
+
+    return $productHTML;
+}
+
+// Fetch products with admin actions
+public function getProductsForAdmin($page = 0, $subcategory = [], $search = '') {
+    $productPerPage = 9;
+    $start = $page * $productPerPage;
+
+    $sql = "SELECT " . $this->productTable . ".*, " . $this->categoryTable . ".subcategory
             FROM " . $this->productTable . "
             INNER JOIN " . $this->categoryTable . " 
             ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
@@ -232,7 +313,7 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
     $conditions = [];
 
     if (!empty($this->receivedMenuCategory)) {
-        $conditions[] = $this->categoryTable . ".menu_category = '" . $this->receivedMenuCategory . "'";
+        $conditions[] = $this->categoryTable . ".menu_category = '" . $this->dbConnect->real_escape_string($this->receivedMenuCategory) . "'";
     }
 
     if (!empty($subcategory)) {
@@ -242,41 +323,50 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
 
     if (!empty($search)) {
         $search = $this->dbConnect->real_escape_string($search);
+        $_SESSION['kereset'] = $search;  // Update session with new search term
         $conditions[] = $this->productTable . ".product_name LIKE '%" . $search . "%'";
+    } else {
+        unset($_SESSION['kereset']);  // Clear the session if no search term
+    }
+
+    if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
+        $conditions[] = $this->productTable . ".product_name LIKE '%" . $_SESSION['kereset'] . "%'";
     }
 
     if (!empty($conditions)) {
         $sql .= " WHERE " . implode(' AND ', $conditions);
     }
 
-	if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
-		$sql .= " AND " . $this->productTable . ".product_name LIKE '%" . $this->search . "%'";
-		
-	}
-
     $sql .= " LIMIT $start, $productPerPage";
 
     $products = $this->getData($sql);
     $productHTML = '';
-	
-	if (!empty($products)) {
+
+    if (!empty($products)) {
         foreach ($products as $product) {
             $productHTML .= '<div class="product-card">';
             $productHTML .= '<div class="image-container skeleton">';
-			$productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
+            $productHTML .= '<a href="index.php?ID=' . $product['id'] . '"><img src="../images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
             $productHTML .= '</div>';
             $productHTML .= '<div class="zoom-window" id="zoomWindow">';
-            $productHTML .= '<img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
+            $productHTML .= '<img src="../images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
             $productHTML .= '</div>';
             $productHTML .= '<div class="product-details">';
             $productHTML .= '<h3>' . $product['product_name'] . '</h3>';
             $productHTML .= '<p>' . $product['leiras'] . '</p>';
+            
+            if ($product['price'] != 0) {
+                $productHTML .= '<p>' . $product['price'] . ' Ft</p>';
+            }
 
-
-			if ($product['price'] != 0) {
-				$productHTML .= '<p>' . $product['price'] . ' Ft</p>';
-			}
-
+            $productHTML .= '</div>';
+            $productHTML .= '<div class="actions">';
+            $productHTML .= '<div class="checkbox-container">';
+            $productHTML .= '</div>';
+            $productHTML .= '<div class="buttons">';
+            $productHTML .= '<a href="dashboard.php?cat=product-crud&subcat=admin_update&edit=' . $product['id'] . '&menucategory=' . urlencode($this->menucategory) . '&alkategoria=' . urlencode($this->alkategoria) . '" class="modify-btn"> <i class="fas fa-edit"></i> Módosítás </a>';
+            $productHTML .= '<a href="dashboard.php?cat=product-crud&subcat=admin_page&delete=' . $product['id'] . '" class="delete-btn"> <i class="fas fa-trash"></i> Törlés </a>';
+            $productHTML .= '</div>';
             $productHTML .= '</div>';
             $productHTML .= '</div>';
         }
@@ -286,80 +376,6 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
 }
 
 
-	
-public function getProductsForAdmin($page = 0, $subcategory = [], $search = '') {
-    $productPerPage = 1;
-    $start = $page * $productPerPage;
-
-    $sql = "SELECT *
-            FROM " . $this->productTable . "
-            INNER JOIN " . $this->categoryTable . " 
-            ON " . $this->productTable . ".subcategory = " . $this->categoryTable . ".subcategory";
-
-    $conditions = [];
-
-    if (!empty($this->receivedMenuCategory)) {
-        $conditions[] = $this->categoryTable . ".menu_category = '" . $this->receivedMenuCategory . "'";
-    }
-
-    if (!empty($subcategory)) {
-        $subcategory = array_map([$this->dbConnect, 'real_escape_string'], $subcategory);
-        $conditions[] = $this->categoryTable . ".subcategory IN ('" . implode("','", $subcategory) . "')";
-    }
-
-    if (!empty($search)) {
-        $search = $this->dbConnect->real_escape_string($search);
-        $conditions[] = $this->productTable . ".product_name LIKE '%" . $search . "%'";
-    }
-
-    if (!empty($conditions)) {
-        $sql .= " WHERE " . implode(' AND ', $conditions);
-    }
-
-	if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
-		$sql .= " AND " . $this->productTable . ".product_name LIKE '%" . $this->search . "%'";
-		
-	}
-
-    $sql .= " LIMIT $start, $productPerPage";
-
-    $products = $this->getData($sql);
-    $productHTML = '';
-
-	if (!empty($products)) {
-		foreach ($products as $product) {
-			$productHTML .= '<div class="product-card">';
-			$productHTML .= '<div class="image-container skeleton">';
-			$productHTML .= '<a href="index4.php?ID=' . $product['id'] . '"><img src="images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
-			$productHTML .= '</div>';
-			$productHTML .= '<div class="zoom-window" id="zoomWindow">';
-			$productHTML .= '<img src="../images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoomed-image">';
-			$productHTML .= '</div>';
-			$productHTML .= '<div class="product-details">';
-			$productHTML .= '<h3>' . $product['product_name'] . '</h3>';
-			$productHTML .= '<p>' . $product['leiras'] . '</p>';
-			
-			// Check if the price is not null
-			if ($product['price'] != 0) {
-				$productHTML .= '<p>' . $product['price'] . ' Ft</p>';
-			}
-			$productHTML .= '</div>';
-			$productHTML .= '<div class="actions">';
-			$productHTML .= '<div class="checkbox-container">';
-			$productHTML .= '</div>';
-			$productHTML .= '<div class="buttons">';
-			$productHTML .= '<a href="dashboard.php?cat=product-crud&subcat=admin_update&edit=' . $product['id'] . '&menucategory=' . urlencode($this->menucategory) . '&alkategoria=' . urlencode($this->alkategoria) . '" class="modify-btn"> <i class="fas fa-edit"></i> Módosítás </a>';
-			$productHTML .= '<a href="dashboard.php?cat=product-crud&subcat=admin_page&delete=' . $product['id'] . '" class="delete-btn"> <i class="fas fa-trash"></i> Törlés </a>';
-			$productHTML .= '</div>';
-			$productHTML .= '</div>';
-			$productHTML .= '</div>';
-			
-		}
-	}
-	
-
-    return $productHTML;
-}	
 	
 	
 

@@ -39,7 +39,7 @@ $ide=$product->getSearchforIt();
                   echo '<div>';
                   echo '<div>';
                   echo '<h3 onclick="toggleCategory(\'' . $product->cleanString($categoryName) . '\')">' . ucfirst($categoryName) . '</h3>';
-                  echo '<div class="subcategory skeleton" id="' . $product->cleanString($categoryName) . '">';
+                  echo '<div class="subcategory" id="' . $product->cleanString($categoryName) . '">';
                   
                   foreach ($subcategories as $key => $subcategory) {
                       $isSubcategoryChecked = (isset($_POST['subcategory']) && in_array($product->cleanString($subcategory), $_POST['subcategory']));
@@ -64,7 +64,7 @@ $ide=$product->getSearchforIt();
               ini_set('display_errors', 1);
               ini_set('display_startup_errors', 1);
               error_reporting(E_ALL);
-              //session_destroy();
+             
               
 
 ?>
@@ -77,7 +77,7 @@ $ide=$product->getSearchforIt();
     <button id="loadMoreButton" style="display:none;">Load More</button>
 </div>
 
-<?php include("footer.php");?>
+<?php include("footer.php"); session_destroy();?>
 <script>
 
 </script>

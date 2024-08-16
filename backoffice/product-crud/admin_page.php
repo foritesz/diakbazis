@@ -1,4 +1,8 @@
 <?php
+$menucategory = isset($_GET['menucategory']) ? $_GET['menucategory'] : '';
+$alkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
+$_SESSION['menucategory'] = $menucategory;
+$_SESSION['alkategoria'] = $alkategoria;
 
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
@@ -33,6 +37,7 @@ if (isset($_POST['add_product'])) {
     $category_name = trim($_POST['category_name']);  // Szóközök eltávolítása
     $subcategory = trim($_POST['subcategory']);
     $product_name = trim($_POST['product_name']);
+    $product_leiras = trim($_POST['product_leiras']);
     $product_price = $_POST['product_price'];
     $visible_product = isset($_POST['visible_product']) ? 1 : 0;
     $seasonal = isset($_POST['seasonal']) ? 1 : 0;
@@ -40,12 +45,13 @@ if (isset($_POST['add_product'])) {
     $product_image_tmp_name = $_FILES['product_image']['tmp_name'];
 
     $new_image_name = uniqid() . '.jpg';
-    $product_image_folder = 'C:/AppServ/www/diakbazis/images/' . $new_image_name;
+    $product_image_folder = '../diakbazis/images/' . $new_image_name;
 
     if (empty($product_name) || empty($product_image) || empty($subcategory)) {
-        $message[] = 'Please fill out all fields.';
+        $message[] = 'Töltse ki a "*" jelölt mezőket.';
     } else {
-        $insert = "INSERT INTO products(product_name, price, kepek, subcategory, visible_product, seasonal) VALUES('$product_name', '$product_price', '$new_image_name', '$subcategory', '$visible_product', '$seasonal')";
+        $insert = "INSERT INTO products(product_name, price, kepek, subcategory, visible_product, seasonal, leiras) 
+                   VALUES('$product_name', '$product_price', '$new_image_name', '$subcategory', '$visible_product', '$seasonal', '$product_leiras')";
         $upload = mysqli_query($conn, $insert);
 
         if ($upload) {
@@ -107,16 +113,16 @@ if (isset($message)) {
          <option value="<?php echo $row['subcategory']; ?>" data-category="<?php echo $row['category_name']; ?>"><?php echo $row['subcategory']; ?></option>
       <?php } ?>
    </select>
-   <input type="text" placeholder="Termék neve" name="product_name" class="box">
-   <textarea class="box" id="product_leiras" name="product_leiras" placeholder="Termék leírása"><?php echo $row['leiras']; ?></textarea>
-   <input type="number" placeholder="Termék ára" name="product_price" class="box">
+   <input type="text" placeholder="Termék neve *" name="product_name" class="box" value="<?php echo isset($product_name) ? $product_name : ''; ?>">
+   <textarea class="box" id="product_leiras" name="product_leiras" placeholder="Termék leírása *"><?php echo isset($product_leiras) ? $product_leiras : ''; ?></textarea>
+   <input type="number" placeholder="Termék ára" name="product_price" class="box" value="<?php echo isset($product_price) ? $product_price : ''; ?>">
    <input type="file" accept="image/png, image/jpeg, image/jpg" name="product_image" class="box">
    <div>
-       <input type="checkbox" name="visible_product" id="visible_product">
+       <input type="checkbox" name="visible_product" id="visible_product" <?php echo isset($visible_product) && $visible_product ? 'checked' : ''; ?>>
        <label for="visible_product">Elrejtés</label>
    </div>
    <div>
-       <input type="checkbox" name="seasonal" id="seasonal">
+       <input type="checkbox" name="seasonal" id="seasonal" <?php echo isset($seasonal) && $seasonal ? 'checked' : ''; ?>>
        <label for="seasonal">Szezonális</label>
    </div>
    <input type="submit" class="btn" name="add_product" value="Termék felvétele">
@@ -173,6 +179,10 @@ $ide = $product->getCategories();
 <div class="content">
     <div class="filter">
 <?php
+$menucategory = isset($_GET['menucategory']) ? $_GET['menucategory'] : '';
+$alkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
+
+
         $selectedMenuCategory = $_GET['menucategory'];
         $selectedAlkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
 

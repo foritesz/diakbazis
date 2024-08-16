@@ -439,43 +439,13 @@ $categories = $product->getCategories();
             </div>
             
             <div class="dropdown">
-                <button class="dropbtn" onclick="toggleDropdown(event)">Szolgáltatás
-                  <i class="fa fa-caret-down"></i>
+            <button class="dropbtn">
+                <a href="szolgaltatas.php" class="dropbtn" style=" text-decoration: none;">
+                    Szolgáltatás
+                </a>
                 </button>
-                <div class="dropdown-content">
-                      <div class="content1">
-                            <div class="row">
-<?php
-
-                                $selectedCategory = 'Szolgáltatás';
-                                if (isset($menucategories[$selectedCategory])) {
-                                    $itemCount = 0;
-                                    foreach ($menucategories[$selectedCategory] as $categoryName => $subcategories) {
-                                        if ($itemCount % 4 == 0) {
-                                            // Close the previous column and start a new one after every 4 items
-                                            if ($itemCount > 0) {
-                                                echo '</div>'; // Close previous column
-                                            }
-                                            echo '<div class="column">'; // Start new column
-                                        }
-                                        echo '<h3>' . ucfirst($categoryName) . '</h3>';
-                                        foreach ($subcategories as $key => $subcategory) {
-                                            $categoryEncoded = urlencode($selectedCategory);
-                                            $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
-                                            echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
-                                        }
-                                        $itemCount++;
-                                    }
-                                    echo '</div>'; 
-                    }
-?>
-                        </div>
-                    </div>
-                </div>
             </div>
 
-            </div>
         </div>
     </div>
 </body>
