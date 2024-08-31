@@ -1,6 +1,6 @@
 <?php
 session_start();
-include("../Product.php");
+include("../config/Product.php");
 $email_address= $_SESSION['email'];
 include('config/database.php');
 if(empty($email_address))

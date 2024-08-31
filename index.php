@@ -1,7 +1,7 @@
 <?php
-include("Product.php");
-include("navbar.php");
-include("cookie.php");
+include("config/Product.php");
+include("includes/navbar.php");
+include("includes/cookie.php");
 $product = new Product();
 $subcategories = $product->getMenucategory();
 $totalRecords = $product->getTotalProducts();
@@ -33,4 +33,4 @@ $ide = $product->getCategories();
         </div>
     </div>
 
-<?php include("footer.php");?>
+<?php include("includes/footer.php");?>

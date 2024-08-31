@@ -145,4 +145,4 @@ function setCheckboxesFromUrl() {
 
 
 </script>
-<script src="../ajax_admin.js"></script>
+<script src="assets/js/ajax_admin.js"></script>

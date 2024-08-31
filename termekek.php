@@ -2,21 +2,21 @@
 // Ellenőrizzük a menucategory paramétert
 if (!isset($_GET['menucategory']) || empty($_GET['menucategory'])) {
     http_response_code(404);
-    include('404.php');
+    include('includes/404.php');
     exit();
 }
 
 // Ellenőrizzük az alkategoria paramétert
 if (empty($_GET['alkategoria']) && empty($_GET['menucategory'])) {
     http_response_code(404);
-    include('404.php');
+    include('includes/404.php');
     exit();
 }
 
 
-include("Product.php");
-include("navbar.php");
-include("cookie.php");
+include("config/Product.php");
+include("includes/navbar.php");
+include("includes/cookie.php");
 $product = new Product();
 $subcategories = $product->getMenucategory();
 $totalRecords = $product->getTotalProducts();
@@ -78,7 +78,7 @@ error_reporting(E_ALL);
 <div id="loadMoreContainer">
     <button id="loadMoreButton" style="display:none;">Load More</button>
 </div>
-<?php include("footer.php"); session_destroy();?>
+<?php include("includes/footer.php"); session_destroy();?>
 <script>
 
 
@@ -97,6 +97,6 @@ error_reporting(E_ALL);
 
 </script>
 
-<script src="filter.js"></script>
-<script src="ajax.js"></script>
+<script src="../public/assets/js/filter.js"></script>
+<script src="../public/assets/js/ajax.js"></script>
 

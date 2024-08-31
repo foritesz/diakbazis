@@ -229,5 +229,5 @@ $alkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
     <button id="loadMoreButton" style="display:none;">Load More</button>
 </div>
 
-<script src="filter_admin.js"></script>
-<script src="../ajax_admin.js"></script>
+<script src="assets/js/filter_admin.js"></script>
+<script src="assets/js//ajax_admin.js"></script>

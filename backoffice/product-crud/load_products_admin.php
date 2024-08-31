@@ -1,5 +1,5 @@
 <?php
-include("Product.php");
+include("../config/Product.php");
 $product = new Product();
 
 $page = isset($_POST['totalRecord']) ? (int)$_POST['totalRecord'] : 0;

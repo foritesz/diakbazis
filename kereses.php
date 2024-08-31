@@ -1,7 +1,7 @@
 <?php
 if (!isset($_GET['kereses']) || empty($_GET['kereses'])) {
     http_response_code(404);
-    include('404.php');
+    include('includes/404.php');
     exit();
 }
 
@@ -9,9 +9,9 @@ if (!isset($_GET['kereses']) || empty($_GET['kereses'])) {
 
 
 
-include("Product.php");
-include("navbar.php");
-include("cookie.php");
+include("config/Product.php");
+include("includes/navbar.php");
+include("includes/cookie.php");
 $product = new Product();
 //$categories = $product->getCategories();
 $searchResults = $product->getSearchforIt();
@@ -77,7 +77,7 @@ $ide=$product->getSearchforIt();
     <button id="loadMoreButton" style="display:none;">Load More</button>
 </div>
 
-<?php include("footer.php"); session_destroy();?>
+<?php include("includes/footer.php"); session_destroy();?>
 <script>
 
 </script>
@@ -143,4 +143,4 @@ function setCheckboxesFromUrl() {
 
 
 </script>
-<script src="ajax.js"></script>
+<script src="../public/assets/js/ajax.js"></script>

@@ -11,8 +11,8 @@ $categories = $product->getCategories();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <link rel="stylesheet" href="../public/assets/css/style.css">
+    <script src="../public/assets/js/script.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
@@ -59,7 +59,7 @@ $categories = $product->getCategories();
                         header("Location: /kereses.php?kereses=".urlencode($kereses));
                         exit();
                         
-                        // Példa: Visszairányítás a masik_oldal.php-re a keresési paraméterrel
+                        // Példa: Visszairányítás a masik_oldal-re a keresési paraméterrel
                     }
                 }
             }
@@ -92,13 +92,14 @@ $categories = $product->getCategories();
                     foreach ($subcategories as $key => $subcategory) {
                         $categoryEncoded = urlencode($selectedCategory);
                         $subcategoryEncoded = urlencode($subcategory);
-                        $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                        // Remove .php from the URL
+                        $link = "termekek?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                         echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
                     }
                     $itemCount++;
                 }
                 echo '</div>'; 
-}
+            }
 ?>
                         </div>
                     </div>
@@ -440,7 +441,7 @@ $categories = $product->getCategories();
             
             <div class="dropdown">
             <button class="dropbtn">
-                <a href="szolgaltatas.php" class="dropbtn" style=" text-decoration: none;">
+                <a href="szolgaltatas" class="dropbtn" style=" text-decoration: none;">
                     Szolgáltatás
                 </a>
                 </button>
