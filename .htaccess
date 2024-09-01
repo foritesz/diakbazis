@@ -1,9 +1,20 @@
-# Enable the Rewrite Engine
 RewriteEngine On
 
-# Rewrite rule to map requests without an extension to PHP files
+# Átirányítja a kiterjesztés nélküli URL-eket a megfelelő .php fájlra az includes könyvtárban
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME}.php -f
+RewriteRule ^(.*)$ includes/$1.php [NC,L]
+
+# Biztosítja az index.php alapértelmezett betöltését, ha az alapkönyvtárban van
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^([^\.]+)$ $1.php [NC,L]
+RewriteRule ^(.*)$ index.php [L]
 
-RewriteBase /myapp/
+# Hibakezelés
+ErrorDocument 404 /404.php
+
+# Biztonsági beállítások
+<FilesMatch "\.(htaccess|htpasswd|ini|log|conf)$">
+  Order allow,deny
+  Deny from all
+</FilesMatch>

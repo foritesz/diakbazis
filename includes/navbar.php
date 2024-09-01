@@ -94,7 +94,7 @@ $categories = $product->getCategories();
                         $subcategoryEncoded = urlencode($subcategory);
                         // Remove .php from the URL
                         $link = "termekek?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
-                        echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
+                        echo '<a href="termekek">' . ucfirst($subcategory) . '</a>';                        
                     }
                     $itemCount++;
                 }
@@ -130,7 +130,7 @@ $categories = $product->getCategories();
                                         foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "termekek.php/?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
                                         }
                                         $itemCount++;
