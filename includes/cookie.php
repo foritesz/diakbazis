@@ -38,7 +38,7 @@
         }
 
         .cookie-btn, .details-btn {
-            background-color: #ff9900;
+            background-color: #b41511;
             color: #fff;
             border: none;
             padding: 10px 20px;
@@ -60,7 +60,7 @@
             margin-top: 10px;
             margin-bottom: 5px;
             font-size: 18px;
-            color: #ffcc00;
+            color: white;
         }
     </style>
 </head>
