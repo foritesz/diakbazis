@@ -45,7 +45,7 @@ if (isset($_POST['add_product'])) {
     $product_image_tmp_name = $_FILES['product_image']['tmp_name'];
 
     $new_image_name = uniqid() . '.jpg';
-    $product_image_folder = '../diakbazis/images/' . $new_image_name;
+    $product_image_folder = '../images/' . $new_image_name;
 
     if (empty($product_name) || empty($product_image) || empty($subcategory)) {
         $message[] = 'Töltse ki a "*" jelölt mezőket.';
@@ -218,6 +218,7 @@ $alkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
             echo '</div>';
             echo '</form>';
         }
+
 ?>
 
     </div>
@@ -230,4 +231,4 @@ $alkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
 </div>
 
 <script src="assets/js/filter_admin.js"></script>
-<script src="assets/js//ajax_admin.js"></script>
+<script src="assets/js/ajax_admin.js"></script>

@@ -136,13 +136,14 @@ class Product{
 		$this->search = isset($_GET['kereses']) ? $_GET['kereses'] : '';
 	
 		$sql = "
-			SELECT p.*, c.menu_category, c.category_name, c.subcategory
-			FROM products p
-			INNER JOIN categories c ON p.subcategory = c.subcategory
-			WHERE p.product_name LIKE '%" . $this->search . "%' 
-			OR p.leiras LIKE '%" . $this->search . "%' 
-			OR p.subcategory LIKE '%" . $this->search . "%'
-		";
+		SELECT p.*, c.menu_category, c.category_name, c.subcategory
+		FROM products p
+		INNER JOIN categories c ON p.subcategory = c.subcategory
+		WHERE LOWER(p.product_name) LIKE '%" . strtolower($this->search) . "%' 
+		OR LOWER(p.leiras) LIKE '%" . strtolower($this->search) . "%' 
+		OR LOWER(p.subcategory) LIKE '%" . strtolower($this->search) . "%'
+	";
+	
 		$result = $this->dbConnect->query($sql);
 	
 		if ($result->num_rows > 0) {
@@ -254,14 +255,17 @@ public function getProducts($page = 0, $subcategory = [], $search = '') {
         $conditions[] = $this->categoryTable . ".subcategory IN ('" . implode("','", $subcategory) . "')";
     }
 
-    // Apply search filter from session or current search
-    if (!empty($search)) {
-        $search = $this->dbConnect->real_escape_string($search);
-        $_SESSION['kereset'] = $search;  // Save search to session
-        $conditions[] = $this->productTable . ".product_name LIKE '%" . $search . "%'";
-    } elseif (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
-        $conditions[] = $this->productTable . ".product_name LIKE '%" . $this->dbConnect->real_escape_string($_SESSION['kereset']) . "%'";
-    }
+	if (!empty($search)) {
+		// Sanitize and save the search term to session
+		$search = $this->dbConnect->real_escape_string($search);
+		$_SESSION['kereset'] = $search;
+		$conditions[] = "LOWER(" . $this->productTable . ".product_name) LIKE '%" . strtolower($search) . "%'";
+	} elseif (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
+		// Retrieve the search term from session and sanitize
+		$search = $this->dbConnect->real_escape_string($_SESSION['kereset']);
+		$conditions[] = "LOWER(" . $this->productTable . ".product_name) LIKE '%" . strtolower($search) . "%'";
+	}
+	
 
     // Build SQL query
     if (!empty($conditions)) {
@@ -329,9 +333,16 @@ public function getProductsForAdmin($page = 0, $subcategory = [], $search = '') 
         unset($_SESSION['kereset']);  // Clear the session if no search term
     }
 
-    if (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
-        $conditions[] = $this->productTable . ".product_name LIKE '%" . $_SESSION['kereset'] . "%'";
-    }
+	if (!empty($search)) {
+		// Sanitize and save the search term to session
+		$search = $this->dbConnect->real_escape_string($search);
+		$_SESSION['kereset'] = $search;
+		$conditions[] = "LOWER(" . $this->productTable . ".product_name) LIKE '%" . strtolower($search) . "%'";
+	} elseif (isset($_SESSION['kereset']) && $_SESSION['kereset'] != "") {
+		// Retrieve the search term from session and sanitize
+		$search = $this->dbConnect->real_escape_string($_SESSION['kereset']);
+		$conditions[] = "LOWER(" . $this->productTable . ".product_name) LIKE '%" . strtolower($search) . "%'";
+	}
 
     if (!empty($conditions)) {
         $sql .= " WHERE " . implode(' AND ', $conditions);

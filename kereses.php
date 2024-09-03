@@ -77,7 +77,7 @@ $ide=$product->getSearchforIt();
     <button id="loadMoreButton" style="display:none;">Load More</button>
 </div>
 
-<?php include("includes/footer.php"); session_destroy();?>
+<?php include("includes/footer.php"); ?>
 <script>
 
 </script>

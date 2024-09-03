@@ -9,7 +9,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: 'POST',
-            url: "load_products.php",
+            url: "config/load_products.php",
             dataType: "json",
             data: {
                 totalRecord: totalRecord,

@@ -16,7 +16,9 @@ $categories = $product->getCategories();
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.4.0/font/bootstrap-icons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-    <title>Weboldal Kínézet</title>
+    
+    <link rel="icon" type="image/svg+xml" href="public/assets/css/favicon.svg">
+    <title>Diák-Bázis</title>
 
 <body class="loading">
   <div class="header">
@@ -24,7 +26,7 @@ $categories = $product->getCategories();
           <a href="../">
             <svg width="200" height="50" xmlns="http://www.w3.org/2000/svg">
                 <text x="10" y="35" font-family="Arial" font-size="30" font-weight="bold" fill="black">
-                    <tspan fill="red" font-weight="bold">D</tspan>iák-<tspan fill="red" font-weight="bold">B</tspan>ázis
+                    <tspan fill="#b41511" font-weight="bold">D</tspan>iák-<tspan fill="#b41511" font-weight="bold">B</tspan>ázis
                 </text>
             </svg>
             </a>
@@ -56,7 +58,7 @@ $categories = $product->getCategories();
                     // Ellenőrzés, ha a keresőmező nem üres
                     if(isset($_GET['submit'])) {
                         // Itt lehet további keresési logika vagy adatbázis lekérdezés
-                        header("Location: /kereses.php?kereses=".urlencode($kereses));
+                        header("Location: kereses.php?kereses=".urlencode($kereses));
                         exit();
                         
                         // Példa: Visszairányítás a masik_oldal-re a keresési paraméterrel
@@ -93,8 +95,8 @@ $categories = $product->getCategories();
                         $categoryEncoded = urlencode($selectedCategory);
                         $subcategoryEncoded = urlencode($subcategory);
                         // Remove .php from the URL
-                        $link = "termekek?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
-                        echo '<a href="termekek">' . ucfirst($subcategory) . '</a>';                        
+                        $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                        echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';                        
                     }
                     $itemCount++;
                 }
@@ -130,7 +132,7 @@ $categories = $product->getCategories();
                                         foreach ($subcategories as $key => $subcategory) {
                                             $categoryEncoded = urlencode($selectedCategory);
                                             $subcategoryEncoded = urlencode($subcategory);
-                                            $link = "termekek.php/?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
+                                            $link = "termekek.php?menucategory={$categoryEncoded}&alkategoria={$subcategoryEncoded}";
                                             echo '<a href="' . $link . '">' . ucfirst($subcategory) . '</a>';
                                         }
                                         $itemCount++;

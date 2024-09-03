@@ -21,14 +21,16 @@
             padding: 20px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 90%; /* Limit the width for smaller screens */
+            width: 400px; /* Base width for larger screens */
         }
         h1 {
-            font-size: 48px;
+            font-size: 6vw; /* Use relative units for better scaling */
             color: #333;
             margin-bottom: 20px;
         }
         p {
-            font-size: 18px;
+            font-size: 4vw; /* Use relative units for better scaling */
             color: #666;
             margin-bottom: 20px;
         }
@@ -39,6 +41,15 @@
         }
         a:hover {
             text-decoration: underline;
+        }
+
+        @media (min-width: 768px) {
+            h1 {
+                font-size: 48px; /* Revert to fixed size on larger screens */
+            }
+            p {
+                font-size: 18px; /* Revert to fixed size on larger screens */
+            }
         }
     </style>
 </head>

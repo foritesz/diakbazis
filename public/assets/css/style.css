@@ -52,8 +52,7 @@ body {
 
 .search-bar button {
   padding: 10px;
-  background-color: #f8284b;
-  background-color: #aa062f;/*alternatív*/
+  background-color: #b41511;
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -67,7 +66,7 @@ body {
 
 .navbar {
   overflow: hidden;
-  background-color: #f8284b;
+  background-color: #b41511;
 }
 
 .dropdown-container {
@@ -75,7 +74,7 @@ body {
   justify-content: center;
   align-items: center;
   width: 100%;
-  background-color: #f8284b;
+  background-color: #b41511;
   padding: 10px 0;
 }
 
@@ -96,7 +95,7 @@ body {
 }
 
 .navbar a:hover, .dropdown:hover .dropbtn {
-  background-color: #a71931;
+  background-color: #680314;
 }
 
 .dropdown-content {
@@ -238,7 +237,7 @@ main {
 #loadMoreButton {
   width: 400px;
   padding: 10px;
-  background-color: #f8284b; /* Adjust the background color as per your design */
+  background-color: #b41511; /* Adjust the background color as per your design */
   color: white;
   border: none;
   border-radius: 4px;
@@ -248,7 +247,7 @@ main {
 }
 
 #loadMoreButton:hover {
-  background-color: #a71931; /* Adjust the hover color as needed */
+  background-color: #680314; /* Adjust the hover color as needed */
 }
 
 
@@ -397,7 +396,7 @@ main {
 
   .search-bar input {
       margin: 20px 0;
-      width: 500px;
+      width: 350px;
       position:relative;
   }
 

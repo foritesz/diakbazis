@@ -1,3 +1,8 @@
+AuthType Basic
+AuthName "Members Only"
+AuthUserFile /var/www/clients/client989/web2711/web/stats/.htpasswd_stats
+require valid-user
+
 RewriteEngine On
 
 # Átirányítja a kiterjesztés nélküli URL-eket a megfelelő .php fájlra az includes könyvtárban
