@@ -2,34 +2,68 @@
 <?php
 @include 'config.php';
 
-if(isset($_POST['add_filter'])) {
-   $menu_category = $_POST['menucategory'];
-   $category_name = $_POST['category_name'];
-   $subcategories = $_POST['subcategories'];
+$message = [];
 
-   if(empty($category_name) || empty($subcategories)) {
-      $message[] = 'Please fill out all fields';
-   } else {
-      $subcategoriesArray = explode(',', $subcategories);
-      foreach($subcategoriesArray as $subcategory_name) {
-         $subcategory_name = trim($subcategory_name); // Trim whitespace from the subcategory name
-         $insert = "INSERT INTO categories (category_name, subcategory, menu_category) VALUES ('$category_name', '$subcategory_name', '$menu_category')";
-         $upload = mysqli_query($conn, $insert);
-      }
-      if($upload) {
-         $message[] = 'Új kategória sikeresen felvéve!';
-      } else {
-         $message[] = 'Hiba a felvétel során! Error:'. mysqli_error($conn);
-      }
-   }
+if (isset($_POST['add_filter'])) {
+    $menu_category = $_POST['menucategory'];
+    $category_name = $_POST['category_name'];
+    $subcategories = $_POST['subcategories'];
+
+    if (empty($category_name) || empty($subcategories)) {
+        $message[] = 'Please fill out all fields';
+    } else {
+        $subcategoriesArray = explode(',', $subcategories);
+        foreach ($subcategoriesArray as $subcategory_name) {
+            $subcategory_name = trim($subcategory_name);
+
+            // Check if the subcategory already exists
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM categories WHERE category_name = ? AND subcategory = ? AND menu_category = ?");
+            $stmt->bind_param("sss", $category_name, $subcategory_name, $menu_category);
+            $stmt->execute();
+            $stmt->bind_result($count);
+            $stmt->fetch();
+            $stmt->close();
+
+            if ($count > 0) {
+                // Subcategory already exists
+                $message[] = 'Alkategória már létezik/Felvéve: "' . htmlspecialchars($subcategory_name) . '"!';
+            } else {
+                // Insert the new subcategory
+                $stmt = $conn->prepare("INSERT INTO categories (category_name, subcategory, menu_category) VALUES (?, ?, ?)");
+                $stmt->bind_param("sss", $category_name, $subcategory_name, $menu_category);
+                $upload = $stmt->execute();
+                $stmt->close();
+
+                if ($upload) {
+                    $message[] = 'Új kategória sikeresen felvéve!';
+                } else {
+                    $message[] = 'Hiba! Error:' . mysqli_error($conn);
+                }
+            }
+        }
+    }
 }
 
-if(isset($_GET['delete'])) {
+if (isset($_GET['delete'])) {
    $category_id = $_GET['delete'];
-   mysqli_query($conn, "DELETE FROM categories WHERE category_id = $category_id");
+   $stmt = $conn->prepare("DELETE FROM categories WHERE category_id = ?");
+   $stmt->bind_param("i", $category_id);
+   $stmt->execute();
+   
+   if ($stmt->affected_rows > 0) {
+       $message[] = "Kategória sikeresen törölve";
+   } else {
+       $message[] = "Hiba lépett fel!";
+   }
+   $stmt->close();
+
+
    header('Location: dashboard.php?cat=product-crud&subcat=filter_page');
+   
 }
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -57,6 +91,13 @@ if(isset($_GET['delete'])) {
             subcategoriesInput.value += (subcategoriesInput.value === '' ? '' : ',') + subcategory;
          }
       }
+
+      function updateCategoryName() {
+         var categoryDropdown = document.getElementById('category_name');
+         var selectedCategory = categoryDropdown.options[categoryDropdown.selectedIndex].text;
+         var categoryInput = document.getElementById('category_name_input');
+         categoryInput.value = selectedCategory;
+      }
    </script>
 </head>
 <body>
@@ -74,9 +115,8 @@ if(isset($message)){
    <div class="admin-product-form-container">
       <form action="<?php $_SERVER['PHP_SELF'] ?>" method="post">
          <h3>Kategória felvétele</h3>
-         <label for="menucategory">Menü Kategória kiválasztása:</label>
+         <label for="menucategory">Menü Kategória kiválasztása</label>
          <select name="menucategory" id="menucategory" class="box" required>
-         <option value="">Menü kategória</option>
             <option value="Papír-Írószer">Papír-Írószer</option>
             <option value="Kreatív">Kreatív</option>
             <option value="Játék">Játék</option>
@@ -87,8 +127,19 @@ if(isset($message)){
             <option value="Házatrtási cikkek">Házatrtási cikkek</option>
             <option value="Szezonáli">Szezonális</option>
             <option value="Ór">Óra</option>
-            <option value="Szolgáltatás">Szolgáltatás</option>
-         <input type="text" placeholder="Kategoria neve" name="category_name" class="box" required>
+         </select>
+         <label for="category_name">Kategória kiválasztása</label>
+         <select name="category_name" id="category_name" class="box" required onchange="updateCategoryName()">
+            <?php
+            $categories_query = mysqli_query($conn, "SELECT DISTINCT category_name FROM categories");
+            while ($category_row = mysqli_fetch_assoc($categories_query)) {
+                echo '<option value="'.$category_row['category_name'].'">'.$category_row['category_name'].'</option>';
+            }
+            ?>
+         </select>
+         <label for="category_name">Új Kategória</label>
+         <input type="text" id="category_name_input" placeholder="Kategoria neve" name="category_name" class="box" required>
+         <label for="category_name">Új Alkategória</label>
          <input type="text" placeholder="Alkategoria" id="subcategory_name" class="box">
          <button type="button" onclick="addSubcategory()" class="btn">Alkategoria felvétele</button>
          <ul id="subcategory_list"></ul>
@@ -96,6 +147,7 @@ if(isset($message)){
          <input type="submit" class="btn" name="add_filter" value="Kategória felvétele">
       </form>
    </div>
+  
 
    <?php
    $select = mysqli_query($conn, "SELECT * FROM categories");
@@ -104,19 +156,19 @@ if(isset($message)){
       <table class="product-display-table">
          <thead>
          <tr>
-            <th>product name</th>
-            <th>action</th>
+            <th>Kategória</th>
+            <th></th>
          </tr>
          </thead>
          <?php while($row = mysqli_fetch_assoc($select)){ ?>
          <tr>
             <td><?php echo $row['category_name']; ?> <br>
-            <select name="topic" id="topic">
-            <option value="" selected="selected"><?php echo $row['subcategory']; ?></option>
-            </select> </td>
+            <?php echo "Alkategória:"; ?>
+            <?php echo $row['subcategory']; ?>
+            </td>
             <td>
-               <a href="dashboard.php?cat=product-crud&subcat=filter_update&edit=<?php echo $row['category_id']; ?>" class="btn"> <i class="fas fa-edit"></i> edit </a>
-               <a href="dashboard.php?cat=product-crud&subcat=filter_page&delete=<?php echo $row['category_id']; ?>" class="btn"> <i class="fas fa-trash"></i> delete </a>
+               <a href="dashboard.php?cat=product-crud&subcat=filter_update&edit=<?php echo $row['category_id']; ?>" class="btn"> <i class="fas fa-edit"></i> Módosítás </a>
+               <a href="dashboard.php?cat=product-crud&subcat=filter_page&delete=<?php echo $row['category_id']; ?>" class="btn"> <i class="fas fa-trash"></i> Törlés </a>
             </td>
          </tr>
          <?php } ?>
@@ -125,3 +177,4 @@ if(isset($message)){
 </div>
 </body>
 </html>
+

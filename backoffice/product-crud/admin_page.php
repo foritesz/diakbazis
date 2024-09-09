@@ -4,9 +4,9 @@ $alkategoria = isset($_GET['alkategoria']) ? $_GET['alkategoria'] : '';
 $_SESSION['menucategory'] = $menucategory;
 $_SESSION['alkategoria'] = $alkategoria;
 
-ini_set('display_errors', 1);
+/*ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+error_reporting(E_ALL);*/
 @include 'config.php';
 
 function resizeImage($source_image, $destination, $width, $height) {

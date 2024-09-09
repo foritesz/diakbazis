@@ -132,12 +132,12 @@ if (isset($_POST['update_category'])) {
         $upload = mysqli_query($conn, $update_data);
 
         if ($upload) {
-            $message[] = 'Category updated successfully!';
+            $message[] = 'Kategória Módosítva!';
         } else {
-            $message[] = 'Could not update the category. Please try again.' . mysqli_error($conn);
+            //$message[] = 'Error.' . mysqli_error($conn);
         }
     } else {
-        $message[] = 'No fields to update.';
+        $message[] = 'Hiba történt a módosítás során!';
     }
 }
 
@@ -150,7 +150,7 @@ if (isset($_POST['update_category'])) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
-    <title>Update Category</title>
+    <title>Kategória Módosítása</title>
 </head>
 <body>
 

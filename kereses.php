@@ -59,14 +59,6 @@ $ide=$product->getSearchforIt();
               echo " <br>Nincs ilyen termék!";
             }
             
-              
-              
-              ini_set('display_errors', 1);
-              ini_set('display_startup_errors', 1);
-              error_reporting(E_ALL);
-             
-              
-
 ?>
     </div>
     <div class="products" id="results">
@@ -101,7 +93,9 @@ function clearFilters() {
         }
     });
     
-    window.history.replaceState({}, document.title, updateUrl('alkategoria', checkedValues));
+    // Update the URL with the selected checkboxes and refresh the page
+    var newUrl = updateUrl('alkategoria', checkedValues);
+    window.location.href = newUrl; // This will reload the page with the updated URL
 }
 
 // Function to add or update the alkategoria parameters in the URL

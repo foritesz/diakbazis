@@ -114,7 +114,7 @@ body {
 
 .column {
   width: 25%; /* Since we're showing 4 columns, each gets 25% width */
-  float: left;
+  /*float: left;*/
 }
 
 .dropdown-content a {
@@ -396,7 +396,7 @@ main {
 
   .search-bar input {
       margin: 20px 0;
-      width: 350px;
+      width: 240px;
       position:relative;
   }
 
@@ -513,8 +513,9 @@ main {
   padding: 20px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
-  margin: 0 auto;
+  margin: 20px auto;
   margin-top: 20px;
+  margin-bottom: 100px;
 }
 .info {
   text-align: center;
@@ -530,8 +531,8 @@ main {
   margin-bottom: 20px;
 }
 iframe {
-  width: 400px;
-  height: 400px;
+  width: 310px;
+  height: 310px;
   border: 0;
   border-radius: 10px;
 }
@@ -540,6 +541,6 @@ iframe {
       width: 48%;
   }
   iframe {
-      height: 450px;
+      height: 310px;
   }
 }

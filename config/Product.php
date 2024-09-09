@@ -355,7 +355,12 @@ public function getProductsForAdmin($page = 0, $subcategory = [], $search = '') 
 
     if (!empty($products)) {
         foreach ($products as $product) {
-            $productHTML .= '<div class="product-card">';
+			if($product['visible_product']==0){
+				$productHTML .= '<div class="product-card">';
+				}
+				else{
+				$productHTML .= '<div class="product-card" style="border: 2px solid red;">';	
+				}
             $productHTML .= '<div class="image-container skeleton">';
             $productHTML .= '<a href="index.php?ID=' . $product['id'] . '"><img src="../images/' . $product['kepek'] . '" alt="' . $product['product_name'] . '" class="zoom-image"></a>';
             $productHTML .= '</div>';
@@ -406,8 +411,4 @@ public function getProductsForAdmin($page = 0, $subcategory = [], $search = '') 
 		return $this;
 	}
 }
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
 ?>

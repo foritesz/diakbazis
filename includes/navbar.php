@@ -37,14 +37,25 @@ $categories = $product->getCategories();
               <div></div>
           </div>
           <div class="search-icon" onclick="toggleSearchBar()">
-              <i class="bi bi-search"></i>
-          </div>
-          <div class="search-bar">
-            <form action=kereses.php method="GET">
-                <input type="text" placeholder="Keresés..." id="kereso" name="kereses">
-                <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
-            </form>
-          </div>
+    <i class="bi bi-search"></i>
+</div>
+<div class="search-bar">
+    <form id="search_form" method="GET" action="kereses.php" onsubmit="return validateSearch()">
+        <input type="text" placeholder="Keresés..." id="kereso" name="kereses">
+        <button type="submit"><i class="fa fa-search" aria-hidden="true"></i></button>
+    </form>
+</div>
+
+<script>
+    function validateSearch() {
+        var keresesiMezo = document.getElementById("kereso").value.trim();
+        if (keresesiMezo === "") {
+            return false;
+        }
+        return true;
+    }
+</script>
+
     </div>
   <?php
             echo '<form method="post" id="search_form">';

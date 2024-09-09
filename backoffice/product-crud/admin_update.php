@@ -204,7 +204,7 @@ if (isset($_POST['update_product'])) {
         if (resizeImage($product_image_tmp_name, $product_image_folder, 600, 600)) {
             // Image resized and saved successfully
         } else {
-            $message[] = 'Error resizing the image.';
+            $message[] = 'A kép átméretezésénél hiba történt!';
         }
     }
 
@@ -219,12 +219,12 @@ if (isset($_POST['update_product'])) {
         $upload = mysqli_query($conn, $update_data);
 
         if ($upload) {
-            $message[] = 'Product updated successfully!';
+            $message[] = 'Termék módosítva!';
         } else {
-            $message[] = 'Could not update the product. Please try again. ' . mysqli_error($conn);
+            //$message[] = 'Could not update the product. Please try again. ' . mysqli_error($conn);
         }
     } else {
-        $message[] = 'No fields to update.';
+        $message[] = 'Hiba történt a módosítás során!';
     }
 }
 ?>
